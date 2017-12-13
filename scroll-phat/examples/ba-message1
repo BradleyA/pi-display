@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Print $MESSAGE1 on scroll phat"
+
+./scroll-text-rotated.py $MESSAGE1 ".|   3 CONTAINERS  0 ALERTS  0 WARNINGS  0 SECURITY UPDATES  0 UPDATES   ...   ...   "
+#	./scroll-text-rotated.py $MESSAGE1 ".|       3 containers,  0 alerts,  0 warnings,  0 security updates,  0 updates, .....   ......    "
+
+
+
