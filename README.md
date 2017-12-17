@@ -1,6 +1,6 @@
 # Pimoroni
 
-This repository contains shell scripts for RaspBerry pi.
+This repository contains shell scripts and python for RaspBerry pi.
 
  * [scroll-phat/examples](https://github.com/BradleyA/Pimoroni/tree/master/scroll-phat/examples)
  * 
