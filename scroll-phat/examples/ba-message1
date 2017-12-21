@@ -1,9 +1,13 @@
 #!/bin/bash
-
+#	ba-message1	1.0	2017-12-20_21:07:44_CST uadmin rpi3b-three.cptx86.com
+#	mark initial version
+#
+#	set -x
+#	set -v
+#
 echo "Print $MESSAGE1 on scroll phat"
 
 ./scroll-text-rotated.py $MESSAGE1 ".|   3 CONTAINERS  0 ALERTS  0 WARNINGS  0 SECURITY UPDATES  0 UPDATES   ...   ...   "
 #	./scroll-text-rotated.py $MESSAGE1 ".|       3 containers,  0 alerts,  0 warnings,  0 security updates,  0 updates, .....   ......    "
-
 
 
