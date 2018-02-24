@@ -14,8 +14,8 @@ I have been using some of these for days, months, or years and just now uploadin
 
 To install, change directory to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
-    git clone https://github.com/BradleyA/Pimoroni
-    cd Pimoroni
+    git clone https://github.com/BradleyA/display-board-2-project
+    cd display-board-2-project
 
 ### System OS script tested
 
