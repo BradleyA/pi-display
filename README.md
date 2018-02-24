@@ -1,4 +1,4 @@
-# Pimoroni
+# display-board-2-project
 
 This repository contains shell scripts and python for RaspBerry pi.
 
