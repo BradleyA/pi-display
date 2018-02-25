@@ -1,7 +1,8 @@
-# display-board-2-project
+# pi-display-board
 
 This repository contains shell scripts and python for RaspBerry pi.
 
+#### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
  * [scroll-phat/examples](https://github.com/BradleyA/Pimoroni/tree/master/scroll-phat/examples)
  * 
@@ -14,8 +15,8 @@ I have been using some of these for days, months, or years and just now uploadin
 
 To install, change directory to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
-    git clone https://github.com/BradleyA/display-board-2-project
-    cd display-board-2-project
+    git clone https://github.com/BradleyA/pi-display-board
+    cd pi-display-board
 
 ### System OS script tested
 
