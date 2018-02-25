@@ -4,14 +4,16 @@ This repository contains shell scripts and python for RaspBerry pi.
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
- * [scroll-phat/examples](https://github.com/BradleyA/Pimoroni/tree/master/scroll-phat/examples)
+ * [scroll-phat/examples](https://github.com/BradleyA/pi-display-board/tree/master/scroll-phat)
  * 
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
 I have been using some of these for days, months, or years and just now uploading them. I need to complete some cleanup before it is shareable and documented . . .
 
-## Install
+### Install
+
+### Clone
 
 To install, change directory to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
@@ -21,7 +23,6 @@ To install, change directory to the location you want to download the scripts. U
 ### System OS script tested
 
  * Ubuntu 16.04.3 LTS (armv7l)
-
 
 ### Design Principles
  * Have a simple setup process and a minimal learning curve
