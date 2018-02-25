@@ -4,8 +4,8 @@ This repository contains shell scripts and python for RaspBerry pi.
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
- * [scroll-phat/examples](https://github.com/BradleyA/pi-display-board/tree/master/scroll-phat)
- * 
+ * [scroll-phat](https://github.com/BradleyA/pi-display-board/tree/master/scroll-phat)
+ * scrollphathd
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
