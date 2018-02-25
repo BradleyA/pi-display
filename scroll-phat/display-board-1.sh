@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	display-board-1.sh	2.1.21	2018-02-25_12:07:56_CST uadmin three-rpi3b.cptx86.com 1.2-1-g87d879f 
+# 	   change design to do all the work but don't know how to fork the process and the kill -9 the fork 
 # 	display-board-1.sh	1.2.19	2018-02-24_21:19:39_CST uadmin three-rpi3b.cptx86.com 1.1 
 # 	   more cleanup 
 # 	display-board-1.sh	1.1.18	2018-02-24_21:17:17_CST uadmin three-rpi3b.cptx86.com v0.2-14-g1976579 
@@ -13,7 +15,7 @@
 ###
 display_help() {
 echo -e "\n${0} - display display container status"
-echo    "   UNDER DEVELOPMENT to add REMOTEHOST.  Currently works for local host only."
+echo    "   UNDER DEVELOPMENT  . . . .  ."
 echo -e "\nUSAGE\n   ${0}"
 echo    "   ${0} [--help | -help | help | -h | h | -? | ?] [--version | -v]"
 echo -e "\nDESCRIPTION\nThis script "
@@ -32,8 +34,9 @@ if [ "$1" == "--version" ] || [ "$1" == "-v" ] || [ "$1" == "version" ] ; then
         exit 0
 fi
 ### 
-CLUSTER=${1:-docker-cluster-1}
+CLUSTER=${1:-docker-cluster-1/}
 DATA_DIR=${2:-/usr/local/data/}
+SSHPORT=${3:-22}
 CONTAINERS=0
 RUNNING=10
 PAUSED=100
@@ -41,25 +44,35 @@ STOPPED=1000
 IMAGES=10000
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
-# >>>	write to file in ${DATA_DIR}${CLUSTER}/${HOSTNAME}
-#	HOSTNAME=`hostname`
-#	docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${HOSTNAME}
+LOCALHOST=`hostname -f`
 ###
 mkdir -p  ${DATA_DIR}${CLUSTER}
-FILE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name TOTAL -print`
-#       Check if ${FILE_LIST} is zero length
-if [ -z "${FILE_LIST}" ] ; then
+NODE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name TOTAL -print`
+#       Check if ${NODE_LIST} is zero length
+if [ -z "${NODE_LIST}" ] ; then
         echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:      No file(s) found\n" 1>&2
 	exit 1
 fi
-for FILE_NAME in ${FILE_LIST} ; do
-	CONTAINERS=`grep -i CONTAINERS ${FILE_NAME} | awk -v v=$CONTAINERS '{print $2 + v}'`
-	RUNNING=`grep -i RUNNING ${FILE_NAME} | awk -v v=$RUNNING '{print $2 + v}'`
-	PAUSED=`grep -i PAUSED ${FILE_NAME} | awk -v v=$PAUSED '{print $2 + v}'`
-	STOPPED=`grep -i STOPPED ${FILE_NAME} | awk -v v=$STOPPED '{print $2 + v}'`
-	IMAGES=`grep -i IMAGES ${FILE_NAME} | awk -v v=$IMAGES '{print $2 + v}'`
+for NODE in ${NODE_LIST} ; do
+	if [ "${LOCALHOST}" != "${NODE}" ] ; then
+#	Check if ${REMOTEHOST} is available on port ${SSHPORT}
+		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
+			ssh -t -p ${SSHPORT} ${USER}@${NODE} 'docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}'
+			scp -p ${SSHPORT} -i ~/.ssh/id_rsa uadmin@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
+		else
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
+		fi
+	else
+		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+	fi
+	CONTAINERS=`grep -i CONTAINERS ${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
+	RUNNING=`grep -i RUNNING ${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
+	PAUSED=`grep -i PAUSED ${NODE} | awk -v v=$PAUSED '{print $2 + v}'`
+	STOPPED=`grep -i STOPPED ${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
+	IMAGES=`grep -i IMAGES ${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 done
 echo    "${0} ${LINENO} ---->${CONTAINERS}< --->${RUNNING}<--->${PAUSED}<---->${STOPPED}<---->${IMAGES}<----"
 MESSAGE1=" CONTAINERS ${CONTAINERS}   RUNNING ${RUNNING}  PAUSED ${PAUSED}   STOPPED ${STOPPED}   IMAGES ${IMAGES}  "
+sleep 20 &
 ./scroll-text-rotated.py "${MESSAGE1}"
 ###
