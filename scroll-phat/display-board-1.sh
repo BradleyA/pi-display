@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	display-board-1.sh	1.1.18	2018-02-24_21:17:17_CST uadmin three-rpi3b.cptx86.com v0.2-14-g1976579 
+# 	   cleanup code from a day of debug 
 # 	display-board-1.sh	1.0.13	2018-02-24_20:39:37_CST uadmin three-rpi3b.cptx86.com v0.2-9-g61e9ec1 
 # 	   first working draft from flat files 
 #	ba-message1	1.0	2017-12-20_21:07:44_CST uadmin rpi3b-three.cptx86.com
@@ -28,23 +30,23 @@ if [ "$1" == "--version" ] || [ "$1" == "-v" ] || [ "$1" == "version" ] ; then
         exit 0
 fi
 ### 
-# >>>	write to file in /usr/local/data/docker-cluster-1/`hostname`
-#
 CLUSTER=${1:-docker-cluster-1}
-BOLD=$(tput bold)
-NORMAL=$(tput sgr0)
-#
-HOSTNAME=`hostname`
-#			docker system info | head -5 > /usr/local/data/docker-cluster-1/${HOSTNAME}
-#	MESSAGE1=`cat /usr/local/data/docker-cluster-1/${HOSTNAME}`
-echo "$MESSAGE1"
+DATA_DIR=${2:-/usr/local/data/}
 CONTAINERS=0
 RUNNING=10
 PAUSED=100
 STOPPED=1000
 IMAGES=10000
+BOLD=$(tput bold)
+NORMAL=$(tput sgr0)
+# >>>	write to file in ${DATA_DIR}${CLUSTER}/${HOSTNAME}
+#	HOSTNAME=`hostname`
+#	docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${HOSTNAME}
+#	MESSAGE1=`cat ${DATA_DIR}${CLUSTER}/${HOSTNAME}`
+#	echo "$MESSAGE1"
 ###
-FILE_LIST=`find /usr/local/data/docker-cluster-1/ -type f ! -name TOTAL -print`
+mkdir -p  ${DATA_DIR}${CLUSTER}
+FILE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name TOTAL -print`
 #       Check if ${FILE_LIST} is zero length
 if [ -z "${FILE_LIST}" ] ; then
         echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:      No file(s) found\n" 1>&2
