@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	display-board-1.sh	1.2.19	2018-02-24_21:19:39_CST uadmin three-rpi3b.cptx86.com 1.1 
+# 	   more cleanup 
 # 	display-board-1.sh	1.1.18	2018-02-24_21:17:17_CST uadmin three-rpi3b.cptx86.com v0.2-14-g1976579 
 # 	   cleanup code from a day of debug 
 # 	display-board-1.sh	1.0.13	2018-02-24_20:39:37_CST uadmin three-rpi3b.cptx86.com v0.2-9-g61e9ec1 
@@ -42,8 +44,6 @@ NORMAL=$(tput sgr0)
 # >>>	write to file in ${DATA_DIR}${CLUSTER}/${HOSTNAME}
 #	HOSTNAME=`hostname`
 #	docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${HOSTNAME}
-#	MESSAGE1=`cat ${DATA_DIR}${CLUSTER}/${HOSTNAME}`
-#	echo "$MESSAGE1"
 ###
 mkdir -p  ${DATA_DIR}${CLUSTER}
 FILE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name TOTAL -print`
