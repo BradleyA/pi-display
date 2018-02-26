@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# 	scroll-text-rotated.py	2.3.32	2018-02-26_15:14:25_CST uadmin three-rpi3b.cptx86.com 2.2-9-gfd85103 
+# 	   continue debug; remove debug echo, add -q to ssh and scp 
+
 
 import sys
 import time

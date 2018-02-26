@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	display-board-1.sh	2.3.32	2018-02-26_15:14:25_CST uadmin three-rpi3b.cptx86.com 2.2-9-gfd85103 
+# 	   continue debug; remove debug echo, add -q to ssh and scp 
 # 	display-board-1.sh	2.2.22	2018-02-25_18:48:57_CST uadmin three-rpi3b.cptx86.com 2.1 
 # 	   add file and directory checks 
 # 	display-board-1.sh	2.1.21	2018-02-25_12:07:56_CST uadmin three-rpi3b.cptx86.com 1.2-1-g87d879f 
@@ -64,9 +66,9 @@ fi
 #	Create missing host files from list in SYSTEM file
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS) ; do
 	touch ${DATA_DIR}${CLUSTER}/${NODE}
-done;
+done
 #
-NODE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name SYSTEMS -print`
+NODE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name SYSTEMS ! -name MESSAGE -print`
 #       Check if ${NODE_LIST} is zero length
 if [ -z "${NODE_LIST}" ] ; then
         echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:      No file(s) found\n" 1>&2
@@ -74,13 +76,13 @@ if [ -z "${NODE_LIST}" ] ; then
 	exit 1
 fi
 for NODE in ${NODE_LIST} ; do
-#	echo "${0} ${LINENO}  --->${LOCALHOST}<--->${NODE##*/}<--->${SSHPORT}<--->${USER}<---><---"
+#	Check if ${NODE##*/} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE##*/}" ] ; then
 #	Check if ${NODE} is available on port ${SSHPORT}
 		if $(nc -z ${NODE##*/} ${SSHPORT} >/dev/null) ; then
 			TEMP="docker system info | head -5 > ${NODE}"
-			ssh -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${USER}@${NODE##*/} ${TEMP}
-			scp -P ${SSHPORT} -i ~/.ssh/id_rsa uadmin@${NODE##*/}:${NODE} ${DATA_DIR}${CLUSTER}
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${USER}@${NODE##*/} ${TEMP}
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${USER}@${NODE##*/}:${NODE} ${DATA_DIR}${CLUSTER}
 		else
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE##*/} not responding on port ${SSHPORT}.\n"   1>&2
 		fi
@@ -93,7 +95,10 @@ for NODE in ${NODE_LIST} ; do
 	STOPPED=`grep -i STOPPED ${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
 	IMAGES=`grep -i IMAGES ${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 done
-echo    "${0} ${LINENO} ---->${CONTAINERS}< --->${RUNNING}<--->${PAUSED}<---->${STOPPED}<---->${IMAGES}<----"
-MESSAGE1=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
-./scroll-text-rotated.py "${MESSAGE1}"
+#	echo    "${0} ${LINENO} -->${LOCALHOST}<--->${NODE##*/}<--->${SSHPORT}<--->${USER}<--"
+#	echo    "${0} ${LINENO} -->${CONTAINERS}<--->${RUNNING}<--->${PAUSED}<---->${STOPPED}<---->${IMAGES}<----"
+#	echo    "${0} ${LINENO} -->${LOCALHOST}<--n-->${NODE}<--dd-->${DATA_DIR}<--c-->${CLUSTER}<--P-->${SSHPORT}<--U-->${USER}<--"
+#	echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
+MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
+./scroll-text-rotated.py "${MESSAGE}"
 ###
