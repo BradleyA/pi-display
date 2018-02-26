@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	display-board-1.sh	2.2.22	2018-02-25_18:48:57_CST uadmin three-rpi3b.cptx86.com 2.1 
+# 	   add file and directory checks 
 # 	display-board-1.sh	2.1.21	2018-02-25_12:07:56_CST uadmin three-rpi3b.cptx86.com 1.2-1-g87d879f 
 # 	   change design to do all the work but don't know how to fork the process and the kill -9 the fork 
 # 	display-board-1.sh	1.2.19	2018-02-24_21:19:39_CST uadmin three-rpi3b.cptx86.com 1.1 
@@ -34,33 +36,53 @@ if [ "$1" == "--version" ] || [ "$1" == "-v" ] || [ "$1" == "version" ] ; then
         exit 0
 fi
 ### 
-CLUSTER=${1:-docker-cluster-1/}
-DATA_DIR=${2:-/usr/local/data/}
-SSHPORT=${3:-22}
+CLUSTER=${1:-cluster-1/}
+USER=${2:-${USER}}
+DATA_DIR=${3:-/usr/local/data/}
+SSHPORT=${4:-22}
 CONTAINERS=0
-RUNNING=10
-PAUSED=100
-STOPPED=1000
-IMAGES=10000
+RUNNING=0
+PAUSED=0
+STOPPED=0
+IMAGES=0
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
 LOCALHOST=`hostname -f`
 ###
-mkdir -p  ${DATA_DIR}${CLUSTER}
-NODE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name TOTAL -print`
+#       Check if cluster directory on system
+if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
+	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tCreating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
+	mkdir -p  ${DATA_DIR}${CLUSTER}
+fi
+#       Check if SYSTEMS file on system
+#	one FQDN per line for all hosts in cluster
+if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
+	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tSYSTEMS file missing, creating SYSTEMS file with local host.\n" 1>&2
+	echo -e "\tAdd hosts that are in cluster into file."
+	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
+fi
+#	Create missing host files from list in SYSTEM file
+for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS) ; do
+	touch ${DATA_DIR}${CLUSTER}/${NODE}
+done;
+#
+NODE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name SYSTEMS -print`
 #       Check if ${NODE_LIST} is zero length
 if [ -z "${NODE_LIST}" ] ; then
         echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:      No file(s) found\n" 1>&2
+	echo -e "\tCheck to make sure user has permission to create directory and files."
 	exit 1
 fi
 for NODE in ${NODE_LIST} ; do
-	if [ "${LOCALHOST}" != "${NODE}" ] ; then
-#	Check if ${REMOTEHOST} is available on port ${SSHPORT}
-		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
-			ssh -t -p ${SSHPORT} ${USER}@${NODE} 'docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}'
-			scp -p ${SSHPORT} -i ~/.ssh/id_rsa uadmin@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
+#	echo "${0} ${LINENO}  --->${LOCALHOST}<--->${NODE##*/}<--->${SSHPORT}<--->${USER}<---><---"
+	if [ "${LOCALHOST}" != "${NODE##*/}" ] ; then
+#	Check if ${NODE} is available on port ${SSHPORT}
+		if $(nc -z ${NODE##*/} ${SSHPORT} >/dev/null) ; then
+			TEMP="docker system info | head -5 > ${NODE}"
+			ssh -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${USER}@${NODE##*/} ${TEMP}
+			scp -P ${SSHPORT} -i ~/.ssh/id_rsa uadmin@${NODE##*/}:${NODE} ${DATA_DIR}${CLUSTER}
 		else
-			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE##*/} not responding on port ${SSHPORT}.\n"   1>&2
 		fi
 	else
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
@@ -72,7 +94,6 @@ for NODE in ${NODE_LIST} ; do
 	IMAGES=`grep -i IMAGES ${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 done
 echo    "${0} ${LINENO} ---->${CONTAINERS}< --->${RUNNING}<--->${PAUSED}<---->${STOPPED}<---->${IMAGES}<----"
-MESSAGE1=" CONTAINERS ${CONTAINERS}   RUNNING ${RUNNING}  PAUSED ${PAUSED}   STOPPED ${STOPPED}   IMAGES ${IMAGES}  "
-sleep 20 &
+MESSAGE1=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 ./scroll-text-rotated.py "${MESSAGE1}"
 ###
