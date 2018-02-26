@@ -6,6 +6,8 @@ This repository contains shell scripts and python for RaspBerry pi.
 
  * [scroll-phat](https://github.com/BradleyA/pi-display-board/tree/master/scroll-phat) 
  * scrollphathd
+ 
+ <img id="image_respberry_scroll-phat" src="scroll-phat/images/IMG_3247.JPG" width="400" >
 
 ----> ![Click this link, then click 'view raw' to see board test](scroll-phat/images/IMG_3246.MOV)
 
