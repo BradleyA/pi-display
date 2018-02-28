@@ -6,7 +6,7 @@ This repository contains shell scripts and python for RaspBerry pi.
 
  * [scroll-phat](https://github.com/BradleyA/pi-display-board/tree/master/scroll-phat) 
  * scrollphathd
- * [blinkt]((https://github.com/BradleyA/pi-display-board/tree/master/blinkt)
+ * [blinkt](https://github.com/BradleyA/pi-display-board/tree/master/blinkt)
  
  <img id="image_respberry_scroll-phat" src="scroll-phat/images/IMG_3247.JPG" width="400" >
 
