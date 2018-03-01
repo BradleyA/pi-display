@@ -1,22 +1,8 @@
 #!/bin/bash
+# 	create-message.sh  2.10.58  2018-03-01_17:43:39_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.9-9-g309bc8c  
+# 	   create-message.sh added cpu temperature 
 # 	create-message.sh	2.5.35	2018-02-26_19:38:46_CST uadmin three-rpi3b.cptx86.com 2.4-1-gd14768e 
 # 	   worked the help and completed testing, 2 programs work 
-# 	create-message.sh	2.4.33	2018-02-26_17:06:02_CST uadmin three-rpi3b.cptx86.com 2.3 
-# 	   rewrote uptime todisplay-board.py 
-# 	display-board-1.sh	2.3.32	2018-02-26_15:14:25_CST uadmin three-rpi3b.cptx86.com 2.2-9-gfd85103 
-# 	   continue debug; remove debug echo, add -q to ssh and scp 
-# 	display-board-1.sh	2.2.22	2018-02-25_18:48:57_CST uadmin three-rpi3b.cptx86.com 2.1 
-# 	   add file and directory checks 
-# 	display-board-1.sh	2.1.21	2018-02-25_12:07:56_CST uadmin three-rpi3b.cptx86.com 1.2-1-g87d879f 
-# 	   change design to do all the work but don't know how to fork the process and the kill -9 the fork 
-# 	display-board-1.sh	1.2.19	2018-02-24_21:19:39_CST uadmin three-rpi3b.cptx86.com 1.1 
-# 	   more cleanup 
-# 	display-board-1.sh	1.1.18	2018-02-24_21:17:17_CST uadmin three-rpi3b.cptx86.com v0.2-14-g1976579 
-# 	   cleanup code from a day of debug 
-# 	display-board-1.sh	1.0.13	2018-02-24_20:39:37_CST uadmin three-rpi3b.cptx86.com v0.2-9-g61e9ec1 
-# 	   first working draft from flat files 
-#	ba-message1	1.0	2017-12-20_21:07:44_CST uadmin rpi3b-three.cptx86.com
-#	mark initial version
 #
 #	set -x
 #	set -v
@@ -94,6 +80,11 @@ for NODE in ${NODE_LIST} ; do
 #	Check if ${NODE} is available on port ${SSHPORT}
 		if $(nc -z ${NODE##*/} ${SSHPORT} >/dev/null) ; then
 			TEMP="docker system info | head -5 > ${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
+			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
+			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP})
+			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
+			TEMP="echo ${CELSIUS} >> ${NODE} ; echo ${FAHRENHEIT} >> ${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE##*/}:${NODE} ${DATA_DIR}${CLUSTER}
 		else
