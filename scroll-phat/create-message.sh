@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  2.11.59  2018-03-01_18:09:13_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.10  
+# 	   added local host to cpu temperature 
 # 	create-message.sh  2.10.58  2018-03-01_17:43:39_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.9-9-g309bc8c  
 # 	   create-message.sh added cpu temperature 
 # 	create-message.sh	2.5.35	2018-02-26_19:38:46_CST uadmin three-rpi3b.cptx86.com 2.4-1-gd14768e 
@@ -92,6 +94,10 @@ for NODE in ${NODE_LIST} ; do
 		fi
 	else
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
+		echo ${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
+		echo ${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
