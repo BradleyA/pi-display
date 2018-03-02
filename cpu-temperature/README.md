@@ -1,21 +1,19 @@
 ## cpu-temperature
-
-cpu-temperature is a bash script that determines the Raspberry pi temputures and 
+cpu-temperature is a bash script that determines the Raspberry pi temperature (Celsius and Fahrenheit).  The Raspberry Pi stack gets very hot if not cooled. 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
-someday will places the information in a file for a docker container to read and display the status on the RaspBerry pi blinkt.
-
-### Install
-
-To install, change to the directory, cd /usr/local/bin, to download the script.
-
-    curl -L https://api.github.com/repos/BradleyA/Linux-admin-scripts/tarball | tar -xzf - --wildcards */cpu-temperature.sh ; mv BradleyA-Linux-admin-scripts-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-Linux-admin-scripts-*
+-> Someday will places the information in a file for a docker container to read and display the status on the RaspBerry pi blinkt.
+3/1/2018 scroll-phat/create-message.sh incluses cpu-temperature
 
 ### Clone
+To clone the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
-To install, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
+    git clone https://github.com/BradleyA/pi-display
+    cd pi-display/cpu-temperature/
 
-    git clone https://github.com/BradleyA/Linux-admin-scripts
-    cd Linux-admin-scripts/cpu-temperature
+### Install
+To install, change to the directory, cd /usr/local/bin, to download the script.
+
+    curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *cpu-temperature/cpu-temperature.sh ; mv BradleyA-pi-display-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-pi-display-*
 
 #### Usage
     cpu-temperature.sh 
