@@ -1,16 +1,8 @@
 #!/bin/bash
+# 	create-message.sh  2.15.65  2018-03-02_17:26:20_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.14  
+# 	   added Memory and Disk 
 # 	create-message.sh  2.14.64  2018-03-02_15:19:54_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.13  
 # 	   added labels for Celsius, Fahrenheit, & System_load: to remote hosts 
-# 	create-message.sh  2.13.63  2018-03-02_14:22:31_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.12-2-g162f35e  
-# 	   added labels for Celsius, Fahrenheit, & System_load: to local host 
-# 	create-message.sh  2.12.60  2018-03-01_18:40:08_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.11  
-# 	   add uptime to tracking file 
-# 	create-message.sh  2.11.59  2018-03-01_18:09:13_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.10  
-# 	   added local host to cpu temperature 
-# 	create-message.sh  2.10.58  2018-03-01_17:43:39_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.9-9-g309bc8c  
-# 	   create-message.sh added cpu temperature 
-# 	create-message.sh	2.5.35	2018-02-26_19:38:46_CST uadmin three-rpi3b.cptx86.com 2.4-1-gd14768e 
-# 	   worked the help and completed testing, 2 programs work 
 #
 #	set -x
 #	set -v
@@ -94,7 +86,13 @@ for NODE in ${NODE_LIST} ; do
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
-			TEMP="uptime | sed -s 's/^.*:/System_Load:/' >> ${NODE}"
+			UPTIME="uptime | sed -s 's/^.*:/System_Load:/' >> ${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${UPTIME}
+			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} 'free -m | grep Mem:')
+			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
+			DISK=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} 'df -h  | grep -m 1 "^/"')
+			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
+			TEMP="echo ${MEMORY} >> ${NODE} ; echo ${DISK} >> ${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE##*/}:${NODE} ${DATA_DIR}${CLUSTER}
 		else
@@ -108,6 +106,10 @@ for NODE in ${NODE_LIST} ; do
 		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		UPTIME=$(uptime | sed -s 's/^.*:/System_Load:/')
 		echo ${UPTIME} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
+		echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
+		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
@@ -121,4 +123,3 @@ echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
 #	echo    "${0} ${LINENO} -->${CONTAINERS}<--->${RUNNING}<--->${PAUSED}<---->${STOPPED}<---->${IMAGES}<----"
 #	echo    "${0} ${LINENO} -->${LOCALHOST}<--n-->${NODE}<--dd-->${DATA_DIR}<--c-->${CLUSTER}<--P-->${SSHPORT}<--U-->${ADMUSER}<--"
 #	echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
-###
