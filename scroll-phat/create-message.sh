@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  2.12.60  2018-03-01_18:40:08_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.11  
+# 	   add uptime to tracking file 
 # 	create-message.sh  2.11.59  2018-03-01_18:09:13_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.10  
 # 	   added local host to cpu temperature 
 # 	create-message.sh  2.10.58  2018-03-01_17:43:39_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.9-9-g309bc8c  
@@ -88,6 +90,8 @@ for NODE in ${NODE_LIST} ; do
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo ${CELSIUS} >> ${NODE} ; echo ${FAHRENHEIT} >> ${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
+			TEMP="uptime | sed -s 's/^.*://' >> ${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE##*/}:${NODE} ${DATA_DIR}${CLUSTER}
 		else
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE##*/} not responding on port ${SSHPORT}.\n"   1>&2
@@ -98,6 +102,8 @@ for NODE in ${NODE_LIST} ; do
 		echo ${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 		echo ${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		UPTIME=$(uptime | sed -s 's/^.*://')
+		echo ${UPTIME} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
