@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  2.13.63  2018-03-02_14:22:31_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.12-2-g162f35e  
+# 	   added labels for Celsius, Fahrenheit, & System_load: to local host 
 # 	display-message.py	2.4.33	2018-02-26_17:06:02_CST uadmin three-rpi3b.cptx86.com 2.3 
 # 	   rewrote uptime todisplay-board.py 
 # 	uptime.py	2.3.32	2018-02-26_15:14:25_CST uadmin three-rpi3b.cptx86.com 2.2-9-gfd85103 
@@ -11,6 +13,13 @@ import time
 
 import scrollphat
 
+print("""
+currently using /usr/local/data/cluster-1/MESSAGE
+Need to change to argument to change defualt location
+
+Press Ctrl+C to exit!
+
+""")
 
 scrollphat.set_brightness(4)
 
@@ -30,7 +39,7 @@ def get_msg():
     file.close()
 #    val = subprocess.check_output(["uptime", "-p"]).decode("utf-8")
 #    val = val.replace("\n","")
-    val = val + " ------->  "
+    val = val + " ---->  "
     return val
 
 timeout = get_timeout()

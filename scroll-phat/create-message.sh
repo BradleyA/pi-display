@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  2.13.63  2018-03-02_14:22:31_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.12-2-g162f35e  
+# 	   added labels for Celsius, Fahrenheit, & System_load: to local host 
 # 	create-message.sh  2.12.60  2018-03-01_18:40:08_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.11  
 # 	   add uptime to tracking file 
 # 	create-message.sh  2.11.59  2018-03-01_18:09:13_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.10  
@@ -99,11 +101,11 @@ for NODE in ${NODE_LIST} ; do
 	else
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
-		echo ${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
-		echo ${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		UPTIME=$(uptime | sed -s 's/^.*://')
-		echo ${UPTIME} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		echo 'System_load:'${UPTIME} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
