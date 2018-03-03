@@ -1,10 +1,10 @@
 #!/bin/bash
+# 	create-message.sh  3.02.73  2018-03-03_15:09:01_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.01-4-g76bea75  
+# 	   create-message.sh move copy of MESSAGE file to remote systems after being updated close #3 
 # 	create-message.sh  3.01.68  2018-03-03_14:19:20_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.16  
 # 	   create-message.sh add support for comment in SYSTEMS file closes #5 
 # 	create-message.sh  2.16.67  2018-03-03_12:06:15_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.15-1-ge4d4c65  
 # 	   add failover automation support, closes #1 
-# 	create-message.sh  2.15.65  2018-03-02_17:26:20_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.14  
-# 	   added Memory and Disk 
 #
 #	set -x
 #	set -v
@@ -112,9 +112,10 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	IMAGES=`grep -i IMAGES ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
-#	loop through host in SYSTEM file for cluster
+echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
+#	loop through host in SYSTEM file for cluster to update MESSAGE file on remote hosts
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
-#	Check if ${NODE} is ${LOCALHOST} skip
+#	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on port ${SSHPORT}
 		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
@@ -122,8 +123,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		else
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
 		fi
-		echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
-	else
 	fi
 done
+echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:	Done.\n"	1>&2
 ###
