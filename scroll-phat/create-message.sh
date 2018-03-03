@@ -1,8 +1,8 @@
 #!/bin/bash
+# 	create-message.sh  2.16.67  2018-03-03_12:06:15_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.15-1-ge4d4c65  
+# 	   add failover automation support, closes #1 
 # 	create-message.sh  2.15.65  2018-03-02_17:26:20_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.14  
 # 	   added Memory and Disk 
-# 	create-message.sh  2.14.64  2018-03-02_15:19:54_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.13  
-# 	   added labels for Celsius, Fahrenheit, & System_load: to remote hosts 
 #
 #	set -x
 #	set -v
@@ -86,8 +86,8 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS); do
 			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/MESSAGE ${DATA_DIR}${CLUSTER}
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/SYSTEMS ${DATA_DIR}${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/MESSAGE ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 		else
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
 		fi
