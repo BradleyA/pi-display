@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.04.75  2018-03-03_16:38:38_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.03  
+# 	   clean out a lot of errors; adding SYSTEM file as example; need to update README about example file 
 # 	create-message.sh  3.03.74  2018-03-03_15:40:43_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.02  
 # 	   create-message.sh add error code closes #2 
 # 	create-message.sh  3.02.73  2018-03-03_15:09:01_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.01-4-g76bea75  
@@ -57,14 +59,14 @@ LOCALHOST=`hostname -f`
 #       Check if cluster directory on system
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tCreating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
-	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:	Permission error creating ${DATA_DIR}${CLUSTER}" ; exit 1; }
+	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:	User ${ADMUSER} does not have permission to create ${DATA_DIR}${CLUSTER} directory" ; exit 1; }
 fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
-touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]: Permission error creating MESSAGE file" ; exit 1; }
+touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]: User ${ADMUSER} does not have permission to create MESSAGE file" ; exit 1; }
 #       Check if SYSTEMS file on system
 #	one FQDN per line for all hosts in cluster
-if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || [ -z ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
-	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tSYSTEMS file missing, creating SYSTEMS file with local host.\n" 1>&2
+if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
+	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tSYSTEMS file missing or empty, creating SYSTEMS file with local host.\n" 1>&2
 	echo -e "\tEdit ${DATA_DIR}${CLUSTER}/SYSTEMS file and add additional hosts in cluster."
 	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
 fi
@@ -92,7 +94,8 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 		else
-			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding on port ${SSHPORT}.\n"   1>&2
+			touch ${DATA_DIR}${CLUSTER}/${NODE}
 		fi
 	else
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
@@ -123,7 +126,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/MESSAGE ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 		else
-			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding on port ${SSHPORT}.\n"   1>&2
 		fi
 	fi
 done
