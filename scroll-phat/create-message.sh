@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.01.68  2018-03-03_14:19:20_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.16  
+# 	   create-message.sh add support for comment in SYSTEMS file closes #5 
 # 	create-message.sh  2.16.67  2018-03-03_12:06:15_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.15-1-ge4d4c65  
 # 	   add failover automation support, closes #1 
 # 	create-message.sh  2.15.65  2018-03-02_17:26:20_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.14  
@@ -65,7 +67,7 @@ if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
 	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
 fi
 #	loop through host in SYSTEM file for cluster
-for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS); do
+for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on port ${SSHPORT}
