@@ -55,6 +55,8 @@ if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tCreating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
 	mkdir -p  ${DATA_DIR}${CLUSTER}
 fi
+#	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
+touch ${DATA_DIR}${CLUSTER}/MESSAGE
 #       Check if SYSTEMS file on system
 #	one FQDN per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
@@ -62,41 +64,32 @@ if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
 	echo -e "\tAdd hosts that are in cluster into file."
 	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
 fi
-#	Create missing host files from list in SYSTEM file
-for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS) ; do
-	touch ${DATA_DIR}${CLUSTER}/${NODE}
-done
-#
-NODE_LIST=`find ${DATA_DIR}${CLUSTER} -type f ! -name SYSTEMS ! -name MESSAGE -print`
-#       Check if ${NODE_LIST} is zero length
-if [ -z "${NODE_LIST}" ] ; then
-        echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:      No file(s) found\n" 1>&2
-	echo -e "\tCheck to make sure user has permission to create directory and files."
-	exit 1
-fi
-for NODE in ${NODE_LIST} ; do
-#	Check if ${NODE##*/} is ${LOCALHOST} don't use ssh and scp
-	if [ "${LOCALHOST}" != "${NODE##*/}" ] ; then
+#	loop through host in SYSTEM file for cluster
+for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS); do
+#	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
+	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on port ${SSHPORT}
-		if $(nc -z ${NODE##*/} ${SSHPORT} >/dev/null) ; then
-			TEMP="docker system info | head -5 > ${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
+		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
+			TEMP="docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
-			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP})
+			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP})
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
-			TEMP="echo 'Celsius: '${CELSIUS} >> ${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
-			UPTIME="uptime | sed -s 's/^.*:/System_Load:/' >> ${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${UPTIME}
-			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} 'free -m | grep Mem:')
+			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
+			UPTIME="uptime | sed -s 's/^.*:/System_Load:/' >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${UPTIME}
+			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
-			DISK=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} 'df -h  | grep -m 1 "^/"')
+			DISK=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
 			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
-			TEMP="echo ${MEMORY} >> ${NODE} ; echo ${DISK} >> ${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE##*/} ${TEMP}
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE##*/}:${NODE} ${DATA_DIR}${CLUSTER}
+			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/MESSAGE ${DATA_DIR}${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/SYSTEMS ${DATA_DIR}${CLUSTER}
 		else
-			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE##*/} not responding on port ${SSHPORT}.\n"   1>&2
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
 		fi
 	else
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
@@ -111,15 +104,13 @@ for NODE in ${NODE_LIST} ; do
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 	fi
-	CONTAINERS=`grep -i CONTAINERS ${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
-	RUNNING=`grep -i RUNNING ${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
-	PAUSED=`grep -i PAUSED ${NODE} | awk -v v=$PAUSED '{print $2 + v}'`
-	STOPPED=`grep -i STOPPED ${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
-	IMAGES=`grep -i IMAGES ${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
+	CONTAINERS=`grep -i CONTAINERS ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
+	RUNNING=`grep -i RUNNING ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
+	PAUSED=`grep -i PAUSED ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$PAUSED '{print $2 + v}'`
+	STOPPED=`grep -i STOPPED ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
+	IMAGES=`grep -i IMAGES ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
-#	echo    "${0} ${LINENO} -->${LOCALHOST}<--->${NODE##*/}<--->${SSHPORT}<--->${ADMUSER}<--"
-#	echo    "${0} ${LINENO} -->${CONTAINERS}<--->${RUNNING}<--->${PAUSED}<---->${STOPPED}<---->${IMAGES}<----"
-#	echo    "${0} ${LINENO} -->${LOCALHOST}<--n-->${NODE}<--dd-->${DATA_DIR}<--c-->${CLUSTER}<--P-->${SSHPORT}<--U-->${ADMUSER}<--"
-#	echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
+#	echo    "${0} ${LINENO} -->${LOCALHOST}<--->${NODE}<--->${SSHPORT}<--->${ADMUSER}<--"
+###
