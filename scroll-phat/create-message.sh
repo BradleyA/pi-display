@@ -88,7 +88,6 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/MESSAGE ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 		else
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
@@ -113,6 +112,18 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	IMAGES=`grep -i IMAGES ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
-echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
-#	echo    "${0} ${LINENO} -->${LOCALHOST}<--->${NODE}<--->${SSHPORT}<--->${ADMUSER}<--"
+#	loop through host in SYSTEM file for cluster
+for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
+#	Check if ${NODE} is ${LOCALHOST} skip
+	if [ "${LOCALHOST}" != "${NODE}" ] ; then
+#	Check if ${NODE} is available on port ${SSHPORT}
+		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/MESSAGE ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
+		else
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:        ${NODE} not responding on port ${SSHPORT}.\n"   1>&2
+		fi
+		echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
+	else
+	fi
+done
 ###
