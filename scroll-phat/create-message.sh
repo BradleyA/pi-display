@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.03.74  2018-03-03_15:40:43_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.02  
+# 	   create-message.sh add error code closes #2 
 # 	create-message.sh  3.02.73  2018-03-03_15:09:01_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.01-4-g76bea75  
 # 	   create-message.sh move copy of MESSAGE file to remote systems after being updated close #3 
 # 	create-message.sh  3.01.68  2018-03-03_14:19:20_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.16  
@@ -55,15 +57,15 @@ LOCALHOST=`hostname -f`
 #       Check if cluster directory on system
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tCreating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
-	mkdir -p  ${DATA_DIR}${CLUSTER}
+	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:	Permission error creating ${DATA_DIR}${CLUSTER}" ; exit 1; }
 fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
-touch ${DATA_DIR}${CLUSTER}/MESSAGE
+touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]: Permission error creating MESSAGE file" ; exit 1; }
 #       Check if SYSTEMS file on system
 #	one FQDN per line for all hosts in cluster
-if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
+if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || [ -z ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tSYSTEMS file missing, creating SYSTEMS file with local host.\n" 1>&2
-	echo -e "\tAdd hosts that are in cluster into file."
+	echo -e "\tEdit ${DATA_DIR}${CLUSTER}/SYSTEMS file and add additional hosts in cluster."
 	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
 fi
 #	loop through host in SYSTEM file for cluster
