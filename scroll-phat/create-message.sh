@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.06.78  2018-03-05_16:16:06_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.05  
+# 	   update display_help 
 # 	create-message.sh  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
 # 	   create-message.sh copy all data files to all systems in cluster to support failover closes #6 
 # 	create-message.sh  3.04.75  2018-03-03_16:38:38_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.03  
@@ -17,12 +19,17 @@ echo    "in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file in
 echo    "the total number of containers, running containers, paused containers,"
 echo    "stopped containers, and number of images.  The MESSAGE file is used by a"
 echo    "Raspberry Pi Scroll-pHAT to display the information."
+echo -e "\nThis script reads /usr/local/data/<cluster-name>/SYSTEMS file for the names"
+echo    "of the hosts in a cluster.  The file includes one FQDN host per line.   Lines"
+echo    "starting with a '#' are ignored."
+
 echo -e "\nSystem inforamtion about each host is stored in"
 echo    "/usr/local/data/<cluster-name>/<host>.  The system information includes cpu"
 echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, and disk"
-echo    "usage."
+echo    "usage.  The system information will be used by blinkt to display system"
+echo    "information about each system in near real time."
 echo -e "\nTo avoid many login prompts for each host in a cluster, enter the following:"
-echo    "ssh-copy-id uadmin@<host-name"
+echo    "ssh-copy-id uadmin@<host-name>"
 echo -e "\nOPTIONS"
 echo    "   CLUSTER   name of cluster directory, dafault cluster-1/"
 echo    "   ADMUSER   site SRE administrator, default is user running script"
