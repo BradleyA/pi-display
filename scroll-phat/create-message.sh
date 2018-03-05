@@ -1,30 +1,28 @@
 #!/bin/bash
+# 	create-message.sh  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
+# 	   create-message.sh copy all data files to all systems in cluster to support failover closes #6 
 # 	create-message.sh  3.04.75  2018-03-03_16:38:38_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.03  
 # 	   clean out a lot of errors; adding SYSTEM file as example; need to update README about example file 
-# 	create-message.sh  3.03.74  2018-03-03_15:40:43_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.02  
-# 	   create-message.sh add error code closes #2 
-# 	create-message.sh  3.02.73  2018-03-03_15:09:01_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.01-4-g76bea75  
-# 	   create-message.sh move copy of MESSAGE file to remote systems after being updated close #3 
-# 	create-message.sh  3.01.68  2018-03-03_14:19:20_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.16  
-# 	   create-message.sh add support for comment in SYSTEMS file closes #5 
-# 	create-message.sh  2.16.67  2018-03-03_12:06:15_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.15-1-ge4d4c65  
-# 	   add failover automation support, closes #1 
 #
 #	set -x
 #	set -v
 ###
 display_help() {
-echo -e "\n${0} - stores information about containers and images"
-echo -e "\n   >>> UNDER DEVELOPMENT  . . . .  ."
+echo -e "\n${0} - Store Docker and system information"
 echo -e "\nUSAGE\n   ${0} [<cluster>] [<administrator>] [<data_directory>] [<sshport>"
 echo    "   ${0} [--help | -help | help | -h | h | -? | ?] [--version | -v]"
 echo -e "\nDESCRIPTION\nThis script stores Docker information about containers and images in a file"
 echo    "on each system in a cluster.  These files are copied to a host and totaled"
-echo    "in a file, /usr/local/data/cluster-1/MESSAGE.  The MESSAGE file includes the"
-echo    "total number of conntainers, running containers, paused containers, stopped"
-echo    "containers, and number of images.  The MESSAGE file is used to display the"
-echo    "information on a Raspberry Pi Scroll-pHAT display."
-echo -e "\n   >>>   NEED to finish this... run script in a container every two minutes on a Raspberry Pi that includes Scroll-pHAT display."
+echo    "in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes"
+echo    "the total number of containers, running containers, paused containers,"
+echo    "stopped containers, and number of images.  The MESSAGE file is used by a"
+echo    "Raspberry Pi Scroll-pHAT to display the information."
+echo -e "\nSystem inforamtion about each host is stored in"
+echo    "/usr/local/data/<cluster-name>/<host>.  The system information includes cpu"
+echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, and disk"
+echo    "usage."
+echo -e "\nTo avoid many login prompts for each host in a cluster, enter the following:"
+echo    "ssh-copy-id uadmin@<host-name"
 echo -e "\nOPTIONS"
 echo    "   CLUSTER   name of cluster directory, dafault cluster-1/"
 echo    "   ADMUSER   site SRE administrator, default is user running script"
@@ -59,10 +57,10 @@ LOCALHOST=`hostname -f`
 #       Check if cluster directory on system
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tCreating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
-	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:	User ${ADMUSER} does not have permission to create ${DATA_DIR}${CLUSTER} directory" ; exit 1; }
+	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create ${DATA_DIR}${CLUSTER} directory" ; exit 1; }
 fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
-touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]: User ${ADMUSER} does not have permission to create MESSAGE file" ; exit 1; }
+touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGE file" ; exit 1; }
 #       Check if SYSTEMS file on system
 #	one FQDN per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
@@ -118,17 +116,17 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
-#	loop through host in SYSTEM file for cluster to update MESSAGE file on remote hosts
+#	loop through host in SYSTEM file for cluster to update all file on remote hosts
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on port ${SSHPORT}
 		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/MESSAGE ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 		else
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding on port ${SSHPORT}.\n"   1>&2
 		fi
 	fi
 done
-echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:	Done.\n"	1>&2
+echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Done.\n"	1>&2
 ###

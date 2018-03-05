@@ -1,11 +1,13 @@
 
+####	README.md  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
+####	   create-message.sh copy all data files to all systems in cluster to support failover closes #6 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
 #### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching. 
 
 I need to complete some cleanup before it is shareable and documented . . .
 
-create-message.sh -> create docker and system data in /usr/local/data/cluster-1/$HOSTNAME on each host that is found in /usr/local/data/cluster-1/SYSTEMS file.  Totals from these files are on the local host, /usr/local/data/cluster-1/MESSAGE for Scroll-pHAT
+create-message.sh -> create docker and system data in /usr/local/data/cluster-1/$HOSTNAME on each host that is found in /usr/local/data/cluster-1/SYSTEMS file.  Docker totals from these files are in /usr/local/data/cluster-1/MESSAGE for Scroll-pHAT on each system.  
 
 display-message.py -> uses this information and displays it on Scroll-pHAT
 
