@@ -1,13 +1,22 @@
 
-####	README.md  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
-####	   create-message.sh copy all data files to all systems in cluster to support failover closes #6 
+
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
 #### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching. 
 
+create-message.sh - This script stores Docker information about containers and images in a file on each system in a cluster.  These files are copied to all host and totaled in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes
+the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT to display the information.
+
+This script reads /usr/local/data/<cluster-name>/SYSTEMS file for the names of the hosts in a cluster.  The file includes one FQDN host per line.  Lines starting with a '#' are ignored.
+
+System inforamtion about each host is stored in /usr/local/data/<cluster-name>/<host>.  The system information includes cpu
+temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.  The system information will be used by blinkt to display system information about each system in near real time.
+
+To avoid many login prompts for each host in a cluster, enter the following:  ssh-copy-id uadmin@<host-name>
+
 I need to complete some cleanup before it is shareable and documented . . .
 
-create-message.sh -> create docker and system data in /usr/local/data/cluster-1/$HOSTNAME on each host that is found in /usr/local/data/cluster-1/SYSTEMS file.  Docker totals from these files are in /usr/local/data/cluster-1/MESSAGE for Scroll-pHAT on each system.  
+create-message.sh -> is found in /usr/local/data/cluster-1/SYSTEMS file.  Docker totals from these files are in /usr/local/data/cluster-1/MESSAGE for Scroll-pHAT on each system.  
 
 display-message.py -> uses this information and displays it on Scroll-pHAT
 
