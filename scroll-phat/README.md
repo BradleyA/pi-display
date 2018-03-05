@@ -1,6 +1,5 @@
 
-####	README.md  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
-####	   create-message.sh copy all data files to all systems in cluster to support failover closes #6 
+
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
 #### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching. 
