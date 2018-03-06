@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.07.82  2018-03-05_19:57:10_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.06-3-g39a0ee9  
+# 	   create-message.sh change directory for /usr/local/data/cluster-1 
 # 	create-message.sh  3.06.78  2018-03-05_16:16:06_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.05  
 # 	   update display_help 
 # 	create-message.sh  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
@@ -65,6 +67,7 @@ LOCALHOST=`hostname -f`
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tCreating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
 	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create ${DATA_DIR}${CLUSTER} directory" ; exit 1; }
+	chmod 775 ${DATA_DIR}${CLUSTER}
 fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
 touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGE file" ; exit 1; }
