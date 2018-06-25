@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	../../../display-led.py  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
+# 	   completed prototype controling blinkt from container start with docker-compose 
 # 	display-led.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
 # 	   added more prices, first draft of display-led.py 
 ###
@@ -97,6 +99,41 @@ def status6(LED_number):
     show()
     time.sleep(15) # 1 = 1 second
 
+#   process information
+def process(line):
+    print("this is in the process information function")
+    print(line)
+    if 'celsius:' in line.lower():
+        print("---> this is Celsius: <---")
+        print ("celsius: ->")
+        print("yy")
+    print("---> not Celsius:")
+    print("xx")
+
+#####
+#   read file and process information
+# >>>  need to replace path and file name with variables
+with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
+    print  FILE_NAME
+    print("begin for loop")
+    for line in f:
+        print("this is in the for loop")
+        print(line)
+        process(line)
+
+# >>>  need to replace path and file name with variables
+#    file = open(FILE_NAME,"r")
+#    print file.read()
+#    file_data = fp.readlines()
+#    file.close()
+
+#		while TRUE:
+#		#   loop through leds on blinkt
+#		    for LED in range(0,7):
+#		#       if file-information(LED) == 1 then status1(LED)
+#		       if 
+#		
+
 
 status1(0)
 status2(1)
@@ -108,23 +145,4 @@ status6(6)
 status6(7)
 
     
-#		#   read file and process information
-#		def get_info():
-#		    file = open("/usr/local/data/cluster-1/MESSAGE","r")
-#		#    print file.read()
-#		    val = file.read()
-#		    file.close()
-#		#    val = subprocess.check_output(["uptime", "-p"]).decode("utf-8")
-#		#    val = val.replace("\n","")
-#		    val = val + " ---->  "
-#		    return val
-#		
-#		
-#		while TRUE:
-#		#   loop through leds on blinkt
-#		    for LED in range(0,7):
-#		#       if file-information(LED) == 1 then status1(LED)
-#		       if 
-#		
-#		
 #		###
