@@ -5,6 +5,32 @@ This is work in progress:
   1) use create-message.sh to create data and store data on each system in a cluster
   2) need to move create-meaage.sh in a docker container on cluster-1, three-rpi3b, cluster-2, six-rpi3b, cluster-3
   3) 
+  
+  
+### Working on:
+    display-led.py
+    
+    #       display-led.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
+    #          added more prices, first draft of display-led.py 
+    ###
+    #       The final design should control an Blinkt LED bar and
+    #               display information for a second
+    #               So this means it will take 8 seconds to display all LEDS?
+    #       Each color level function will exit with the primary color on
+    #       Color brightness controlled in each color level function
+    #
+    #       Other containers will update a volume that this container mounts
+    #               and reads (LED_number, Level)
+    ###
+    
+    
+    docker-blinkt-workshop/labs/3.2
+    
+    Dockerfile
+    rainbow.py
+    build
+    docker-compose.yaml
+
 
 ### Clone
 To clone the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
