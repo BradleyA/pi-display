@@ -33,7 +33,7 @@ This is work in progress:
     
     system-stats/system-stats-1.sh
     
-    
+    scroll-phat/create-message.sh
     This script stores Docker information about containers and images in a file"
     on each system in a cluster.  These files are copied to a host and totaled"
     in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes"
@@ -42,8 +42,12 @@ This is work in progress:
     Raspberry Pi Scroll-pHAT to display the information."
     This script reads /usr/local/data/<cluster-name>/SYSTEMS file for the names"
     of the hosts in a cluster.  The file includes one FQDN host per line.   Lines"
-    starting with a '#' are ignored."
-
+    starting with a '#' are ignored.
+    
+    scroll-phat/display-message.py
+    . . .
+    
+    
 
 ### Clone
 To clone the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
