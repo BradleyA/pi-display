@@ -6,6 +6,56 @@ pi-system-stats is a bash script that runs several commands and has notes about 
 
 <img id="image_raspberry_cluster" src="../images/IMG_2664.JPG" width="200" >
 
+
+#### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
+Need to continue to organize the research from the many systems running different test cases.   Organize it into; what works, what I want, and what I still need to make this design work:
+This is work in progress:
+  1) use create-message.sh to create data and store data on each system in a cluster
+  2) need to move create-meaage.sh in a docker container on cluster-1, three-rpi3b, cluster-2, six-rpi3b, cluster-3
+  3) 
+  
+  
+### Working on:
+    display-led.py
+    --> need one container running on each system in cluster with blinkt
+    #       display-led.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
+    #          added more prices, first draft of display-led.py 
+    ###
+    #       The final design should control an Blinkt LED bar and
+    #               display information for a second
+    #               So this means it will take 8 seconds to display all LEDS?
+    #       Each color level function will exit with the primary color on
+    #       Color brightness controlled in each color level function
+    #
+    #       Other containers will update a volume that this container mounts
+    #               and reads (LED_number, Level)
+    ###
+    
+    docker-blinkt-workshop/labs/3.2
+    --> example Dockerfile and yaml to use with other scripts
+    Dockerfile
+    rainbow.py
+    build
+    docker-compose.yaml
+    
+    system-stats/system-stats-1.sh
+    --> not sure if still needed
+    
+    scroll-phat/create-message.sh
+    --> need one container always running on one system in cluster
+    This script stores Docker information about containers and images in a file"
+    on each system in a cluster.  These files are copied to a host and totaled"
+    in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes"
+    the total number of containers, running containers, paused containers,"
+    stopped containers, and number of images.  The MESSAGE file is used by a"
+    Raspberry Pi Scroll-pHAT to display the information."
+    This script reads /usr/local/data/<cluster-name>/SYSTEMS file for the names"
+    of the hosts in a cluster.  The file includes one FQDN host per line.   Lines"
+    starting with a '#' are ignored.
+    
+    scroll-phat/display-message.py
+    --> need one container running system with scroll board in cluster
+
 ### Install
 
 To install, change to the directory, cd /usr/local/bin, to download the script.
