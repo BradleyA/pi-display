@@ -9,7 +9,7 @@ This is work in progress:
   
 ### Working on:
     display-led.py
-    
+    --> need one container running on each system in cluster with blinkt
     #       display-led.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
     #          added more prices, first draft of display-led.py 
     ###
@@ -23,15 +23,32 @@ This is work in progress:
     #               and reads (LED_number, Level)
     ###
     
-    
     docker-blinkt-workshop/labs/3.2
-    
+    --> example Dockerfile and yaml to use with other scripts
     Dockerfile
     rainbow.py
     build
     docker-compose.yaml
-
-
+    
+    system-stats/system-stats-1.sh
+    --> not sure if still needed
+    
+    scroll-phat/create-message.sh
+    --> need one container always running on one system in cluster
+    This script stores Docker information about containers and images in a file"
+    on each system in a cluster.  These files are copied to a host and totaled"
+    in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes"
+    the total number of containers, running containers, paused containers,"
+    stopped containers, and number of images.  The MESSAGE file is used by a"
+    Raspberry Pi Scroll-pHAT to display the information."
+    This script reads /usr/local/data/<cluster-name>/SYSTEMS file for the names"
+    of the hosts in a cluster.  The file includes one FQDN host per line.   Lines"
+    starting with a '#' are ignored.
+    
+    scroll-phat/display-message.py
+    --> need one container running system with scroll board in cluster
+    . . .
+    
 ### Clone
 To clone the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
