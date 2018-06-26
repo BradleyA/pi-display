@@ -10,7 +10,7 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
  * scrollphathd
  * [blinkt](https://github.com/BradleyA/pi-display-board/tree/master/blinkt)
  
- <img id="image_respberry_scroll-phat" src="scroll-phat/images/IMG_3247.JPG" width="450" >
+ <img id="image_respberry_scroll-phat" src="images/IMG_3247.JPG" width="450" >
 
 ----> ![Click this link, then click 'view raw' to see board test](scroll-phat/images/IMG_3246.MOV)
 
