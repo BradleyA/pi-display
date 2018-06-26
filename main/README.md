@@ -31,17 +31,17 @@ This is work in progress:
     #               and reads (LED_number, Level)
     ###
     
-    docker-blinkt-workshop/labs/3.2
+    main
     --> example Dockerfile and yaml to use with other scripts
     Dockerfile
     rainbow.py
     build
     docker-compose.yaml
     
-    system-stats/system-stats-1.sh
+    main/system-stats-1.sh
     --> not sure if still needed
     
-    scroll-phat/create-message.sh
+    scrollphat/create-message.sh
     --> need one container always running on one system in cluster
     This script stores Docker information about containers and images in a file"
     on each system in a cluster.  These files are copied to a host and totaled"
@@ -53,7 +53,7 @@ This is work in progress:
     of the hosts in a cluster.  The file includes one FQDN host per line.   Lines"
     starting with a '#' are ignored.
     
-    scroll-phat/display-message.py
+    scrollphat/display-message.py
     --> need one container running system with scroll board in cluster
 
 ### Install
