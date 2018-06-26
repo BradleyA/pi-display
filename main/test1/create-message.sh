@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.16.113  2018-06-26_15:12:37_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.15  
+# 	   add process inforamtion to stdout 
 # 	create-message.sh  3.15.112  2018-06-26_14:15:43_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.14  
 # 	   move to test1 
 # 	create-message.sh  3.07.82  2018-03-05_19:57:10_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.06-3-g39a0ee9  
@@ -8,7 +10,7 @@
 # 	create-message.sh  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
 # 	   create-message.sh copy all data files to all systems in cluster to support failover closes #6 
 # 	create-message.sh  3.04.75  2018-03-03_16:38:38_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.03  
-# 	   clean out a lot of errors; adding SYSTEM file as example; need to update README about example file 
+# 	   clean out a lot of errors; adding SYSTEMS file as example; need to update README about example file 
 #
 #	set -x
 #	set -v
@@ -76,15 +78,22 @@ touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERRO
 #	one FQDN per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tSYSTEMS file missing or empty, creating SYSTEMS file with local host.\n" 1>&2
-	echo -e "\tEdit ${DATA_DIR}${CLUSTER}/SYSTEMS file and add additional hosts in cluster."
+	echo -e "\tEdit ${DATA_DIR}${CLUSTER}/SYSTEMS file and add additional hosts that are in the cluster.\n"
 	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
 fi
-#	loop through host in SYSTEM file for cluster
+#	Loop through host in SYSTEMS file
+echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file"	1>&2
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
+	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE}"	1>&2
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on port ${SSHPORT}
 		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
+#       Check if cluster directory on system
+			TEMP="mkdir -p  ${DATA_DIR}${CLUSTER}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
+			TEMP="chmod 775 ${DATA_DIR}${CLUSTER}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
@@ -127,8 +136,10 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
-#	loop through host in SYSTEM file for cluster to update all file on remote hosts
+#	Loop through hosts in SYSTEMS file and update other host information
+echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file and update other host information"	1>&2
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
+	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE}"	1>&2
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on port ${SSHPORT}
