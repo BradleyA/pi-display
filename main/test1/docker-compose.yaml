@@ -1,0 +1,62 @@
+#       https://github.com/docker/compose/releases/
+# 	docker-compose.yaml  3.17.116  2018-06-26_19:50:50_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.16-2-g490b53f  
+# 	   more setup for testing yaml 
+# 	blinkt/docker-blinkt-workshop/labs/3.2/docker-compose.yaml  3.10.90  2018-06-25_20:11:55_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.09-3-ga1f8dbf  
+# 	   add note for future updates 
+# 	docker-compose.yaml  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
+# 	   completed prototype controling blinkt from container start with docker-compose 
+version: "2.0"
+services: 
+  create-message:
+    build:
+#                       Either a path to a directory containing a Dockerfile, or a url to a git repository.
+      context: .
+#                       Value at build time is the value in the environment where docker-compose is running.
+      args:
+        - buildno
+        - gitcommithash
+    image: cptx86/create-message:${compose-build-version:-latest}
+    privileged: true
+
+##      example code for images and depends_on
+#version: "2"
+#services:
+#  redis:
+#    ports:
+#      - 6379/TCP
+#    image: aarch64/redis
+#
+#  counter:
+#    depends_on:
+#     - redis
+#    ports:
+#      - 3000/TCP
+#    image: alexellis2/redis_hit_counter:aarch64
+###
+#      args: 
+#        buildno: 1
+##              You can omit the value when specifying a build argument, in which case its value at build time is the value in the environment where Compose is running.
+##              args:
+##               - buildno
+##               - gitcommithash
+###
+##                      image: redis
+##                      image: ubuntu:14.04
+##                      image: tutum/influxdb
+##                      image: example-registry.com:4000/postgresql
+##                      image: a4bc65fd
+####
+##  This is for the yaml
+##       Both $VARIABLE and ${VARIABLE} syntax are supported. Additionally when using the 2.1 file format, it is possible to provide inline default values using typical shell syntax:
+##       ${VARIABLE:-default} evaluates to default if VARIABLE is unset or empty in the environment.
+##       ${VARIABLE-default} evaluates to default only if VARIABLE is unset in the environment.
+##
+##       Similarly, the following syntax allows you to specify mandatory variables:
+##
+##       ${VARIABLE:?err} exits with an error message containing err if VARIABLE is unset or empty in the environment.
+##       ${VARIABLE?err} exits with an error message containing err if VARIABLE is unset in the environment.
+###
+#       changes this file:
+#         - start blinkt-monitor (display colors) on each host in cluster (chamge rainbow.py to display-led.py)
+#         - start ___________ (write information
+###
