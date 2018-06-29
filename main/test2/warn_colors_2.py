@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	warn_colors_2.py  3.21.120  2018-06-29_10:59:39_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.20  
+# 	   each test file is working 
 # 	warn_colors_2.py  3.20.119  2018-06-29_10:01:07_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.19  
 # 	   create blinkt color color functions 
 # 	warn_colors_2.py  3.19.118  2018-06-29_07:27:09_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.18  
@@ -50,9 +52,9 @@ for i in range(0, 2):
    time.sleep(0.30) # 1 = 1 second
 
 #	ORANGE : CRITICAL ERROR
-set_pixel(LED_number + 3, 255, 35, 0, 0.1)
-show()
-time.sleep(1) # 1 = 1 second
+   set_pixel(LED_number + 3, 255, 35, 0, 0.1)
+   show()
+   time.sleep(1) # 1 = 1 second
 
 #	RED : FATAL ERROR
 for i in range(0,10):
@@ -64,7 +66,7 @@ for i in range(0,10):
    time.sleep(0.1) # 1 = 1 second
 
 #       VIOLET : the statistic is WARNING (alert)
-set_pixel(LED_number + 5, 127, 0, 255, 0.1)
-show()
-time.sleep(15) # 1 = 1 second
+   set_pixel(LED_number + 5, 127, 0, 255, 0.1)
+   show()
+   time.sleep(15) # 1 = 1 second
 
