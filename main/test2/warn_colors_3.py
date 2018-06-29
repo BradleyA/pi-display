@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	warn_colors_3.py  3.20.119  2018-06-29_10:01:07_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.19  
+# 	   create blinkt color color functions 
 # 	warn_colors_3.py  3.19.118  2018-06-29_07:27:09_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.18  
 # 	   move .py file to test in container 
 # 	blinkt.mine/warn_colors_3.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
@@ -27,24 +29,31 @@ LED_number = 0
 
 ###
 if status == '1':
-#	GREEN : no known incidents
-    set_pixel(LED_number, 0, 255, 0, 1.0)
-    show()
-    time.sleep(1) # 1 = 1 second
+   level1(LED_number)
 elif status == '2':
-    # Do the other thing
-if status == '3':
-    # Fall-through by not using elif, but now the default case includes case 'a'!
+   # Do the other thing
+   level1(LED_number)
+elif status == '3':
+   # Fall-through by not using elif, but now the default case includes case 'a'!
+   level1(LED_number)
 elif status in 'xyz':
-    # Do yet another thing
-else:
-    # Do the default
+   # Do yet another thing
+   level1(LED_number)
+#else:
+   # Do the default
+fi
 
 
 
-
+#	GREEN : no known incidents
+def level1(LED_number):
+   set_pixel(LED_number, 0, 255, 0, 1.0)
+   show()
+   time.sleep(1) # 1 = 1 second
+   return;
 
 #	BLUE : an incident (watch)
+def level2(LED_number):
 for i in range(0, 2):
    set_pixel(LED_number + 1, 0, 255, 0, 0.2)
    show()
@@ -52,8 +61,10 @@ for i in range(0, 2):
    set_pixel(LED_number + 1, 0, 0, 255, 0.2)
    show()
    time.sleep(0.10) # 1 = 1 second
+   return;
 
 #	YELLOW : additional incidents WARNING (alert)
+def level3(LED_number):
 for i in range(0, 2):
    set_pixel(LED_number + 2, 0, 255, 0, 0.1)
    show()
@@ -61,13 +72,17 @@ for i in range(0, 2):
    set_pixel(LED_number + 2, 255, 255, 0, 0.2)
    show()
    time.sleep(0.30) # 1 = 1 second
+   return;
 
 #	ORANGE : CRITICAL ERROR
-set_pixel(LED_number + 3, 255, 35, 0, 0.1)
-show()
-time.sleep(1) # 1 = 1 second
+def level4(LED_number):
+   set_pixel(LED_number + 3, 255, 35, 0, 0.1)
+   show()
+   time.sleep(1) # 1 = 1 second
+   return;
 
 #	RED : FATAL ERROR
+def level5(LED_number):
 for i in range(0,10):
    set_pixel(LED_number + 4, 0, 0, 0, 0)
    show()
@@ -75,9 +90,11 @@ for i in range(0,10):
    set_pixel(LED_number + 4, 255, 0, 0, 1.0)
    show()
    time.sleep(0.1) # 1 = 1 second
+   return;
 
 #       VIOLET : the statistic is  WARNING (alert)
-set_pixel(LED_number + 5, 127, 0, 255, 0.1)
-show()
-time.sleep(15) # 1 = 1 second
-
+def warn(LED_number):
+   set_pixel(LED_number + 5, 127, 0, 255, 0.1)
+   show()
+   time.sleep(15) # 1 = 1 second
+   return;

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	warn_colors_2.py  3.20.119  2018-06-29_10:01:07_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.19  
+# 	   create blinkt color color functions 
 # 	warn_colors_2.py  3.19.118  2018-06-29_07:27:09_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.18  
 # 	   move .py file to test in container 
 # 	blinkt.mine/warn_colors_2.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
@@ -61,7 +63,7 @@ for i in range(0,10):
    show()
    time.sleep(0.1) # 1 = 1 second
 
-#       VIOLET : the statistic is  WARNING (alert)
+#       VIOLET : the statistic is WARNING (alert)
 set_pixel(LED_number + 5, 127, 0, 255, 0.1)
 show()
 time.sleep(15) # 1 = 1 second
