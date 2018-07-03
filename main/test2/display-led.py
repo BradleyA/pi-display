@@ -1,10 +1,8 @@
 #!/usr/bin/env python
-# 	display-led.py  3.21.120  2018-06-29_10:59:39_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.20  
-# 	   each test file is working 
+# 	display-led.py  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
+# 	   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
 # 	../../../display-led.py  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
 # 	   completed prototype controling blinkt from container start with docker-compose 
-# 	display-led.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
-# 	   added more prices, first draft of display-led.py 
 ###
 #	The final design should control an Blinkt LED bar and
 #		display information for a second
@@ -36,6 +34,7 @@ def status1(LED_number):
 #   LED_number argument 0-7
     set_pixel(LED_number, 0, 255, 0, 0.2)
     show()
+    return();
 
 def status2(LED_number):
 #   Incidents causing no disruption to overall services and operations
@@ -48,6 +47,7 @@ def status2(LED_number):
         set_pixel(LED_number, 50, 205, 50, 0.2)
         show()
         time.sleep(0.15) # 1 = 1 second
+    return();
         
 def status3(LED_number):
 #  Active incident with minimal affect to overall services and operations
@@ -63,6 +63,7 @@ def status3(LED_number):
         set_pixel(LED_number, 255, 255, 0, 0.2)
         show()
         time.sleep(0.15) # 1 = 1 second
+    return();
 
 def status4(LED_number):
 #   Active emergency incidents causing significant impact to operations and possiable service disruptions
@@ -78,6 +79,7 @@ def status4(LED_number):
         set_pixel(LED_number, 255, 35, 0, 0.1)
         show()
         time.sleep(0.05) # 1 = 1 second
+    return();
 
 def status5(LED_number):
 #   Active emergency incidents causing multiple impaired operations amd unavoidable severe service disruptions
@@ -93,24 +95,27 @@ def status5(LED_number):
         set_pixel(LED_number, 255, 0, 0, 0.2)
         show()
         time.sleep(0.05) # 1 = 1 second
+    return();
 
 #       VIOLET : the statistic is  WARNING (alert)
 #   LED_number argument 0-7
 def status6(LED_number):
     set_pixel(LED_number, 127, 0, 255, 0.1)
     show()
-    time.sleep(15) # 1 = 1 second
+    time.sleep(5) # 1 = 1 second
+    return();
 
 #   process information
 def process(line):
-    print("this is in the process information function")
+    print("in process information function")
     print(line)
     if 'celsius:' in line.lower():
-        print("---> this is Celsius: <---")
+        print("\t---> this is Celsius: <---")
         print ("celsius: ->")
-        print("yy")
-    print("---> not Celsius:")
-    print("xx")
+#        print("yy")
+#    print("---> not Celsius:")
+#    print("xx")
+    return();
 
 #####
 #   read file and process information
@@ -119,9 +124,10 @@ with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
     print  FILE_NAME
     print("begin for loop")
     for line in f:
-        print("this is in the for loop")
-        print(line)
+#        print("in for loop")
+#        print(line)
         process(line)
+    print("end for loop")
 
 # >>>  need to replace path and file name with variables
 #    file = open(FILE_NAME,"r")

@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	../test1/create-message.sh  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
+# 	   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
 # 	create-message.sh  3.16.113  2018-06-26_15:12:37_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.15  
 # 	   add process inforamtion to stdout 
 # 	create-message.sh  3.15.112  2018-06-26_14:15:43_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.14  
@@ -53,7 +55,7 @@ if [ "$1" == "--version" ] || [ "$1" == "-v" ] || [ "$1" == "version" ] ; then
         exit 0
 fi
 ### 
-CLUSTER=${1:-cluster-1/}
+CLUSTER=${1:-cluster-1}
 ADMUSER=${2:-${USER}}
 DATA_DIR=${3:-/usr/local/data/}
 SSHPORT=${4:-22}
@@ -127,6 +129,9 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+	echo "-->	create soft link	<--"
+		cd ${DATA_DIR}${CLUSTER}
+		ln -sf ${LOCALHOST} LOCAL-HOST
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
@@ -145,6 +150,8 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 #	Check if ${NODE} is available on port ${SSHPORT}
 		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
+			TEMP="cd ${DATA_DIR}${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
 		else
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding on port ${SSHPORT}.\n"   1>&2
 		fi
