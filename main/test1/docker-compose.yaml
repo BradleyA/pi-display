@@ -1,12 +1,11 @@
-#       https://github.com/docker/compose/releases/
+# 
+# 	docker-compose.yaml  3.24.118  2018-07-03_19:35:35_CDT  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.18  
+# 	   testing test1 
 # 	docker-compose.yaml  3.18.117  2018-06-26_20:39:39_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.17  
 # 	   changed yaml version from 2.0 to 3.5 on two-rpi3b failed 
-# 	docker-compose.yaml  3.17.116  2018-06-26_19:50:50_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.16-2-g490b53f  
-# 	   more setup for testing yaml 
-# 	blinkt/docker-blinkt-workshop/labs/3.2/docker-compose.yaml  3.10.90  2018-06-25_20:11:55_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.09-3-ga1f8dbf  
-# 	   add note for future updates 
 # 	docker-compose.yaml  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
 # 	   completed prototype controling blinkt from container start with docker-compose 
+###
 version: "3.5"
 services: 
   create-message:
@@ -15,11 +14,12 @@ services:
       context: .
 #                       Value at build time is the value in the environment where docker-compose is running.
       args:
-        - buildno
-        - gitcommithash
-    image: cptx86/create-message:${compose-build-version:-latest}
+        buildno: 1
+#        - buildno
+#        - gitcommithash
+    image: cptx86/create-message
+#    image: cptx86/create-message:${compose-build-version:-latest}
     privileged: true
-
 ##      example code for images and depends_on
 #version: "2"
 #services:
