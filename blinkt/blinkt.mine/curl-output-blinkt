@@ -1,4 +1,8 @@
 #!/bin/bash
+#	../../blinkt/blinkt.mine/curl-output-blinkt  3.20.119  2018-06-29_10:01:07_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.19  
+#	   create blinkt color color functions 
+#	../../blinkt/blinkt.mine/case-examples  3.19.118  2018-06-29_07:27:09_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.18  
+#	   move .py file to test in container 
 
 : <<'DISCLAIMER'
 
