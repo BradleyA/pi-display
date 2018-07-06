@@ -1,20 +1,10 @@
 #!/bin/bash
+# 	create-message.sh  3.29.131  2018-07-05_23:41:29_CDT  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.28  
+# 	   local host format in file different but remote host are correct format close #8 
 # 	create-message.sh  3.28.130  2018-07-05_22:17:16_CDT  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.27  
 # 	   add notes for issues #8 #9 
 # 	../test1/create-message.sh  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
 # 	   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
-# 	create-message.sh  3.16.113  2018-06-26_15:12:37_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.15  
-# 	   add process inforamtion to stdout 
-# 	create-message.sh  3.15.112  2018-06-26_14:15:43_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.14  
-# 	   move to test1 
-# 	create-message.sh  3.07.82  2018-03-05_19:57:10_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.06-3-g39a0ee9  
-# 	   create-message.sh change directory for /usr/local/data/cluster-1 
-# 	create-message.sh  3.06.78  2018-03-05_16:16:06_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.05  
-# 	   update display_help 
-# 	create-message.sh  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
-# 	   create-message.sh copy all data files to all systems in cluster to support failover closes #6 
-# 	create-message.sh  3.04.75  2018-03-03_16:38:38_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.03  
-# 	   clean out a lot of errors; adding SYSTEMS file as example; need to update README about example file 
 #
 #	set -x
 #	set -v
@@ -105,8 +95,8 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
-			UPTIME="uptime | sed -s 's/^.*:/System_Load:/' >> ${DATA_DIR}${CLUSTER}/${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${UPTIME}
+			CPU_LOAD="awk '\$1~/cpu[0-9]/{usage=(\$2+\$4)*100/(\$2+\$4+\$5); print \$1\": \"usage}' /proc/stat  >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU_LOAD}
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
@@ -125,9 +115,8 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-		# change uptime to  awk '$1~/cpu[0-9]/{usage=($2+$4)*100/($2+$4+$5); print $1": "usage"%"}' /proc/stat
-		UPTIME=$(uptime | sed -s 's/^.*:/System_Load:/')
-		echo ${UPTIME} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		CPU_LOAD=$(awk '$1~/cpu[0-9]/{usage=($2+$4)*100/($2+$4+$5); print $1": "usage"\\n"}' /proc/stat)
+		echo -e ${CPU_LOAD} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		#  maybe try: vcgencmd get_mem arm && vcgencmd get_mem gpu: Shows the memory split between the CPU and GPU
 		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 		echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
