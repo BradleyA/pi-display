@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.25.124  2018-07-05_19:54:51_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.22-2-gd5dc5cb  
+# 	   create celsius table for 1-5 
 # 	display-led.py  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
 # 	   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
 # 	../../../display-led.py  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
@@ -20,7 +22,7 @@ import subprocess
 
 set_clear_on_exit()
 # >>> #
-CLUSTER = "cluster-1/"
+CLUSTER = "cluster-1"
 DATA_DIR = "/usr/local/data/"
 FILE_NAME = subprocess.check_output("hostname -f", shell=True)
 # >>> #
@@ -102,7 +104,7 @@ def status5(LED_number):
 def status6(LED_number):
     set_pixel(LED_number, 127, 0, 255, 0.1)
     show()
-    time.sleep(5) # 1 = 1 second
+    time.sleep(2) # 1 = 1 second
     return();
 
 #   process information
@@ -111,7 +113,17 @@ def process(line):
     print(line)
     if 'celsius:' in line.lower():
         print("\t---> this is Celsius: <---")
-        print ("celsius: ->")
+        print("celsius: ->")
+        print(line[line.find(':')+2:])
+        VALUE = float(line[line.find(':')+2:])
+        print(VALUE)
+        if VALUE 
+< 38 C 100.4 1
+10.5
+< 48.5
+< 59
+< 69.5
+> 80        5
 #        print("yy")
 #    print("---> not Celsius:")
 #    print("xx")
@@ -128,6 +140,21 @@ with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
 #        print(line)
         process(line)
     print("end for loop")
+
+#       if status == '1':
+#          level1(LED_number)
+#       elif status == '2':
+#          # Do the other thing
+#          level1(LED_number)
+#       elif status == '3':
+#          # Fall-through by not using elif, but now the default case includes case 'a'!
+#          level1(LED_number)
+#       elif status in 'xyz':
+#          # Do yet another thing
+#          level1(LED_number)
+#       #else:
+#          # Do the default
+#       fi
 
 # >>>  need to replace path and file name with variables
 #    file = open(FILE_NAME,"r")
@@ -152,5 +179,4 @@ status6(5)
 status6(6)
 status6(7)
 
-    
 #		###
