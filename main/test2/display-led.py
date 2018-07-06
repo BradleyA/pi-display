@@ -1,10 +1,8 @@
 #!/usr/bin/env python
+# 	display-led.py  3.27.129  2018-07-05_22:15:33_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.26-3-ga14ad7c  
+# 	   complete testing for LED 7 Celsius: 
 # 	display-led.py  3.26.125  2018-07-05_20:35:22_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.25  
 # 	   celsius working as LED 7 
-# 	display-led.py  3.25.124  2018-07-05_19:54:51_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.22-2-gd5dc5cb  
-# 	   create celsius table for 1-5 
-# 	display-led.py  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
-# 	   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
 # 	../../../display-led.py  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
 # 	   completed prototype controling blinkt from container start with docker-compose 
 ###
@@ -114,10 +112,8 @@ def process(line):
     print("in process information function")
     print(line)
     if 'celsius:' in line.lower():
-        print("celsius: ->")
-        print(line[line.find(':')+2:])
+        #   print(line[line.find(':')+2:])
         VALUE = float(line[line.find(':')+2:])
-        print(VALUE)
         LED_number = 7
         if   VALUE < 48.5 : # < 48.5 C 119.3  1
             status1(LED_number)
@@ -129,9 +125,6 @@ def process(line):
             status4(LED_number)
         elif VALUE >= 80  :   # > 80 C 176    5
             status5(LED_number) 
-#        print("yy")
-#    print("---> not Celsius:")
-#    print("xx")
     return();
 
 #####
