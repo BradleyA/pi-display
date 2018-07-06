@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.26.125  2018-07-05_20:35:22_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.25  
+# 	   celsius working as LED 7 
 # 	display-led.py  3.25.124  2018-07-05_19:54:51_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.22-2-gd5dc5cb  
 # 	   create celsius table for 1-5 
 # 	display-led.py  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
@@ -112,18 +114,21 @@ def process(line):
     print("in process information function")
     print(line)
     if 'celsius:' in line.lower():
-        print("\t---> this is Celsius: <---")
         print("celsius: ->")
         print(line[line.find(':')+2:])
         VALUE = float(line[line.find(':')+2:])
         print(VALUE)
-        if VALUE 
-< 38 C 100.4 1
-10.5
-< 48.5
-< 59
-< 69.5
-> 80        5
+        LED_number = 7
+        if   VALUE < 48.5 : # < 48.5 C 119.3  1
+            status1(LED_number)
+        elif VALUE < 59   : # < 59 C   138.2  2
+            status2(LED_number)
+        elif VALUE < 69.5 : # < 69.5 C 157.1  3
+            status3(LED_number)
+        elif VALUE < 80   : # < 80 C   176    4
+            status4(LED_number)
+        elif VALUE >= 80  :   # > 80 C 176    5
+            status5(LED_number) 
 #        print("yy")
 #    print("---> not Celsius:")
 #    print("xx")
@@ -140,21 +145,6 @@ with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
 #        print(line)
         process(line)
     print("end for loop")
-
-#       if status == '1':
-#          level1(LED_number)
-#       elif status == '2':
-#          # Do the other thing
-#          level1(LED_number)
-#       elif status == '3':
-#          # Fall-through by not using elif, but now the default case includes case 'a'!
-#          level1(LED_number)
-#       elif status in 'xyz':
-#          # Do yet another thing
-#          level1(LED_number)
-#       #else:
-#          # Do the default
-#       fi
 
 # >>>  need to replace path and file name with variables
 #    file = open(FILE_NAME,"r")
@@ -176,7 +166,7 @@ status3(2)
 status4(3)
 status5(4)
 status6(5)
-status6(6)
-status6(7)
+#   status6(6)
+#   status6(7)
 
 #		###
