@@ -1,10 +1,6 @@
 #!/bin/bash
-# 	create-message.sh  3.29.131  2018-07-05_23:41:29_CDT  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.28  
-# 	   local host format in file different but remote host are correct format close #8 
-# 	create-message.sh  3.28.130  2018-07-05_22:17:16_CDT  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.27  
-# 	   add notes for issues #8 #9 
-# 	../test1/create-message.sh  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
-# 	   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
+# 	create-message.sh  3.30.134  2018-07-10_22:17:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.29-2-gd631460  
+# 	   continue testing issue #9 
 #
 #	set -x
 #	set -v
@@ -99,12 +95,10 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU_LOAD}
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
-
 			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
 			MEMORY2=$(echo ${MEMORY2} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
 			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
 			MEMORY3=$(echo ${MEMORY3} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
-
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
 			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
 			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
@@ -123,15 +117,12 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		CPU_LOAD=$(awk '$1~/cpu[0-9]/{usage=($2+$4)*100/($2+$4+$5); print $1": "usage"\\n"}' /proc/stat)
 		echo -e ${CPU_LOAD} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-		#  maybe try: vcgencmd get_mem arm && vcgencmd get_mem gpu: Shows the memory split between the CPU and GPU
 		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 		echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-
 		MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
 		echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
 		echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 	echo "-->	create soft link	<--"
