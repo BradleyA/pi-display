@@ -1,6 +1,10 @@
 #!/bin/bash
-# 	create-message.sh  3.28.130  2018-07-10_21:34:59_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.27  
-# 	   add main/test1/create-message.sh memory for CPU and GPU close #9 
+# 	create-message.sh  3.29.131  2018-07-05_23:41:29_CDT  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.28  
+# 	   local host format in file different but remote host are correct format close #8 
+# 	create-message.sh  3.28.130  2018-07-05_22:17:16_CDT  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.27  
+# 	   add notes for issues #8 #9 
+# 	../test1/create-message.sh  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
+# 	   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
 #
 #	set -x
 #	set -v
@@ -91,8 +95,8 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
-			UPTIME="uptime | sed -s 's/^.*:/System_Load:/' >> ${DATA_DIR}${CLUSTER}/${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${UPTIME}
+			CPU_LOAD="awk '\$1~/cpu[0-9]/{usage=(\$2+\$4)*100/(\$2+\$4+\$5); print \$1\": \"usage}' /proc/stat  >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU_LOAD}
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 
@@ -117,8 +121,9 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-		UPTIME=$(uptime | sed -s 's/^.*:/System_Load:/')
-		echo ${UPTIME} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		CPU_LOAD=$(awk '$1~/cpu[0-9]/{usage=($2+$4)*100/($2+$4+$5); print $1": "usage"\\n"}' /proc/stat)
+		echo -e ${CPU_LOAD} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		#  maybe try: vcgencmd get_mem arm && vcgencmd get_mem gpu: Shows the memory split between the CPU and GPU
 		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 		echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 
