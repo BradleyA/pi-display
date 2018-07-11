@@ -1,18 +1,6 @@
 #!/bin/bash
-# 	../test1/create-message.sh  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
-# 	   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
-# 	create-message.sh  3.16.113  2018-06-26_15:12:37_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.15  
-# 	   add process inforamtion to stdout 
-# 	create-message.sh  3.15.112  2018-06-26_14:15:43_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.14  
-# 	   move to test1 
-# 	create-message.sh  3.07.82  2018-03-05_19:57:10_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.06-3-g39a0ee9  
-# 	   create-message.sh change directory for /usr/local/data/cluster-1 
-# 	create-message.sh  3.06.78  2018-03-05_16:16:06_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.05  
-# 	   update display_help 
-# 	create-message.sh  3.05.77  2018-03-05_15:55:00_CST  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.04-1-g7674832  
-# 	   create-message.sh copy all data files to all systems in cluster to support failover closes #6 
-# 	create-message.sh  3.04.75  2018-03-03_16:38:38_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.03  
-# 	   clean out a lot of errors; adding SYSTEMS file as example; need to update README about example file 
+# 	create-message.sh  3.28.130  2018-07-10_21:34:59_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.27  
+# 	   add main/test1/create-message.sh memory for CPU and GPU close #9 
 #
 #	set -x
 #	set -v
@@ -107,9 +95,15 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${UPTIME}
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
+
+			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
+			MEMORY2=$(echo ${MEMORY2} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
+			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
+			MEMORY3=$(echo ${MEMORY3} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
+
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
 			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
-			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
@@ -127,6 +121,12 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo ${UPTIME} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 		echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+
+		MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
+		echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
+		echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 	echo "-->	create soft link	<--"
