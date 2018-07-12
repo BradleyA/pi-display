@@ -4,12 +4,12 @@
 
 #### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching. 
 
-create-message.sh - This script stores Docker information about containers and images in a file on each system in a cluster.  These files are copied to all host and totaled in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes
+create-message.sh - This script stores Docker information about containers and images in a file on each system in a cluster.  These files are copied to all host and totaled in a file, /usr/local/data/\<cluster-name>/MESSAGE.  The MESSAGE file includes
 the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT to display the information.
 
-This script reads /usr/local/data/<cluster-name>/SYSTEMS file for the names of the hosts in a cluster.  The file includes one FQDN host per line.  Lines starting with a '#' are ignored.
+This script reads /usr/local/data/\<cluster-name>/SYSTEMS file for the names of the hosts in a cluster.  The file includes one FQDN host per line.  Lines starting with a '#' are ignored.
 
-System inforamtion about each host is stored in /usr/local/data/<cluster-name>/<host>.  The system information includes cpu
+System inforamtion about each host is stored in /usr/local/data/\<cluster-name>/\<host>.  The system information includes cpu
 temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.  The system information will be used by blinkt to display system information about each system in near real time.
 
 To avoid many login prompts for each host in a cluster, enter the following:  ssh-copy-id uadmin@<host-name>
