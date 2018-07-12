@@ -4,17 +4,15 @@
 
 #### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching. 
 
-create-message.sh - This script stores Docker information about containers and images in a file on each system in a cluster.  These files are copied to all host and totaled in a file, /usr/local/data/\<cluster-name>/MESSAGE.  The MESSAGE file includes
-the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT to display the information.
+create-message.sh - This script stores system information and Docker information about containers and images in a file on each system in a cluster.  These files are copied to all host and the Docker information is totaled in a file, /usr/local/data/\<cluster-name>/MESSAGE.  The MESSAGE file includes the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT to display the information.
 
-This script reads /usr/local/data/\<cluster-name>/SYSTEMS file for the names of the hosts in a cluster.  The file includes one FQDN host per line.  Lines starting with a '#' are ignored.
+This script reads /usr/local/data/\<cluster-name>/SYSTEMS file for the FQDN or IP address of the hosts in a cluster.  The file includes one FQDN host or IP address per line.  Lines starting with a '#' are ignored.
 
-System inforamtion about each host is stored in /usr/local/data/\<cluster-name>/\<host>.  The system information includes cpu
-temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.  The system information will be used by blinkt to display system information about each system in near real time.
+System inforamtion about each host is stored in /usr/local/data/\<cluster-name>/\<host> with the Docker information.  The system information includes cpu temperature in Celsius and Fahrenheit, CPU percent used, memory percent used, and disk percent used.  The system information will be used by blinkt to display system information about each system in near real time.
 
 To avoid many login prompts for each host in a cluster, enter the following:  ssh-copy-id uadmin@<host-name>
 
-I need to complete some cleanup before it is shareable and documented . . .
+#### I need to complete some cleanup before it is shareable and documented . . .
 
 create-message.sh -> is found in /usr/local/data/cluster-1/SYSTEMS file.  Docker totals from these files are in /usr/local/data/cluster-1/MESSAGE for Scroll-pHAT on each system.  
 
