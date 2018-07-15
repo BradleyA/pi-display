@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.31.136  2018-07-14_20:10:01_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.30-1-g45fdc1f  
+# 	   COntinue to work on CPU_Usage: % 
 # 	create-message.sh  3.30.134  2018-07-10_22:17:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.29-2-gd631460  
 # 	   continue testing issue #9 
 #
@@ -91,8 +93,16 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
-			CPU_LOAD="awk '\$1~/cpu[0-9]/{usage=(\$2+\$4)*100/(\$2+\$4+\$5); print \$1\": \"usage}' /proc/stat  >> ${DATA_DIR}${CLUSTER}/${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU_LOAD}
+#			CPU_LOAD="awk '\$1~/cpu[0-9]/{usage=(\$2+\$4)*100/(\$2+\$4+\$5); print \$1\": \"usage}' /proc/stat  >> ${DATA_DIR}${CLUSTER}/${NODE}"
+#			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU_LOAD}
+#			CPU="awk '\$1~/cpu/{usage=(\$2+\$4)*100/(\$2+\$4+\$5); print \$1\": \"usage}' /proc/stat  >> ${DATA_DIR}${CLUSTER}/${NODE}"
+#			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU}
+#			CPU1="cpu_last=(\$(head -n1 /proc/stat)) cpu_last_sum=\${cpu_last[@]:1} cpu_last_sum=\$((\${cpu_last_sum// /+})) ; sleep 1 ; cpu_now=(\$(head -n1 /proc/stat)) ; cpu_sum=\${cpu_now[@]:1} ; cpu_sum=\$((\${cpu_sum// /+})) ; cpu_delta=\$((cpu_sum - cpu_last_sum)) ; cpu_idle=\$((cpu_now[4]- cpu_last[4])) ; cpu_used=\$((cpu_delta - cpu_idle)) ; cpu_usage=\$((100 * cpu_used / cpu_delta)) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
+#			CPU1="cpu_last=(\$(head -n1 /proc/stat)) cpu_last_sum=\${cpu_last[@]:1} cpu_last_sum=\$((\${cpu_last_sum// /+})) ; sleep 1 ; cpu_now=(\$(head -n1 /proc/stat)) ; cpu_sum=\${cpu_now[@]:1} ; cpu_sum=\$((\${cpu_sum// /+})) ; cpu_delta=\$((cpu_sum - cpu_last_sum)) ; cpu_usage=\$((100 * cpu_used / cpu_delta)) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
+	set -x
+			CPU1="cpu_last=(\$(head -n1 /proc/stat)) cpu_last_sum=\${cpu_last[@]:1} cpu_last_sum=\$((\${cpu_last_sum// /+})) ; sleep 1 ; cpu_sum=\$((\${cpu_sum// /+})) ; cpu_delta=\$((cpu_sum - cpu_last_sum)) ; cpu_usage=\$((100 * cpu_used / cpu_delta)) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU1}
+	set +x
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
