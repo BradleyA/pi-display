@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.33.140  2018-07-14_21:25:28_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.32  
+# 	   continue to fail with cpu 
 # 	create-message.sh  3.32.139  2018-07-14_21:14:47_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.31-2-g2451bc0  
 # 	   CPU using ssh still not working 
 # 	create-message.sh  3.31.136  2018-07-14_20:10:01_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.30-1-g45fdc1f  
@@ -104,7 +106,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 #			CPU1="cpu_usage=\$(((cpu_used \* 2) / (cpu_delta + 1))) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
 #			CPU1="cpu_usage=\$((( awk -v used=\$(cpu_used) delta=\$(cpu_delta) '{print used * 100 / (delta + 1)}' ))) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
 	set -x
- CPU1="cpu_now=($(head -n1 /proc/stat)); cpu_sum="${cpu_now[@]:1}"; cpu_sum=$((${cpu_sum// /+})); cpu_delta=$((cpu_sum - cpu_last_sum + 1)); cpu_idle=$((cpu_now[4]- cpu_last[4])); cpu_used=$((cpu_delta - cpu_idle)); cpu_usage=$((100 * cpu_used / cpu_delta)) ; cpu_last=("${cpu_now[@]}") ; cpu_last_sum=$cpu_sum ; sleep 1 ; cpu_now=($(head -n1 /proc/stat)); cpu_sum="${cpu_now[@]:1}"; cpu_sum=$((${cpu_sum// /+})); cpu_delta=$((cpu_sum - cpu_last_sum + 1)); cpu_idle=$((cpu_now[4]- cpu_last[4])); cpu_used=$((cpu_delta - cpu_idle)); cpu_usage=$((100 * cpu_used / cpu_delta)) ; cpu_last=("${cpu_now[@]}") ; cpu_last_sum=$cpu_sum ; echo "CPU usage at $cpu_usage%" "
+ CPU1="cpu_now=($(head -n1 /proc/stat));x=100;cpu_sum="${cpu_now[@]:1}"; cpu_sum=$((${cpu_sum// /+})); cpu_delta=$((cpu_sum - cpu_last_sum + 1)); cpu_idle=$((cpu_now[4]- cpu_last[4])); cpu_used=$((cpu_delta - cpu_idle)); cpu_usage=$((x * cpu_used / cpu_delta)) ; cpu_last=("${cpu_now[@]}") ; cpu_last_sum=$cpu_sum ; sleep 1 ; cpu_now=($(head -n1 /proc/stat)); cpu_sum="${cpu_now[@]:1}"; cpu_sum=$((${cpu_sum// /+})); cpu_delta=$((cpu_sum - cpu_last_sum + 1)); cpu_idle=$((cpu_now[4]- cpu_last[4])); cpu_used=$((cpu_delta - cpu_idle)); cpu_usage=$((x * cpu_used / cpu_delta)) ; cpu_last=("${cpu_now[@]}") ; cpu_last_sum=$cpu_sum ; echo "CPU usage at $cpu_usage%" "
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU1}
 	set +x
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
