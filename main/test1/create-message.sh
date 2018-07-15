@@ -1,6 +1,6 @@
 #!/bin/bash
-# 	create-message.sh  3.36.143  2018-07-15_13:01:07_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.35  
-# 	   got remote CPU usage working now need to add code for local 
+# 	create-message.sh  3.37.144  2018-07-15_13:18:50_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.36  
+# 	   begin cleanup for CPU_usage script being added and installed 
 #
 #	set -x
 #	set -v
@@ -61,6 +61,11 @@ if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tCreating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
 	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create ${DATA_DIR}${CLUSTER} directory" ; exit 1; }
 	chmod 775 ${DATA_DIR}${CLUSTER}
+###
+# >>>> open incident	is this where the install section should be
+#		maybe add section checking for -d /usr/local/bin
+#		 "cp ./create-message.sh /usr/local/bin ; cp CPU_usage.sh /usr/local/bin "
+###
 fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
 touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGE file" ; exit 1; }
@@ -91,20 +96,9 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
-#			CPU_LOAD="awk '\$1~/cpu[0-9]/{usage=(\$2+\$4)*100/(\$2+\$4+\$5); print \$1\": \"usage}' /proc/stat  >> ${DATA_DIR}${CLUSTER}/${NODE}"
-#			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU_LOAD}
-#			CPU="awk '\$1~/cpu/{usage=(\$2+\$4)*100/(\$2+\$4+\$5); print \$1\": \"usage}' /proc/stat  >> ${DATA_DIR}${CLUSTER}/${NODE}"
-#			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${CPU}
-#			CPU1="cpu_last=(\$(head -n1 /proc/stat)) cpu_last_sum=\${cpu_last[@]:1} cpu_last_sum=\$((\${cpu_last_sum// /+})) ; sleep 1 ; cpu_now=(\$(head -n1 /proc/stat)) ; cpu_sum=\${cpu_now[@]:1} ; cpu_sum=\$((\${cpu_sum// /+})) ; cpu_delta=\$((cpu_sum - cpu_last_sum)) ; cpu_idle=\$((cpu_now[4]- cpu_last[4])) ; cpu_used=\$((cpu_delta - cpu_idle)) ; cpu_usage=\$((100 * cpu_used / cpu_delta)) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
-#			CPU1="cpu_last=(\$(head -n1 /proc/stat)) cpu_last_sum=\${cpu_last[@]:1} cpu_last_sum=\$((\${cpu_last_sum// /+})) ; sleep 1 ; cpu_now=(\$(head -n1 /proc/stat)) ; cpu_sum=\${cpu_now[@]:1} ; cpu_sum=\$((\${cpu_sum// /+})) ; cpu_delta=\$((cpu_sum - cpu_last_sum)) ; cpu_usage=\$((100 * cpu_used / cpu_delta)) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
-#			CPU1="cpu_usage=\$(((cpu_used \* 2) / (cpu_delta + 1))) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
-#			CPU1="cpu_usage=\$((( awk -v used=\$(cpu_used) delta=\$(cpu_delta) '{print used * 100 / (delta + 1)}' ))) ; echo \"CPU_Usage: \${cpu_usage}\"  >> ${DATA_DIR}${CLUSTER}/${NODE}"
-	set -x
-#			CPU1="cpu_now=(\$(head -n1 /proc/stat));cpu_sum="\${cpu_now[@]:1}"; cpu_sum=\$((${cpu_sum// /+})); cpu_delta=\$((cpu_sum - cpu_last_sum + 1)); cpu_idle=\$((cpu_now[4]- cpu_last[4])); cpu_used=\$((cpu_delta - cpu_idle)); cpu_usage=\$((\$(expr 100 \* cpu_used / cpu_delta))) ; cpu_last=("\${cpu_now[@]}") ; cpu_last_sum=\$cpu_sum ; sleep 1 ; cpu_now=(\$(head -n1 /proc/stat)); cpu_sum="\${cpu_now[@]:1}"; cpu_sum=\$((\${cpu_sum// /+})); cpu_delta=\$((cpu_sum - cpu_last_sum + 1)); cpu_idle=\$((cpu_now[4]- cpu_last[4])); cpu_used=\$((cpu_delta - cpu_idle)); cpu_usage=\$((\$(expr 100 \* cpu_used / cpu_delta))) ; cpu_last=("\${cpu_now[@]}") ; cpu_last_sum=\$cpu_sum ; echo 'CPU usage at '$cpu_usage% "
-#			CPU1="cpu_now=(\$(head -n1 /proc/stat));cpu_sum="\${cpu_now[@]:1}"; cpu_sum=\$((${cpu_sum// /+})); cpu_delta=\$((cpu_sum - cpu_last_sum + 1)); cpu_idle=\$((cpu_now[4]- cpu_last[4])); cpu_used=\$((cpu_delta - cpu_idle)); cpu_usage=\$((\$(expr 100 \* cpu_used / cpu_delta))) ; cpu_last=("\${cpu_now[@]}") ; cpu_last_sum=\$cpu_sum ; sleep 1 ; cpu_now=(\$(head -n1 /proc/stat)); cpu_sum="\${cpu_now[@]:1}"; cpu_sum=\$((\${cpu_sum// /+})); cpu_delta=\$((cpu_sum - cpu_last_sum + 1)); cpu_idle=\$((cpu_now[4]- cpu_last[4])); cpu_used=\$((cpu_delta - cpu_idle)); cpu_usage=\$((\$(expr 100 \* cpu_used / cpu_delta))) ; echo 'CPU usage at '\${cpu_usage} "
-#			CPU1="cpu_now=(\$(head -n1 /proc/stat));cpu_sum="\${cpu_now[@]:1}"; cpu_sum=\$((${cpu_sum// /+})); cpu_delta=\$((cpu_sum - cpu_last_sum + 1)); cpu_idle=\$((cpu_now[4]- cpu_last[4])); cpu_used=\$((cpu_delta - cpu_idle)); cpu_usage=\$((\$((100 \* cpu_used)) / cpu_delta)) ; cpu_last=("\${cpu_now[@]}") ; cpu_last_sum=\$cpu_sum ; sleep 1 ; cpu_now=(\$(head -n1 /proc/stat)); cpu_sum="\${cpu_now[@]:1}"; cpu_sum=\$((\${cpu_sum// /+})); cpu_delta=\$((cpu_sum - cpu_last_sum + 1)); cpu_idle=\$((cpu_now[4]- cpu_last[4])); cpu_used=\$((cpu_delta - cpu_idle)); cpu_usage=\$((\$((100 \* cpu_used)) / cpu_delta)) ; echo 'CPU usage at '\${cpu_usage} "
+			# CPU_usage
+			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} /usr/local/bin/CPU_usage.sh ${ADMUSER}@${NODE}:/usr/local/bin/
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${NODE}"
-	set +x
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
