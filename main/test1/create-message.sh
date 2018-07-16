@@ -1,8 +1,6 @@
 #!/bin/bash
-# 	create-message.sh  3.38.145  2018-07-15_22:43:03_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.37  
-# 	   complete moving multiple CPU output for one CPU total usage 
-# 	create-message.sh  3.37.144  2018-07-15_13:18:50_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.36  
-# 	   begin cleanup for CPU_usage script being added and installed 
+# 	create-message.sh  3.39.146  2018-07-15_22:45:54_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.38  
+# 	   complete moving multiple CPU output for one CPU total usage close #12 
 #
 #	set -x
 #	set -v
