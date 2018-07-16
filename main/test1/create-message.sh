@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.40.147  2018-07-15_22:53:19_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.39  
+# 	   change --> create soft link <-- to define which FQDN is current cluster server close #11 
 # 	create-message.sh  3.39.146  2018-07-15_22:45:54_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.38  
 # 	   complete moving multiple CPU output for one CPU total usage close #12 
 #
@@ -133,7 +135,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-	echo "-->	create soft link	<--"
+		echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE} - Cluster Server"	1>&2
 		cd ${DATA_DIR}${CLUSTER}
 		ln -sf ${LOCALHOST} LOCAL-HOST
 	fi
