@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.38.145  2018-07-15_22:43:03_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.37  
+# 	   complete moving multiple CPU output for one CPU total usage 
 # 	create-message.sh  3.37.144  2018-07-15_13:18:50_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.36  
 # 	   begin cleanup for CPU_usage script being added and installed 
 #
@@ -15,9 +17,12 @@ echo    "in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file in
 echo    "the total number of containers, running containers, paused containers,"
 echo    "stopped containers, and number of images.  The MESSAGE file is used by a"
 echo    "Raspberry Pi Scroll-pHAT to display the information."
-echo -e "\nThis script reads /usr/local/data/<cluster-name>/SYSTEMS file for the names"
-echo    "of the hosts in a cluster.  The file includes one FQDN host per line.   Lines"
-echo    "starting with a '#' are ignored."
+echo -e "\nThis script reads /usr/local/data/<cluster-name>/SYSTEMS file for hosts."
+echo    "The hosts are one FQDN or IP address per line for all hosts in a cluster."
+echo    "Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file"
+echo    "is used by Linux-admin/cluster-command.sh & pi-display/create-message.sh."
+echo    "A different path and cluster command host file can be entered on the"
+echo    "command line as the second argument."
 echo -e "\nSystem inforamtion about each host is stored in"
 echo    "/usr/local/data/<cluster-name>/<host>.  The system information includes cpu"
 echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, and disk"
@@ -56,24 +61,22 @@ BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
 LOCALHOST=`hostname -f`
 ###
-#       Check if cluster directory on system
+#       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tCreating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
-	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create ${DATA_DIR}${CLUSTER} directory" ; exit 1; }
+	mkdir -p  ${DATA_DIR}${CLUSTER} || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create ${DATA_DIR}${CLUSTER} directory"  1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}${CLUSTER}
-###
-# >>>> open incident	is this where the install section should be
-#		maybe add section checking for -d /usr/local/bin
-#		 "cp ./create-message.sh /usr/local/bin ; cp CPU_usage.sh /usr/local/bin "
-###
 fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
-touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGE file" ; exit 1; }
+touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGE file"  1>&2 ; exit 1; }
 #       Check if SYSTEMS file on system
-#	one FQDN per line for all hosts in cluster
+#	one FQDN or IP address per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tSYSTEMS file missing or empty, creating SYSTEMS file with local host.\n" 1>&2
 	echo -e "\tEdit ${DATA_DIR}${CLUSTER}/SYSTEMS file and add additional hosts that are in the cluster.\n"
+	echo -e "###     List of hosts used by cluster-command.sh & create-message.sh"  > ${DATA_DIR}${CLUSTER}/SYSTEMS
+	echo -e "#       One FQDN or IP address per line for all hosts in cluster" > ${DATA_DIR}${CLUSTER}/SYSTEMS
+	echo -e "###" > ${DATA_DIR}${CLUSTER}/SYSTEMS
 	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
 fi
 #	Loop through host in SYSTEMS file
@@ -116,13 +119,14 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			touch ${DATA_DIR}${CLUSTER}/${NODE}
 		fi
 	else
+#		Docker info
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
 		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-		CPU_LOAD=$(awk '$1~/cpu[0-9]/{usage=($2+$4)*100/($2+$4+$5); print $1": "usage"\\n"}' /proc/stat)
-		echo -e ${CPU_LOAD} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+#		CPU_usage
+		/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %.2f%%\n", $3,$2,$3*100/$2 }')
 		echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
