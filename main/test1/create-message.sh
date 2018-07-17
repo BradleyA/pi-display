@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	../test1/create-message.sh  3.42.149  2018-07-16_21:15:26_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.41  
+# 	   remove % from Disk_Usage output 
 # 	create-message.sh  3.40.147  2018-07-15_22:53:19_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.39  
 # 	   change --> create soft link <-- to define which FQDN is current cluster server close #11 
 # 	create-message.sh  3.39.146  2018-07-15_22:45:54_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.38  
@@ -109,7 +111,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
 			MEMORY3=$(echo ${MEMORY3} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
-			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
+			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
 			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
@@ -133,7 +135,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
 		echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %s\n", $3,$2,$5}')
+		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE} - Cluster Server"	1>&2
 		cd ${DATA_DIR}${CLUSTER}
