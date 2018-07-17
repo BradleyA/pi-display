@@ -1,12 +1,6 @@
 #!/usr/bin/env python
-# 	display-led.py  3.43.150  2018-07-16_21:55:46_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.42  
-# 	   testing 7 6 5 4 blinkt 
-# 	display-led.py  3.41.148  2018-07-16_21:04:57_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.40  
-# 	   blinkt 7 Celsius & blinkt 6 CPU_usage working 
-# 	display-led.py  3.27.129  2018-07-05_22:15:33_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.26-3-ga14ad7c  
-# 	   complete testing for LED 7 Celsius: 
-# 	display-led.py  3.26.125  2018-07-05_20:35:22_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.25  
-# 	   celsius working as LED 7 
+# 	display-led.py  3.44.151  2018-07-16_22:08:09_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.43  
+# 	   read host information and display on blinkt close #14 
 ###
 #	The final design should control an Blinkt LED bar and
 #		display information for a second
