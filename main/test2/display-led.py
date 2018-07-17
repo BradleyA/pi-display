@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.43.150  2018-07-16_21:55:46_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.42  
+# 	   testing 7 6 5 4 blinkt 
 # 	display-led.py  3.41.148  2018-07-16_21:04:57_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.40  
 # 	   blinkt 7 Celsius & blinkt 6 CPU_usage working 
 # 	display-led.py  3.27.129  2018-07-05_22:15:33_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.26-3-ga14ad7c  
@@ -137,22 +139,36 @@ def process(line):
             status3(LED_number)
         elif VALUE < 90 : # < 90 %
             status4(LED_number)
-        elif VALUE >= 95 : # >= 95 %
+        elif VALUE >= 90 : # >= 95 %
             status5(LED_number) 
-#    if 'disk_usage:' in line.lower():
-#        print(line[line.find(':')+2:])
-#        VALUE = int(line[line.find(':')+2:])
-#        LED_number = 4
-#        if   VALUE < 70 : # < 70 %
-#            status1(LED_number)
-#        elif VALUE < 80 : # < 80 %
-#            status2(LED_number)
-#        elif VALUE < 85 : # < 85 %
-#            status3(LED_number)
-#        elif VALUE < 90 : # < 90 %
-#            status4(LED_number)
-#        elif VALUE >= 95 : # >= 95 %
-#            status5(LED_number) 
+    if 'memory_usage:' in line.lower():
+        print(line.split(' ')[2])
+        VALUE = int(line.split(' ')[2])
+        LED_number = 5
+        if   VALUE < 70 : # < 70 %
+            status1(LED_number)
+        elif VALUE < 80 : # < 80 %
+            status2(LED_number)
+        elif VALUE < 85 : # < 85 %
+            status3(LED_number)
+        elif VALUE < 90 : # < 90 %
+            status4(LED_number)
+        elif VALUE >= 90 : # >= 95 %
+            status5(LED_number) 
+    if 'disk_usage:' in line.lower():
+        print(line.split(' ')[2])
+        VALUE = int(line.split(' ')[2])
+        LED_number = 4
+        if   VALUE < 70 : # < 70 %
+            status1(LED_number)
+        elif VALUE < 80 : # < 80 %
+            status2(LED_number)
+        elif VALUE < 85 : # < 85 %
+            status3(LED_number)
+        elif VALUE < 90 : # < 90 %
+            status4(LED_number)
+        elif VALUE >= 90 : # >= 95 %
+            status5(LED_number) 
     return();
 
 #####
