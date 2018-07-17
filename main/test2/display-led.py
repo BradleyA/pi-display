@@ -1,10 +1,10 @@
 #!/usr/bin/env python
+# 	display-led.py  3.41.148  2018-07-16_21:04:57_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.40  
+# 	   blinkt 7 Celsius & blinkt 6 CPU_usage working 
 # 	display-led.py  3.27.129  2018-07-05_22:15:33_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.26-3-ga14ad7c  
 # 	   complete testing for LED 7 Celsius: 
 # 	display-led.py  3.26.125  2018-07-05_20:35:22_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.25  
 # 	   celsius working as LED 7 
-# 	../../../display-led.py  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
-# 	   completed prototype controling blinkt from container start with docker-compose 
 ###
 #	The final design should control an Blinkt LED bar and
 #		display information for a second
@@ -22,7 +22,7 @@ import subprocess
 
 set_clear_on_exit()
 # >>> #
-CLUSTER = "cluster-1"
+CLUSTER = "cluster-1/"
 DATA_DIR = "/usr/local/data/"
 FILE_NAME = subprocess.check_output("hostname -f", shell=True)
 # >>> #
@@ -125,6 +125,34 @@ def process(line):
             status4(LED_number)
         elif VALUE >= 80  :   # > 80 C 176    5
             status5(LED_number) 
+    if 'cpu_usage:' in line.lower():
+        #   print(line[line.find(':')+2:])
+        VALUE = int(line[line.find(':')+2:])
+        LED_number = 6
+        if   VALUE < 70 : # < 70 %
+            status1(LED_number)
+        elif VALUE < 80 : # < 80 %
+            status2(LED_number)
+        elif VALUE < 85 : # < 85 %
+            status3(LED_number)
+        elif VALUE < 90 : # < 90 %
+            status4(LED_number)
+        elif VALUE >= 95 : # >= 95 %
+            status5(LED_number) 
+#    if 'disk_usage:' in line.lower():
+#        print(line[line.find(':')+2:])
+#        VALUE = int(line[line.find(':')+2:])
+#        LED_number = 4
+#        if   VALUE < 70 : # < 70 %
+#            status1(LED_number)
+#        elif VALUE < 80 : # < 80 %
+#            status2(LED_number)
+#        elif VALUE < 85 : # < 85 %
+#            status3(LED_number)
+#        elif VALUE < 90 : # < 90 %
+#            status4(LED_number)
+#        elif VALUE >= 95 : # >= 95 %
+#            status5(LED_number) 
     return();
 
 #####
@@ -150,8 +178,6 @@ with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
 #		    for LED in range(0,7):
 #		#       if file-information(LED) == 1 then status1(LED)
 #		       if 
-#		
-
 
 status1(0)
 status2(1)
