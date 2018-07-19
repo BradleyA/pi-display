@@ -1,17 +1,18 @@
 #!/usr/bin/env python
-# 	display-message.py  2.13.63  2018-03-02_14:22:31_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.12-2-g162f35e  
-# 	   added labels for Celsius, Fahrenheit, & System_load: to local host 
-# 	display-message.py	2.4.33	2018-02-26_17:06:02_CST uadmin three-rpi3b.cptx86.com 2.3 
-# 	   rewrote uptime todisplay-board.py 
-# 	uptime.py	2.3.32	2018-02-26_15:14:25_CST uadmin three-rpi3b.cptx86.com 2.2-9-gfd85103 
-# 	   continue debug; remove debug echo, add -q to ssh and scp 
+# 	display-message.py  3.45.154  2018-07-18_22:09:28_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.44-2-g4df6d1b  
+# 	   begin design for display_help and line arguments using default 
 
-
+###
 import subprocess
 import sys
 import time
 
 import scrollphat
+
+def display_help():
+    print("<<your help output goes here>>")
+#	need to change to python from bash echo -e "\n${0} - remote cluster system adminstration tool"
+    sys.exit(1)
 
 print("""
 currently using /usr/local/data/cluster-1/MESSAGE
@@ -20,6 +21,10 @@ Need to change to argument to change defualt location
 Press Ctrl+C to exit!
 
 """)
+
+#	review github incident #15
+print 'Number of arguments:', len(sys.argv), 'arguments.'
+print 'Argument List:', str(sys.argv)
 
 scrollphat.set_brightness(4)
 
@@ -59,6 +64,7 @@ while True:
             timeout = get_timeout()
             count = 0
             print ("Updating uptime message")
+            display_help()
         else:
             count = count+ 1
     except KeyboardInterrupt:
