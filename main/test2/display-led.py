@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.46.155  2018-07-24_20:39:20_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.45  
+# 	   cleanup debug print 
 # 	display-led.py  3.44.151  2018-07-16_22:08:09_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.43  
 # 	   read host information and display on blinkt close #14 
 ###
@@ -106,7 +108,6 @@ def status6(LED_number):
 #   process information
 def process(line):
     print("in process information function")
-    print(line)
     if 'celsius:' in line.lower():
         #   print(line[line.find(':')+2:])
         VALUE = float(line[line.find(':')+2:])
