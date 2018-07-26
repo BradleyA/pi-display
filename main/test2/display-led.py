@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.49.158  2018-07-25_21:58:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.48  
+# 	   add date need to add hostname 
 # 	display-led.py  3.48.157  2018-07-25_21:44:23_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.47  
 # 	   add debug with python script name and date output 
 ###
@@ -170,6 +172,7 @@ def process(line):
 #####
 #   read file and process information
 # >>>  need to replace path and file name with variables
+#	>> how to find hostname and set variable
 with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
     print  FILE_NAME
     print time.strftime("%Y-%m-%d %H:%M")
