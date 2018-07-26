@@ -1,10 +1,6 @@
 #!/usr/bin/env python
-# 	display-led.py  3.47.156  2018-07-25_21:25:10_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.46  
-# 	   added date to output 
-# 	display-led.py  3.46.155  2018-07-24_20:39:20_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.45  
-# 	   cleanup debug print 
-# 	display-led.py  3.44.151  2018-07-16_22:08:09_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.43  
-# 	   read host information and display on blinkt close #14 
+# 	display-led.py  3.48.157  2018-07-25_21:44:23_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.47  
+# 	   add debug with python script name and date output 
 ###
 #	The final design should control an Blinkt LED bar and
 #		display information for a second
@@ -19,7 +15,9 @@
 from blinkt import set_clear_on_exit, set_pixel, show, clear
 import time
 import subprocess
+
 import datetime
+import sys
 
 set_clear_on_exit()
 # >>> #
@@ -27,7 +25,7 @@ CLUSTER = "cluster-1/"
 DATA_DIR = "/usr/local/data/"
 FILE_NAME = subprocess.check_output("hostname -f", shell=True)
 # >>> #
-print  FILE_NAME
+#	print  FILE_NAME
 FILE_NAME = DATA_DIR + CLUSTER + FILE_NAME
 print  FILE_NAME
 
@@ -174,6 +172,8 @@ def process(line):
 # >>>  need to replace path and file name with variables
 with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
     print  FILE_NAME
+    print time.strftime("%Y-%m-%d %H:%M")
+    print sys.argv[0]
     print time.strftime("%Y-%m-%d %H:%M")
     #	print("begin for loop")
     for line in f:
