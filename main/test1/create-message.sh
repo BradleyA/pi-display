@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.50.159  2018-07-27_18:12:25_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.49  
+# 	   change default cluster name 
 # 	../test1/create-message.sh  3.43.150  2018-07-16_21:55:46_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.42  
 # 	   testing 7 6 5 4 blinkt 
 # 	../test1/create-message.sh  3.42.149  2018-07-16_21:15:26_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.41  
@@ -52,7 +54,7 @@ if [ "$1" == "--version" ] || [ "$1" == "-v" ] || [ "$1" == "version" ] ; then
         exit 0
 fi
 ### 
-CLUSTER=${1:-cluster-1}
+CLUSTER=${1:-us-tx-cluster-1}
 ADMUSER=${2:-${USER}}
 DATA_DIR=${3:-/usr/local/data/}
 SSHPORT=${4:-22}
