@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.55.165  2018-07-28_13:32:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.54  
+# 	   move create-message.sh 
 # 	display-message.py  3.54.164  2018-07-27_20:13:51_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.53  
 # 	   change default directory to /usr/local/data/us-tx-cluster-1 
 # 	display-message.py  3.45.154  2018-07-18_22:09:28_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.44-2-g4df6d1b  
@@ -17,8 +19,8 @@ def display_help():
     sys.exit(1)
 
 print("""
-currently using /usr/local/data/us-tx-cluster-1/MESSAGE
-Need to change to argument to change defualt location
+Currently using /usr/local/data/us-tx-cluster-1/MESSAGE
+Need to change to argument and have a default location
 
 Press Ctrl+C to exit!
 
@@ -66,7 +68,7 @@ while True:
             timeout = get_timeout()
             count = 0
             print ("Updating uptime message")
-            display_help()
+#	            display_help()
         else:
             count = count+ 1
     except KeyboardInterrupt:
