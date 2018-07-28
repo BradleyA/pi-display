@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# 	display-message.py  3.55.165  2018-07-28_13:32:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.54  
-# 	   move create-message.sh 
+# 	display-message.py  3.56.167  2018-07-28_14:59:59_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.55-1-gff92252  
+# 	   begin design on py help processing 
 # 	display-message.py  3.54.164  2018-07-27_20:13:51_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.53  
 # 	   change default directory to /usr/local/data/us-tx-cluster-1 
 # 	display-message.py  3.45.154  2018-07-18_22:09:28_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.44-2-g4df6d1b  
@@ -29,6 +29,15 @@ Press Ctrl+C to exit!
 #	review github incident #15
 print 'Number of arguments:', len(sys.argv), 'arguments.'
 print 'Argument List:', str(sys.argv)
+###	if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
+###	        display_help
+###	        exit 0
+###	fi
+###	if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] ||  [ "$1" == "-v" ] ; then
+###	        head -2 ${0} | awk {'print$2"\t"$3'}
+###	        exit 0
+###	fi
+
 
 scrollphat.set_brightness(4)
 
@@ -67,6 +76,8 @@ while True:
             scrollphat.write_string(msg)
             timeout = get_timeout()
             count = 0
+#		incident #13
+
             print ("Updating uptime message")
 #	            display_help()
         else:
