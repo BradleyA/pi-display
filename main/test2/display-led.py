@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.53.163  2018-07-27_19:53:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.52  
+# 	   change default cluster directory to us-tx-cluster-1 
 # 	display-led.py  3.52.162  2018-07-27_19:42:53_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.51-1-gc84d151  
 # 	   change default cluster directory to us-tx-cluster-1 
 ###
@@ -171,7 +173,7 @@ def process(line):
 #   read file and process information
 # >>>  need to replace path and file name with variables
 #	>> how to find hostname and set variable
-with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
+with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
     print  FILE_NAME
     print time.strftime("%Y-%m-%d %H:%M")
     print sys.argv[0]
