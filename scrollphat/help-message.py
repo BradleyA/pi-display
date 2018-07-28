@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.58.169  2018-07-28_16:12:24_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.57  
+# 	   #15 
 # 	help-message.py  3.57.168  2018-07-28_15:42:23_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.56  
 # 	   test works -h  does not work --help -help help h -? ? #15 
 # 	help-message.py  3.56.167  2018-07-28_14:59:59_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.55-1-gff92252  
@@ -14,7 +16,6 @@ def display_help():
     print("<<your help output goes here>>")
 #	need to change to python from bash echo -e "\n${0} - remote cluster system adminstration tool"
 #    sys.exit(1)
-
 
 #	review github incident #15
 print 'Number of arguments:', len(sys.argv), 'arguments.'
