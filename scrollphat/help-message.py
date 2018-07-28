@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.57.168  2018-07-28_15:42:23_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.56  
+# 	   test works -h  does not work --help -help help h -? ? #15 
 # 	help-message.py  3.56.167  2018-07-28_14:59:59_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.55-1-gff92252  
 # 	   begin design on py help processing 
 
@@ -37,9 +39,10 @@ def main(argv):
       print 'test.py -i <inputfile> -o <outputfile>'
       sys.exit(2)
    for opt, arg in opts:
+      print 'opt = ', opt
       if opt == '--help' or opt == '-help' or opt == 'help' or opt == '-h' or opt == 'h' or opt == '-?' or opt == '?' :
          display_help()
-         print 'test.py -i <inputfile> -o <outputfile>'
+         print 'test works -h  does not work --help -help help h -? ? '
          sys.exit()
       elif opt in ("-i", "--ifile"):
          inputfile = arg
