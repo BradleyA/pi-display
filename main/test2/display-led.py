@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-# 	display-led.py  3.49.158  2018-07-25_21:58:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.48  
-# 	   add date need to add hostname 
-# 	display-led.py  3.48.157  2018-07-25_21:44:23_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.47  
-# 	   add debug with python script name and date output 
+# 	display-led.py  3.52.162  2018-07-27_19:42:53_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.51-1-gc84d151  
+# 	   change default cluster directory to us-tx-cluster-1 
 ###
 #	The final design should control an Blinkt LED bar and
 #		display information for a second
@@ -23,7 +21,7 @@ import sys
 
 set_clear_on_exit()
 # >>> #
-CLUSTER = "cluster-1/"
+CLUSTER = "us-tx-cluster-1/"
 DATA_DIR = "/usr/local/data/"
 FILE_NAME = subprocess.check_output("hostname -f", shell=True)
 # >>> #
