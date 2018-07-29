@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.60.171  2018-07-29_17:25:31_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.59  
+# 	   Completed design of ERROR WARNING INFO message for python close #18 
 # 	help-message.py  3.59.170  2018-07-29_13:30:07_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.58  
 # 	   getting close with #18 ERROR WARNING INFO stdout:wq 
 # 	help-message.py  3.58.169  2018-07-28_16:12:24_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.57  
@@ -7,32 +9,41 @@
 # 	   test works -h  does not work --help -help help h -? ? #15 
 # 	help-message.py  3.56.167  2018-07-28_14:59:59_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.55-1-gff92252  
 # 	   begin design on py help processing 
-
+#
 ###
 import subprocess
 import sys
 import time
 
-
+###
 def display_help():
     print("<<your help output goes here>>")
-#	need to change to python from bash echo -e "\n${0} - remote cluster system adminstration tool"
-#    sys.exit(1)
-
-print __name__, 'line number '
-print __file__
-import os
-cwd = os.getcwd()
-print 'cwd = ', cwd
+    return
+#	bash standard;
+#	echo -e "\n${0} - remote cluster system adminstration tool"
+#	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:       ${USER} does NOT have write permission\n\tin local Git repository directory `pwd`"      1>&2
 
 from inspect import currentframe
 
-def get_linenumber():
+def get_line_no():
     cf = currentframe()
     return cf.f_back.f_lineno
 
-print "This is line 32, python says line ", get_linenumber()
+class color:
+   BOLD = '\033[1m'
+   END = '\033[0m'
 
+#	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:       ${USER} does NOT have write permission\n\tin local Git repository directory `pwd`"      1>&2
+print color.END,__file__,get_line_no(),color.BOLD,"[ERROR]",color.END,"USER don't do that!\n"
+
+print "command with path =", __file__
+print "module =", __name__
+
+import os
+
+print "pwd =", os.getcwd()
+
+sys.exit(1)
 
 #	import os.path
 
