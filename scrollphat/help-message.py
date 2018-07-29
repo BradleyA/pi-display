@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.59.170  2018-07-29_13:30:07_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.58  
+# 	   getting close with #18 ERROR WARNING INFO stdout:wq 
 # 	help-message.py  3.58.169  2018-07-28_16:12:24_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.57  
 # 	   #15 
 # 	help-message.py  3.57.168  2018-07-28_15:42:23_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.56  
@@ -17,6 +19,32 @@ def display_help():
 #	need to change to python from bash echo -e "\n${0} - remote cluster system adminstration tool"
 #    sys.exit(1)
 
+print __name__, 'line number '
+print __file__
+import os
+cwd = os.getcwd()
+print 'cwd = ', cwd
+
+from inspect import currentframe
+
+def get_linenumber():
+    cf = currentframe()
+    return cf.f_back.f_lineno
+
+print "This is line 32, python says line ", get_linenumber()
+
+
+#	import os.path
+
+#	print 'function call = ', sys._getframe().f_code.co_filename
+#	file_name =  sys._getframe().f_code.co_filename
+#	print 'file_name = ', file_name
+#	print 'function call =',  os.path.abspath()
+#	file_name_path = os.path.abspath()
+#	print 'file_name_path = ', os.path.abspath()
+#	
+#	
+#	
 #	review github incident #15
 print 'Number of arguments:', len(sys.argv), 'arguments.'
 print 'Argument List:', str(sys.argv)

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.59.170  2018-07-29_13:30:07_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.58  
+# 	   getting close with #18 ERROR WARNING INFO stdout:wq 
 # 	display-message.py  3.56.167  2018-07-28_14:59:59_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.55-1-gff92252  
 # 	   begin design on py help processing 
 # 	display-message.py  3.54.164  2018-07-27_20:13:51_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.53  
@@ -14,17 +16,16 @@ import time
 import scrollphat
 
 def display_help():
-    print("<<your help output goes here>>")
+   print("<<your help output goes here>>")
+   print("""
+   Currently using /usr/local/data/us-tx-cluster-1/MESSAGE
+   Need to change to argument and have a default location
+   
+   Press Ctrl+C to exit!
+   
+   """)
 #	need to change to python from bash echo -e "\n${0} - remote cluster system adminstration tool"
     sys.exit(1)
-
-print("""
-Currently using /usr/local/data/us-tx-cluster-1/MESSAGE
-Need to change to argument and have a default location
-
-Press Ctrl+C to exit!
-
-""")
 
 #	review github incident #15
 print 'Number of arguments:', len(sys.argv), 'arguments.'
