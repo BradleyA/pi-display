@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.61.172  2018-07-29_17:35:05_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.60  
+# 	   cleanup file after completing #18 to continue with #19 
 # 	display-message.py  3.59.170  2018-07-29_13:30:07_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.58  
 # 	   getting close with #18 ERROR WARNING INFO stdout:wq 
 # 	display-message.py  3.56.167  2018-07-28_14:59:59_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.55-1-gff92252  
@@ -24,8 +26,7 @@ def display_help():
    Press Ctrl+C to exit!
    
    """)
-#	need to change to python from bash echo -e "\n${0} - remote cluster system adminstration tool"
-    sys.exit(1)
+   return
 
 #	review github incident #15
 print 'Number of arguments:', len(sys.argv), 'arguments.'
@@ -87,3 +88,4 @@ while True:
         scrollphat.clear()
         sys.exit(-1)
 
+    sys.exit(1)

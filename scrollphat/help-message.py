@@ -1,10 +1,8 @@
 #!/usr/bin/env python
+# 	help-message.py  3.61.172  2018-07-29_17:35:05_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.60  
+# 	   cleanup file after completing #18 to continue with #19 
 # 	help-message.py  3.60.171  2018-07-29_17:25:31_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.59  
 # 	   Completed design of ERROR WARNING INFO message for python close #18 
-# 	help-message.py  3.59.170  2018-07-29_13:30:07_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.58  
-# 	   getting close with #18 ERROR WARNING INFO stdout:wq 
-# 	help-message.py  3.58.169  2018-07-28_16:12:24_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.57  
-# 	   #15 
 # 	help-message.py  3.57.168  2018-07-28_15:42:23_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.56  
 # 	   test works -h  does not work --help -help help h -? ? #15 
 # 	help-message.py  3.56.167  2018-07-28_14:59:59_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.55-1-gff92252  
@@ -19,9 +17,6 @@ import time
 def display_help():
     print("<<your help output goes here>>")
     return
-#	bash standard;
-#	echo -e "\n${0} - remote cluster system adminstration tool"
-#	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:       ${USER} does NOT have write permission\n\tin local Git repository directory `pwd`"      1>&2
 
 from inspect import currentframe
 
@@ -43,22 +38,10 @@ import os
 
 print "pwd =", os.getcwd()
 
-sys.exit(1)
-
-#	import os.path
-
-#	print 'function call = ', sys._getframe().f_code.co_filename
-#	file_name =  sys._getframe().f_code.co_filename
-#	print 'file_name = ', file_name
-#	print 'function call =',  os.path.abspath()
-#	file_name_path = os.path.abspath()
-#	print 'file_name_path = ', os.path.abspath()
-#	
-#	
-#	
 #	review github incident #15
 print 'Number of arguments:', len(sys.argv), 'arguments.'
 print 'Argument List:', str(sys.argv)
+
 ###	if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
 ###	        display_help
 ###	        exit 0
