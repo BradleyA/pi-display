@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.66.177  2018-07-29_23:02:16_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.65  
+# 	   completed aargument design close #15 updated code for #18 
 # 	help-message.py  3.65.176  2018-07-29_21:56:49_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.64  
 # 	   added LANG support for display_help 
 # 	help-message.py  3.64.175  2018-07-29_20:51:00_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.63  
@@ -21,7 +23,10 @@ import subprocess
 import sys
 import time
 import os
-
+###
+class color:
+   BOLD = '\033[1m'
+   END = '\033[0m'
 ###
 def display_help():
    language = os.getenv("LANG")
@@ -37,46 +42,45 @@ def display_help():
       print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", language, "is not supported, Would you like to help?"
    return
 
-print "command with path =", __file__
-print "module =", __name__
-
-from os import getcwd
-print "pwd =", getcwd()
-
 from inspect import currentframe
 def get_line_no():
     cf = currentframe()
     return cf.f_back.f_lineno
 
-class color:
-   BOLD = '\033[1m'
-   END = '\033[0m'
+no_arguments =  int(len(sys.argv))
+if no_arguments == 2 :
+   if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
+      display_help()
+      sys.exit()
+   if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
+      with open(__file__) as f:
+         f.readline()
+         line2 = f.readline()
+         line2 = line2.split()
+         print line2[1], line2[2]
+      sys.exit()
+###
+#	Check arguments if not set default; github incident #15
+if no_arguments == 2 :
+   LINE_ARG1 = sys.argv[1]
+else :
+#	set default
+   LINE_ARG1 = "/tmp"
+if no_arguments == 3 :
+   LINE_ARG2 = sys.argv[2]
+else :
+#	set default
+   LINE_ARG2 = "22"
 
 #	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]: ${USER} does NOT have write permission\n\tin local Git repository directory `pwd`"      1>&2
-print color.END,__file__,get_line_no(),color.BOLD,"[ERROR]",color.END,"USER don't do that!\n"
+print "\n",color.END,__file__,get_line_no(),color.BOLD,"[ERROR]",color.END,"USER don't do that!\n"
+###
 
-###
-if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
-   display_help()
-   sys.exit()
-if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
-   with open(__file__) as f:
-      f.readline()
-      line2 = f.readline()
-      line2 = line2.split()
-      print line2[1], line2[2]
-   sys.exit()
-###
-#
 print "command with path =", __file__
 print "module =", __name__
 
 from os import getcwd
-
 print "pwd =", getcwd()
-#	review github incident #15
+
 print "\nNumber of arguments:", len(sys.argv), "arguments."
 print "Argument List:", str(sys.argv)
-
-print "first argument =", sys.argv[1]
-
