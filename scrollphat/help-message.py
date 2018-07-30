@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.64.175  2018-07-29_20:51:00_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.63  
+# 	   test works --version -version version -v #15 
 # 	help-message.py  3.63.174  2018-07-29_19:11:04_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.62  
 # 	   test works for --help -help help -h h -? ? #15 
 # 	help-message.py  3.62.173  2018-07-29_19:07:08_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.61  
@@ -19,8 +21,15 @@ import time
 
 ###
 def display_help():
-    print("<<your help output goes here>>")
-    return
+   print "\n", __file__, "- <one line description>"
+   print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
+   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?] [--version | -v]"
+   print "\nDESCRIPTION\n<<your help output goes here>>"
+   print "\nOPTIONS\n   <<your options go here>>"
+   print "\nDOCUMENTATION\n   <<URL to GITHUB README>>"
+   print "\nEXAMPLES\n   <<your code examples go here>>"
+   print "      <<line two of first example>>"
+   return
 
 from inspect import currentframe
 
@@ -43,25 +52,20 @@ from os import getcwd
 print "pwd =", getcwd()
 
 ###
+if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
+   display_help()
+   sys.exit()
+if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
+   with open(__file__) as f:
+      f.readline()
+      line2 = f.readline()
+      line2 = line2.split()
+      print line2[1], line2[2]
+   sys.exit()
+###
 #	review github incident #15
 print "\nNumber of arguments:", len(sys.argv), "arguments."
 print "Argument List:", str(sys.argv)
 
-###	if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
-###	        display_help
-###	        exit 0
-###	fi
-###	if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] ||  [ "$1" == "-v" ] ; then
-###	        head -2 ${0} | awk {'print$2"\t"$3'}
-###	        exit 0
-###	fi
 print "first argument =", sys.argv[1]
-
-if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
-   display_help()
-   print 'test works -h  does not work --help -help help h -? ? '
-   sys.exit()
-if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
-   print 'test works -h  does not work --help -help help h -? ? '
-   sys.exit()
 
