@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.65.176  2018-07-29_21:56:49_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.64  
+# 	   added LANG support for display_help 
 # 	help-message.py  3.64.175  2018-07-29_20:51:00_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.63  
 # 	   test works --version -version version -v #15 
 # 	help-message.py  3.63.174  2018-07-29_19:11:04_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.62  
@@ -18,9 +20,11 @@
 import subprocess
 import sys
 import time
+import os
 
 ###
 def display_help():
+   language = os.getenv("LANG")
    print "\n", __file__, "- <one line description>"
    print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
    print "  ", __file__, "[--help | -help | help | -h | h | -? | ?] [--version | -v]"
@@ -29,10 +33,17 @@ def display_help():
    print "\nDOCUMENTATION\n   <<URL to GITHUB README>>"
    print "\nEXAMPLES\n   <<your code examples go here>>"
    print "      <<line two of first example>>"
+   if language != "en_US.UTF-8" :
+      print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", language, "is not supported, Would you like to help?"
    return
 
-from inspect import currentframe
+print "command with path =", __file__
+print "module =", __name__
 
+from os import getcwd
+print "pwd =", getcwd()
+
+from inspect import currentframe
 def get_line_no():
     cf = currentframe()
     return cf.f_back.f_lineno
@@ -43,13 +54,6 @@ class color:
 
 #	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]: ${USER} does NOT have write permission\n\tin local Git repository directory `pwd`"      1>&2
 print color.END,__file__,get_line_no(),color.BOLD,"[ERROR]",color.END,"USER don't do that!\n"
-
-print "command with path =", __file__
-print "module =", __name__
-
-from os import getcwd
-
-print "pwd =", getcwd()
 
 ###
 if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
@@ -63,6 +67,13 @@ if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 've
       print line2[1], line2[2]
    sys.exit()
 ###
+#
+print "command with path =", __file__
+print "module =", __name__
+
+from os import getcwd
+
+print "pwd =", getcwd()
 #	review github incident #15
 print "\nNumber of arguments:", len(sys.argv), "arguments."
 print "Argument List:", str(sys.argv)
