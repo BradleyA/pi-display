@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.63.174  2018-07-29_19:11:04_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.62  
+# 	   test works for --help -help help -h h -? ? #15 
 # 	help-message.py  3.62.173  2018-07-29_19:07:08_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.61  
 # 	   test works for --help -help help -h h -? ? 
 # 	help-message.py  3.61.172  2018-07-29_17:35:05_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.60  
@@ -59,30 +61,7 @@ if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or
    display_help()
    print 'test works -h  does not work --help -help help h -? ? '
    sys.exit()
-
-import sys, getopt
-
-def main(argv):
-   inputfile = ''
-   outputfile = ''
-   try:
-      opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
-   except getopt.GetoptError:
-      print 'test.py -i <inputfile> -o <outputfile>'
-      sys.exit(2)
-   for opt, arg in opts:
-      print 'opt = ', opt
-      if opt == '--help' or opt == '-help' or opt == 'help' or opt == '-h' or opt == 'h' or opt == '-?' or opt == '?' :
-         display_help()
-         print 'test works -h  does not work --help -help help h -? ? '
-         sys.exit()
-      elif opt in ("-i", "--ifile"):
-         inputfile = arg
-      elif opt in ("-o", "--ofile"):
-         outputfile = arg
-   print 'Input file is "', inputfile
-   print 'Output file is "', outputfile
-
-if __name__ == "__main__":
-   main(sys.argv[1:])
+if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
+   print 'test works -h  does not work --help -help help h -? ? '
+   sys.exit()
 
