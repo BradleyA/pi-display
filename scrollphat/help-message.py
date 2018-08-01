@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	help-message.py  3.69.182  2018-07-31_22:38:59_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.68  
+# 	   update with a few changes after first merge with display-message.py #19 #13 
 # 	help-message.py  3.66.177  2018-07-29_23:02:16_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.65  
 # 	   completed aargument design close #15 updated code for #18 
 # 	help-message.py  3.65.176  2018-07-29_21:56:49_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.64  
@@ -38,15 +40,16 @@ def display_help():
    print "\nDOCUMENTATION\n   <<URL to GITHUB README>>"
    print "\nEXAMPLES\n   <<your code examples go here>>"
    print "      <<line two of first example>>"
+#       After displaying help in english check for other languages
    if language != "en_US.UTF-8" :
       print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", language, "is not supported, Would you like to help?"
    return
-
+#
 from inspect import currentframe
 def get_line_no():
     cf = currentframe()
     return cf.f_back.f_lineno
-
+#
 no_arguments =  int(len(sys.argv))
 if no_arguments == 2 :
    if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
@@ -60,17 +63,19 @@ if no_arguments == 2 :
          print line2[1], line2[2]
       sys.exit()
 ###
-#	Check arguments if not set default; github incident #15
+SSHPORT=22
+#       Check argument 1 for non-default ______
 if no_arguments == 2 :
    LINE_ARG1 = sys.argv[1]
 else :
-#	set default
-   LINE_ARG1 = "/tmp"
+#	set default MESSAGE file with path
+   LINE_ARG1 = "/usr/local/data/us-tx-cluster-1/MESSAGE"
+   print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",LINE_ARG1
+#       Check argument 2 for non-default SSHPORT number
 if no_arguments == 3 :
-   LINE_ARG2 = sys.argv[2]
-else :
-#	set default
-   LINE_ARG2 = "22"
+   SSHPORT = sys.argv[2]
+   print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using PORT number",SSHPORT
+#
 
 #	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}ERROR${NORMAL}]: ${USER} does NOT have write permission\n\tin local Git repository directory `pwd`"      1>&2
 print "\n",color.END,__file__,get_line_no(),color.BOLD,"[ERROR]",color.END,"USER don't do that!\n"
