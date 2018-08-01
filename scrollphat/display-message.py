@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.68.181  2018-07-31_22:22:04_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.67-2-gcfd104d  
+# 	   completed merge of display-message.py and help-message.py #19 #13 
 # 	display-message.py  3.67.178  2018-07-31_22:09:20_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.66  
 # 	   first pass of merge help-message.py with display-message.py #19 #13 
 # 	help-message.py  3.66.177  2018-07-29_23:02:16_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.65  
@@ -76,66 +78,50 @@ else :
    LINE_ARG1 = "/usr/local/data/us-tx-cluster-1/MESSAGE"
    print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",LINE_ARG1
 #
+scrollphat.set_brightness(4)
+# Every refresh_interval seconds we'll refresh the uptime
+# Only has to change every 60 seconds.
+pause = 0.12
+ticks_per_second = 1/pause
+refresh_interval = 60
 
+def get_timeout():
+   return ticks_per_second * refresh_interval
 
-##>	#	review github incident #15
-##>	print 'Number of arguments:', len(sys.argv), 'arguments.'
-##>	print 'Argument List:', str(sys.argv)
-##>	###	if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
-##>	###	        display_help
-##>	###	        exit 0
-##>	###	fi
-##>	###	if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] ||  [ "$1" == "-v" ] ; then
-##>	###	        head -2 ${0} | awk {'print$2"\t"$3'}
-##>	###	        exit 0
-##>	###	fi
-##>	
-##>	
-##>	scrollphat.set_brightness(4)
-##>	
-##>	# Every refresh_interval seconds we'll refresh the uptime
-##>	# Only has to change every 60 seconds.
-##>	pause = 0.12
-##>	ticks_per_second = 1/pause
-##>	refresh_interval = 60
-##>	
-##>	def get_timeout():
-##>	    return ticks_per_second * refresh_interval
-##>	
-##>	def get_msg():
-##>	    file = open("/usr/local/data/us-tx-cluster-1/MESSAGE","r")
-##>	#    print file.read()
-##>	    val = file.read()
-##>	    file.close()
-##>	#    val = subprocess.check_output(["uptime", "-p"]).decode("utf-8")
-##>	#    val = val.replace("\n","")
-##>	    val = val + " ---->  "
-##>	    return val
-##>	
-##>	timeout = get_timeout()
-##>	count = 0
-##>	msg = get_msg()
-##>	scrollphat.set_rotate(True)
-##>	scrollphat.write_string(msg)
-##>	
-##>	while True:
-##>	    try:
-##>	        scrollphat.scroll()
-##>	        time.sleep(pause)
-##>	
-##>	        if(count > timeout):
-##>	            msg = get_msg()
-##>	            scrollphat.write_string(msg)
-##>	            timeout = get_timeout()
-##>	            count = 0
-##>	#		incident #13
-##>	
-##>	            print ("Updating uptime message")
-##>	#	            display_help()
-##>	        else:
-##>	            count = count+ 1
-##>	    except KeyboardInterrupt:
-##>	        scrollphat.clear()
-##>	        sys.exit(-1)
-##>	
+def get_msg():
+   file = open("/usr/local/data/us-tx-cluster-1/MESSAGE","r")
+#    print file.read()
+   val = file.read()
+   file.close()
+#    val = subprocess.check_output(["uptime", "-p"]).decode("utf-8")
+#    val = val.replace("\n","")
+   val = val + " ---->  "
+   return val
+
+timeout = get_timeout()
+count = 0
+msg = get_msg()
+scrollphat.set_rotate(True)
+scrollphat.write_string(msg)
+
+while True:
+   try:
+      scrollphat.scroll()
+      time.sleep(pause)
+
+      if(count > timeout):
+         msg = get_msg()
+         scrollphat.write_string(msg)
+         timeout = get_timeout()
+         count = 0
+#		incident #13
+
+         print ("Updating uptime message")
+#	 display_help()
+      else:
+         count = count+ 1
+   except KeyboardInterrupt:
+      scrollphat.clear()
+      sys.exit(-1)
+
 ##>	    sys.exit(1)
