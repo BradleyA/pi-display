@@ -24,7 +24,7 @@ still a lot of work to include blinkt
 To install, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
     git clone https://github.com/BradleyA/pi-display
-    cd pi-display/scroll-phat
+    cd pi-display/scrollphat
 
 ### System OS script tested
  * Ubuntu 16.04.3 LTS (armv7l)
