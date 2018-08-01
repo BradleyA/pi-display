@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.70.183  2018-07-31_22:49:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.69  
+# 	   debug completd first pass, add to crontab for more testing #19 #13 
 # 	display-message.py  3.68.181  2018-07-31_22:22:04_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.67-2-gcfd104d  
 # 	   completed merge of display-message.py and help-message.py #19 #13 
 # 	display-message.py  3.67.178  2018-07-31_22:09:20_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.66  
@@ -72,11 +74,11 @@ if no_arguments == 2 :
       sys.exit()
 #	Check argument 1 for non-default MESSAGE file
 if no_arguments == 2 :
-   LINE_ARG1 = sys.argv[1]
+   MESSAGE_file = sys.argv[1]
 else :
 #	set default MESSAGE file with path
-   LINE_ARG1 = "/usr/local/data/us-tx-cluster-1/MESSAGE"
-   print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",LINE_ARG1
+   MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
+print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",MESSAGE_file
 #
 scrollphat.set_brightness(4)
 # Every refresh_interval seconds we'll refresh the uptime
@@ -89,7 +91,7 @@ def get_timeout():
    return ticks_per_second * refresh_interval
 
 def get_msg():
-   file = open("/usr/local/data/us-tx-cluster-1/MESSAGE","r")
+   file = open(MESSAGE_file,"r")
 #    print file.read()
    val = file.read()
    file.close()
@@ -115,7 +117,6 @@ while True:
          timeout = get_timeout()
          count = 0
 #		incident #13
-
          print ("Updating uptime message")
 #	 display_help()
       else:
@@ -123,5 +124,4 @@ while True:
    except KeyboardInterrupt:
       scrollphat.clear()
       sys.exit(-1)
-
-##>	    sys.exit(1)
+###
