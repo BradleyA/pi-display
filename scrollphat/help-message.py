@@ -31,7 +31,7 @@ class color:
    END = '\033[0m'
 ###
 def display_help():
-   language = os.getenv("LANG")
+   LANGUAGE = os.getenv("LANG")
    print "\n", __file__, "- <one line description>"
    print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
    print "  ", __file__, "[--help | -help | help | -h | h | -? | ?] [--version | -v]"
@@ -41,8 +41,8 @@ def display_help():
    print "\nEXAMPLES\n   <<your code examples go here>>"
    print "      <<line two of first example>>"
 #       After displaying help in english check for other languages
-   if language != "en_US.UTF-8" :
-      print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", language, "is not supported, Would you like to help?"
+   if LANGUAGE != "en_US.UTF-8" :
+      print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", LANGUAGE, "is not supported, Would you like to help?"
    return
 #
 from inspect import currentframe
