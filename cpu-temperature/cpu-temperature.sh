@@ -1,35 +1,37 @@
 #!/bin/bash
-# 	cpu-temperature/cpu-temperature.sh  2.8.47  2018-02-28_12:46:40_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.7-7-gca0e0da  
-# 	   moved cpu-temperature and syste-stats project into this repository 
-# 	cpu-temperature/cpu-temperature.sh  2.8.46  2018-02-28_12:43:05_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.7-6-g7238272  
-# 	   moved cpu-temperature and syste-stats project into this repository 
-# 	cpu-temperature.sh	1.4.34	2018-02-21_21:22:51_CST uadmin six-rpi3b.cptx86.com 1.3 
-# 	   ruff draft addition display_help cpu-temperature.sh & system-stats-1.sh 
-#	cpu-temperature.sh	1.0	2017-12-20_22:07:09_CST uadmin rpi3b-two.cptx86.com
-#	added description comment and added mark
-#
+# 	cpu-temperature.sh  3.72.186  2018-08-12_13:46:05_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.71-1-g7093446  
+# 	   sync to standard script design changes 
+###
+#	print out current temperature
+###
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
-#
-#	print out current temperature
-###             
+BOLD=$(tput bold)
+NORMAL=$(tput sgr0)
+###
 display_help() {
-echo -e "\n${0} - >>> NEED TO COMPLETE THIS SOON, ONCE I KNOW HOW IT IS GOING TO WORK :-) <<<"
+echo -e "\n${NORMAL}${0} - >>> NEED TO COMPLETE THIS SOON, ONCE I KNOW HOW IT IS GOING TO WORK :-) <<<"
 echo -e "\nUSAGE\n   ${0}"
-echo    "   ${0} [--help | -help | help | -h | h | -? | ?] [--version | -v]"
+echo    "   ${0} [--help | -help | help | -h | h | -? | ?]"
+echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION\nXXXXXX "
 echo -e "\nOPTIONS "
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-scripts/tree/master/cpu-temperature"
 echo -e "\nEXAMPLES\n   XXXXXX \n\t${0} XXXXXX\n"
+if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
+        echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARNING${NORMAL}]:     Your language, ${LANG}, is not supported.\n\tWould you like to help?\n" 1>&2
+fi
 }
 if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
         display_help
         exit 0
 fi
-if [ "$1" == "--version" ] || [ "$1" == "-v" ] ||  [ "$1" == "version" ]  ; then
+if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] || [ "$1" == "-v" ] ; then
         head -2 ${0} | awk {'print$2"\t"$3'}
         exit 0
 fi
+if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  >${0}<  >${1}<" 1>&2 ; fi
 ###
 echo "Hostname =	" `hostname`
 
