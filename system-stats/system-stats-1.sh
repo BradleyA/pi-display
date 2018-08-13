@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	system-stats/system-stats-1.sh  3.75.189  2018-08-12_21:26:10_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.74  
+# 	   sync to standard script design changes 
 # 	system-stats/system-stats-1.sh  2.8.47  2018-02-28_12:46:40_CST  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 2.7-7-gca0e0da  
 # 	   moved cpu-temperature and syste-stats project into this repository 
 # 	system-stats-1.sh	1.12.51	2018-02-23_09:09:04_CST uadmin six-rpi3b.cptx86.com 1.11-3-g63003c3 
@@ -7,29 +9,38 @@
 # 	   ruff draft addition display_help cpu-temperature.sh & system-stats-1.sh 
 #	system-stats-1.sh	1.0	2017-12-20_22:12:37_CST uadmin rpi3b-two.cptx86.com
 #	initial version
-#
+###
+#   	evaluate different states for raspberry pi
+###
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
-#
-#   	evaluate different states for raspberry pi
-###             
+BOLD=$(tput bold)
+NORMAL=$(tput sgr0)
+###
 display_help() {
-echo -e "\n${0} - >>> NEED TO COMPLETE THIS SOON, ONCE I KNOW HOW IT IS GOING TO WORK :-) <<<"
+echo -e "\n${NORMAL}${0} - >>> NEED TO COMPLETE THIS SOON, ONCE I KNOW HOW IT IS GOING TO WORK :-) <<<"
 echo -e "\nUSAGE\n   ${0}"
-echo    "   ${0} [--help | -help | help | -h | h | -? | ?] [--version | -v]"
+echo    "   ${0} [--help | -help | help | -h | h | -? | ?]"
+echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION\nXXXXXX "
 echo -e "\nOPTIONS "
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-scripts/tree/master/system-stats-1.sh"
-echo -e "\nEXAMPLES\n   XXXXXX \n\t${0}\n"
+echo -e "\nEXAMPLES\n   ${0}\n\n   XXXXXX\n"
+if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
+        echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARNING${NORMAL}]:     Your language, ${LANG}, is not supported.\n\tWould you like to help?\n" 1>&2
+fi
 }
 if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
         display_help
         exit 0
 fi
-if [ "$1" == "--version" ] || [ "$1" == "-v" ] ||  [ "$1" == "version" ]  ; then
+if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] || [ "$1" == "-v" ] ; then
         head -2 ${0} | awk {'print$2"\t"$3'}
         exit 0
 fi
+###
+#	if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  >${0}<  >${1}<" 1>&2 ; fi
 ###
 echo -e "Need to determine what I want to use in these notes to move forward with this project.  On hold until a later time.\n"
 echo -e  " -->  Hostname = " `hostname`
