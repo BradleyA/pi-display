@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.74.188  2018-08-12_21:13:52_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.73  
+# 	   sync to standard script design changes 
 # 	create-message.sh  3.50.159  2018-07-27_18:12:25_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.49  
 # 	   change default cluster name 
 # 	../test1/create-message.sh  3.43.150  2018-07-16_21:55:46_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.42  
@@ -9,14 +11,18 @@
 # 	   change --> create soft link <-- to define which FQDN is current cluster server close #11 
 # 	create-message.sh  3.39.146  2018-07-15_22:45:54_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.38  
 # 	   complete moving multiple CPU output for one CPU total usage close #12 
-#
-#	set -x
-#	set -v
+###
+DEBUG=0                 # 0 = debug off, 1 = debug on
+#       set -x
+#       set -v
+BOLD=$(tput bold)
+NORMAL=$(tput sgr0)
 ###
 display_help() {
-echo -e "\n${0} - Store Docker and system information"
-echo -e "\nUSAGE\n   ${0} [<cluster>] [<administrator>] [<data_directory>] [<sshport>"
-echo    "   ${0} [--help | -help | help | -h | h | -? | ?] [--version | -v]"
+echo -e "\n${NORMAL}${0} - Store Docker and system information"
+echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>] [<SSHPORT>"
+echo    "   ${0} [--help | -help | help | -h | h | -? | ?]"
+echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION\nThis script stores Docker information about containers and images in a file"
 echo    "on each system in a cluster.  These files are copied to a host and totaled"
 echo    "in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes"
@@ -44,12 +50,15 @@ echo    "   SSHPORT   SSH server port, default port 22"
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES"
 echo -e "   Store information for a different cluster\n\t${0} cluster-2\n"
+if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
+        echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARNING${NORMAL}]:     Your language, ${LANG}, is not supported.\n\tWould you like to help?\n" 1>&2
+fi
 }
 if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
         display_help
         exit 0
 fi
-if [ "$1" == "--version" ] || [ "$1" == "-v" ] || [ "$1" == "version" ] ; then
+if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] || [ "$1" == "-v" ] ; then
         head -2 ${0} | awk {'print$2"\t"$3'}
         exit 0
 fi
@@ -63,9 +72,9 @@ RUNNING=0
 PAUSED=0
 STOPPED=0
 IMAGES=0
-BOLD=$(tput bold)
-NORMAL=$(tput sgr0)
 LOCALHOST=`hostname -f`
+###
+if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< SSHPORT >${SSHPORT}<" 1>&2 ; fi#
 ###
 #       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
