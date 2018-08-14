@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.76.190  2018-08-14_09:57:12_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.75  
+# 	   changed nc -z port lookup to ssh; correct ssh port design close #21 
 # 	create-message.sh  3.74.188  2018-08-12_21:13:52_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.73  
 # 	   sync to standard script design changes 
 # 	create-message.sh  3.50.159  2018-07-27_18:12:25_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.49  
@@ -20,7 +22,7 @@ NORMAL=$(tput sgr0)
 ###
 display_help() {
 echo -e "\n${NORMAL}${0} - Store Docker and system information"
-echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>] [<SSHPORT>"
+echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>]"
 echo    "   ${0} [--help | -help | help | -h | h | -? | ?]"
 echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION\nThis script stores Docker information about containers and images in a file"
@@ -46,7 +48,6 @@ echo -e "\nOPTIONS"
 echo    "   CLUSTER   name of cluster directory, dafault cluster-1/"
 echo    "   ADMUSER   site SRE administrator, default is user running script"
 echo    "   DATA_DIR  path to cluster directory, dafault /usr/local/data/"
-echo    "   SSHPORT   SSH server port, default port 22"
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES"
 echo -e "   Store information for a different cluster\n\t${0} cluster-2\n"
@@ -66,7 +67,6 @@ fi
 CLUSTER=${1:-us-tx-cluster-1}
 ADMUSER=${2:-${USER}}
 DATA_DIR=${3:-/usr/local/data/}
-SSHPORT=${4:-22}
 CONTAINERS=0
 RUNNING=0
 PAUSED=0
@@ -74,7 +74,7 @@ STOPPED=0
 IMAGES=0
 LOCALHOST=`hostname -f`
 ###
-if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< SSHPORT >${SSHPORT}<" 1>&2 ; fi#
+if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}<" 1>&2 ; fi
 ###
 #       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
@@ -95,45 +95,48 @@ if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}${CLUSTER}/SYSTEM
 	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
 fi
 #	Loop through host in SYSTEMS file
-echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file"	1>&2
+if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file"	1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE}"	1>&2
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
-#	Check if ${NODE} is available on port ${SSHPORT}
-		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
-#       Check if cluster directory on system
+#	Check if ${NODE} is available on ssh port 
+		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} "; set -x 1>&2 ; fi
+		if $(ssh ${NODE} exit >/dev/null) ; then
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}" ;  set +x 1>&2 ; fi
 			TEMP="mkdir -p  ${DATA_DIR}${CLUSTER}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
+			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="chmod 775 ${DATA_DIR}${CLUSTER}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
+			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
+			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
-			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP})
+			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP})
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
+			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			# CPU_usage
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} /usr/local/bin/CPU_usage.sh ${ADMUSER}@${NODE}:/usr/local/bin/
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${NODE}"
-			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'free -m | grep Mem:')
+			scp -q    -i ~/.ssh/id_rsa /usr/local/bin/CPU_usage.sh ${ADMUSER}@${NODE}:/usr/local/bin/
+			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
-			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
+			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
 			MEMORY2=$(echo ${MEMORY2} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
-			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
+			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
 			MEMORY3=$(echo ${MEMORY3} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
-			DISK=$(ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
+			DISK=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
 			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
+			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
+			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 		else
-			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding on port ${SSHPORT}.\n"   1>&2
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}" ;  set +x 1>&2 ; fi
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port.\n"   1>&2
 			touch ${DATA_DIR}${CLUSTER}/${NODE}
 		fi
 	else
+		if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE} - Cluster Server" 1>&2 ; fi
 #		Docker info
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
@@ -150,7 +153,6 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-		echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE} - Cluster Server"	1>&2
 		cd ${DATA_DIR}${CLUSTER}
 		ln -sf ${LOCALHOST} LOCAL-HOST
 	fi
@@ -163,18 +165,18 @@ done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
 #	Loop through hosts in SYSTEMS file and update other host information
-echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file and update other host information"	1>&2
+if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file and update other host information"	1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE}"	1>&2
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
-#	Check if ${NODE} is available on port ${SSHPORT}
-		if $(nc -z ${NODE} ${SSHPORT} >/dev/null) ; then
-			scp -q    -i ~/.ssh/id_rsa -P ${SSHPORT} ${DATA_DIR}${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
+#	Check if ${NODE} is available on port
+		if $(ssh ${NODE} exit >/dev/null) ; then
+			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 			TEMP="cd ${DATA_DIR}${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
-			ssh -q -t -i ~/.ssh/id_rsa -p ${SSHPORT} ${ADMUSER}@${NODE} ${TEMP}
+			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 		else
-			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding on port ${SSHPORT}.\n"   1>&2
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port.\n"   1>&2
 		fi
 	fi
 done
