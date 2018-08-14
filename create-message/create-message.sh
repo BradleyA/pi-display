@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.77.191  2018-08-14_11:05:08_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.76  
+# 	   stopped 'ssh: connect to host ...' from printing to screen during testing of #21 
 # 	create-message.sh  3.76.190  2018-08-14_09:57:12_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.75  
 # 	   changed nc -z port lookup to ssh; correct ssh port design close #21 
 # 	create-message.sh  3.74.188  2018-08-12_21:13:52_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.73  
@@ -102,7 +104,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port 
 		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} "; set -x 1>&2 ; fi
-		if $(ssh ${NODE} exit >/dev/null) ; then
+		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
 			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}" ;  set +x 1>&2 ; fi
 			TEMP="mkdir -p  ${DATA_DIR}${CLUSTER}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
@@ -132,7 +134,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 		else
 			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}" ;  set +x 1>&2 ; fi
-			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port.\n"   1>&2
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port."   1>&2
 			touch ${DATA_DIR}${CLUSTER}/${NODE}
 		fi
 	else
@@ -170,13 +172,13 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE}"	1>&2
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
-#	Check if ${NODE} is available on port
-		if $(ssh ${NODE} exit >/dev/null) ; then
+#	Check if ${NODE} is available on ssh port
+		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
 			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 			TEMP="cd ${DATA_DIR}${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 		else
-			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port.\n"   1>&2
+			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port."   1>&2
 		fi
 	fi
 done
