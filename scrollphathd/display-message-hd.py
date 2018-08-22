@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message-hd.py  3.81.195  2018-08-21_23:01:44_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.80  
+# 	   add more standard code #22 
 # 	display-message-hd.py  3.80.194  2018-08-21_22:53:45_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.79  
 # 	   begin design for display_help and line arguments using default  #22 
 # 	ba-test-text.py  3.78.192  2018-08-21_22:24:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.77  
@@ -11,6 +13,7 @@ import scrollphathd
 from scrollphathd.fonts import font3x5
 
 import sys
+import os
 ###
 class color:
    BOLD = '\033[1m'
@@ -56,16 +59,37 @@ else :
    MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
 print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",MESSAGE_file
 #
+# Every refresh_interval seconds we'll refresh the uptime
+# Only has to change every 60 seconds.
+pause = 0.12
+ticks_per_second = 1/pause
+refresh_interval = 60
+
+def get_timeout():
+   return ticks_per_second * refresh_interval
+
+def get_msg():
+   file = open(MESSAGE_file,"r")
+#    print file.read()
+   val = file.read()
+   file.close()
+#    val = subprocess.check_output(["uptime", "-p"]).decode("utf-8")
+#    val = val.replace("\n","")
+   val = val + " ---->  "
+   return val
+
+
+
+
 
 ###
 print("""
-Scroll pHAT HD: Hello World
+Scroll pHAT HD: 
+Scrolls "Text" across the screen
 
-Scrolls "Hello World" across the screen
 in a 3x5 pixel condensed font.
 
 Press Ctrl+C to exit!
-
 """)
 ###
 
