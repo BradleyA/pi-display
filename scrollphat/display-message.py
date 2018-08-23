@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	../scrollphat/display-message.py  3.82.196  2018-08-22_22:28:51_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.81  
+# 	   format cleanup 
 # 	display-message.py  3.71.184  2018-07-31_22:58:30_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.70  
 # 	   completed adding help-message.py code into display-message.py close #19 
 ###
@@ -51,17 +53,17 @@ else :
 #	set default MESSAGE file with path
    MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
 print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",MESSAGE_file
-#
+#	Set brightness
 scrollphat.set_brightness(4)
 # Every refresh_interval seconds we'll refresh the uptime
 # Only has to change every 60 seconds.
 pause = 0.12
 ticks_per_second = 1/pause
 refresh_interval = 60
-
+#
 def get_timeout():
    return ticks_per_second * refresh_interval
-
+#
 def get_msg():
    file = open(MESSAGE_file,"r")
 #    print file.read()

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message-hd.py  3.82.196  2018-08-22_22:28:51_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.81  
+# 	   format cleanup 
 # 	display-message-hd.py  3.81.195  2018-08-21_23:01:44_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.80  
 # 	   add more standard code #22 
 # 	display-message-hd.py  3.80.194  2018-08-21_22:53:45_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.79  
@@ -57,17 +59,20 @@ if no_arguments == 2 :
 else :
 #       set default MESSAGE file with path
    MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
-print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",MESSAGE_file
-#
+   print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",MESSAGE_file
+#	Rotate the text
+scrollphathd.rotate(180)
+#	Set brightness
+scrollphathd.set_brightness(0.5)
 # Every refresh_interval seconds we'll refresh the uptime
 # Only has to change every 60 seconds.
 pause = 0.12
 ticks_per_second = 1/pause
 refresh_interval = 60
-
+#
 def get_timeout():
    return ticks_per_second * refresh_interval
-
+#
 def get_msg():
    file = open(MESSAGE_file,"r")
 #    print file.read()
@@ -77,31 +82,10 @@ def get_msg():
 #    val = val.replace("\n","")
    val = val + " ---->  "
    return val
-
-
-
-
-
-###
-print("""
-Scroll pHAT HD: 
-Scrolls "Text" across the screen
-
-in a 3x5 pixel condensed font.
-
-Press Ctrl+C to exit!
-""")
-###
-
-#	Uncomment to rotate the text
-scrollphathd.rotate(180)
-#	Set a more eye-friendly default brightness
-scrollphathd.set_brightness(0.5)
-
-scrollphathd.write_string(".|   3 CONTAINERS  0 ALERTS  0 WARNINGS  0 SECURITY UPDATES  0 UPDATES   ...   ...   ", x=0, y=1, font=font3x5, brightness=0.5)
-
+#
 while True:
-    scrollphathd.show()
-    scrollphathd.scroll()
-    time.sleep(0.05)
+   scrollphathd.write_string( get_msg(), x=0, y=1, font=font3x5, brightness=0.5)
+   scrollphathd.show()
+   scrollphathd.scroll()
+   time.sleep(0.05)
 
