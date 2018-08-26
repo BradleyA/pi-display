@@ -1,20 +1,6 @@
 #!/bin/bash
-# 	create-message.sh  3.77.191  2018-08-14_11:05:08_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.76  
-# 	   stopped 'ssh: connect to host ...' from printing to screen during testing of #21 
-# 	create-message.sh  3.76.190  2018-08-14_09:57:12_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.75  
-# 	   changed nc -z port lookup to ssh; correct ssh port design close #21 
-# 	create-message.sh  3.74.188  2018-08-12_21:13:52_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.73  
-# 	   sync to standard script design changes 
-# 	create-message.sh  3.50.159  2018-07-27_18:12:25_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.49  
-# 	   change default cluster name 
-# 	../test1/create-message.sh  3.43.150  2018-07-16_21:55:46_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.42  
-# 	   testing 7 6 5 4 blinkt 
-# 	../test1/create-message.sh  3.42.149  2018-07-16_21:15:26_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.41  
-# 	   remove % from Disk_Usage output 
-# 	create-message.sh  3.40.147  2018-07-15_22:53:19_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.39  
-# 	   change --> create soft link <-- to define which FQDN is current cluster server close #11 
-# 	create-message.sh  3.39.146  2018-07-15_22:45:54_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.38  
-# 	   complete moving multiple CPU output for one CPU total usage close #12 
+# 	create-message.sh  3.83.197  2018-08-26_10:39:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.82  
+# 	   few changes to display-help create-message.sh 
 ###
 DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
@@ -32,27 +18,28 @@ echo    "on each system in a cluster.  These files are copied to a host and tota
 echo    "in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes"
 echo    "the total number of containers, running containers, paused containers,"
 echo    "stopped containers, and number of images.  The MESSAGE file is used by a"
-echo    "Raspberry Pi Scroll-pHAT to display the information."
+echo    "Raspberry Pi Scroll-pHAT and Scroll-pHAT-HD to display the information."
 echo -e "\nThis script reads /usr/local/data/<cluster-name>/SYSTEMS file for hosts."
 echo    "The hosts are one FQDN or IP address per line for all hosts in a cluster."
 echo    "Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file"
-echo    "is used by Linux-admin/cluster-command.sh & pi-display/create-message.sh."
-echo    "A different path and cluster command host file can be entered on the"
-echo    "command line as the second argument."
+echo    "is used by Linux-admin/cluster-command.sh, pi-display/create-message.sh,"
+echo    "user-work-files/bin/find-code.sh and other scripts.  A different path and"
+echo    "cluster command host file can be entered on the command line as the"
+echo    "second argument."
 echo -e "\nSystem inforamtion about each host is stored in"
 echo    "/usr/local/data/<cluster-name>/<host>.  The system information includes cpu"
 echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, and disk"
 echo    "usage.  The system information will be used by blinkt to display system"
 echo    "information about each system in near real time."
 echo -e "\nTo avoid many login prompts for each host in a cluster, enter the following:"
-echo    "ssh-copy-id uadmin@<host-name>"
+echo    "${BOLD}ssh-copy-id uadmin@<host-name>${NORMAL} to each host in the SYSTEMS file."
 echo -e "\nOPTIONS"
-echo    "   CLUSTER   name of cluster directory, dafault cluster-1/"
+echo    "   CLUSTER   name of cluster directory, dafault us-tx-cluster-1"
 echo    "   ADMUSER   site SRE administrator, default is user running script"
-echo    "   DATA_DIR  path to cluster directory, dafault /usr/local/data/"
+echo    "   DATA_DIR  path to cluster data directory, dafault /usr/local/data/"
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES"
-echo -e "   Store information for a different cluster\n\t${0} cluster-2\n"
+echo -e "   Store message information for a cluster-2\n\t${0} cluster-2\n"
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
         echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARNING${NORMAL}]:     Your language, ${LANG}, is not supported.\n\tWould you like to help?\n" 1>&2
 fi

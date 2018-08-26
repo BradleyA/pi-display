@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	../scrollphathd/display-message-hd.py  3.83.197  2018-08-26_10:39:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.82  
+# 	   few changes to display-help create-message.sh 
 # 	display-message-hd.py  3.82.196  2018-08-22_22:28:51_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.81  
 # 	   format cleanup 
 # 	display-message-hd.py  3.81.195  2018-08-21_23:01:44_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.80  
@@ -80,7 +82,7 @@ def get_msg():
    file.close()
 #    val = subprocess.check_output(["uptime", "-p"]).decode("utf-8")
 #    val = val.replace("\n","")
-   val = val + " ---->  "
+   val = " ---->  " + val
    return val
 #
 while True:
