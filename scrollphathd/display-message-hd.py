@@ -1,15 +1,11 @@
 #!/usr/bin/env python
+# 	../scrollphathd/display-message-hd.py  3.84.198  2018-08-26_22:32:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.83  
+# 	   display-help 
 # 	../scrollphathd/display-message-hd.py  3.83.197  2018-08-26_10:39:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.82  
 # 	   few changes to display-help create-message.sh 
-# 	display-message-hd.py  3.82.196  2018-08-22_22:28:51_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.81  
-# 	   format cleanup 
 # 	display-message-hd.py  3.81.195  2018-08-21_23:01:44_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.80  
 # 	   add more standard code #22 
-# 	display-message-hd.py  3.80.194  2018-08-21_22:53:45_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.79  
-# 	   begin design for display_help and line arguments using default  #22 
-# 	ba-test-text.py  3.78.192  2018-08-21_22:24:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.77  
-# 	   start design and deveopment of scrollphathd/ #22 
-
+###
 import time
 import signal
 
@@ -27,7 +23,8 @@ def display_help():
    language = os.getenv("LANG")
    print "\n", __file__, "- <one line description>"
    print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
-   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?] [--version | -v]"
+   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?]"
+   print "  ", __file__, "[--version | -version | -v]"
    print "\nDESCRIPTION\n<<your help output goes here>>"
    print "\nOPTIONS\n   <<your options go here>>"
    print "\nDOCUMENTATION\n   <<URL to GITHUB README>>"

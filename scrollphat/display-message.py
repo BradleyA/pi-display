@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-# 	../scrollphat/display-message.py  3.82.196  2018-08-22_22:28:51_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.81  
-# 	   format cleanup 
+# 	display-message.py  3.84.198  2018-08-26_22:32:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.83  
+# 	   display-help 
 # 	display-message.py  3.71.184  2018-07-31_22:58:30_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.70  
 # 	   completed adding help-message.py code into display-message.py close #19 
 ###
@@ -18,7 +18,8 @@ def display_help():
    language = os.getenv("LANG")
    print "\n", __file__, "- <one line description>"
    print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
-   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?] [--version | -v]"
+   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?]"
+   print "  ", __file__, "[--version | -version | -v]"
    print "\nDESCRIPTION\n<<your help output goes here>>"
    print "\nOPTIONS\n   <<your options go here>>"
    print "\nDOCUMENTATION\n   <<URL to GITHUB README>>"
