@@ -10,7 +10,7 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
 
 #### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching. 
 
- * [scrollphat](https://github.com/BradleyA/pi-display-board/tree/master/scroll-phat) 
+ * [scrollphat](https://github.com/BradleyA/pi-display/tree/master/scrollphat) 
  * scrollphathd
  * [blinkt](https://github.com/BradleyA/pi-display-board/tree/master/blinkt)
  
