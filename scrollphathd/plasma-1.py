@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	plasma-1.py  3.88.202  2018-08-31_22:26:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.87  
+# 	   update display_help 
 # 	plasma-1.py  3.87.201  2018-08-31_22:15:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.86  
 # 	   start filling in display_help 
 # 	plasma-1.py  3.86.200  2018-08-31_21:53:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.85  
@@ -19,15 +21,18 @@ class color:
 def display_help():
    LANGUAGE = os.getenv("LANG")
    print "\n", __file__, "- ten second Scroll pHAT HD screen test"
-   print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
-   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?]"
-   print "  ", __file__, "[--version | -version |-v]"
+   print "\nUSAGE\n   ", __file__,
+   print "\n   ", __file__, "[--help | -help | help | -h | h | -? | ?]"
+   print "   ", __file__, "[--version | -version |-v]"
    print "\nDESCRIPTION\n<<your help output goes here>>"
-   print "\a... Pimoroni Scroll pHAT HD 17x7 Pixels Display for Raspberry Pi ..."
-   print "\nOPTIONS\n   <<your options go here>>"
+   print "... Pimoroni Scroll pHAT HD 17x7 Pixels Display for Raspberry Pi ..."
+   print "... used plasma.py command from scrollphathd/exaples directory ..."
+   print "\nAdded follow line using administrator account with crontab -e;"
+   print "   @reboot /usr/local/bin/plasma-1.py >> /tmp/crontab-test-log-file 2>&1 ..."
+   print "\nOPTIONS\n   None"
    print "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display"
-   print "\nEXAMPLES\n   <<your code examples go here>>"
-   print "      <<line two of first example>>"
+#	   print "\nEXAMPLES\n   <<your code examples go here>>"
+#	   print "      <<line two of first example>>"
 #       After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
       print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", LANGUAGE, "is not supported, Would you like to help?"
