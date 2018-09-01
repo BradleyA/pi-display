@@ -1,10 +1,14 @@
 #!/usr/bin/env python
+# 	plasma-1.py  3.87.201  2018-08-31_22:15:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.86  
+# 	   start filling in display_help 
 # 	plasma-1.py  3.86.200  2018-08-31_21:53:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.85  
 # 	   begin merging standard py format 
 # 	plasma.py  3.78.192  2018-08-21_22:24:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.77  
 # 	   start design and deveopment of scrollphathd/ #22 
 ###
+import sys
 import time
+import os
 import math
 import scrollphathd
 ###
@@ -14,12 +18,14 @@ class color:
 ###
 def display_help():
    LANGUAGE = os.getenv("LANG")
-   print "\n", __file__, "- <one line description>"
+   print "\n", __file__, "- ten second Scroll pHAT HD screen test"
    print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
-   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?] [--version | -v]"
+   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?]"
+   print "  ", __file__, "[--version | -version |-v]"
    print "\nDESCRIPTION\n<<your help output goes here>>"
+   print "\a... Pimoroni Scroll pHAT HD 17x7 Pixels Display for Raspberry Pi ..."
    print "\nOPTIONS\n   <<your options go here>>"
-   print "\nDOCUMENTATION\n   <<URL to GITHUB README>>"
+   print "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display"
    print "\nEXAMPLES\n   <<your code examples go here>>"
    print "      <<line two of first example>>"
 #       After displaying help in english check for other languages
