@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message-hd.py  3.90.220  2018-09-01_20:52:04_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.89-7-gedfe815  
+# 	   test option 
 # 	display-message-hd.py  3.89.212  2018-09-01_19:21:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.88-9-gb961ab4  
 # 	   complete display-help 
 # 	../scrollphathd/display-message-hd.py  3.84.198  2018-08-26_22:32:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.83  
@@ -24,7 +26,7 @@ class color:
 def display_help():
    language = os.getenv("LANG")
    print "\n", __file__, "- display contents of MESSAGE file"
-   print "\nUSAGE\n  ", __file__
+   print "\nUSAGE\n  ", __file__, "[<MESSAGE_file>]"
    print "  ", __file__, "[--help | -help | help | -h | h | -? | ?]"
    print "  ", __file__, "[--version | -version | -v]"
    print "\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGE file on a"
@@ -35,17 +37,19 @@ def display_help():
    print "created by create-message.sh script.  The create-message.sh script reads the"
    print "/usr/local/data/<cluster-name>/SYSTEMS file for the FQDN or IP address of the"
    print "hosts in a cluster."
+   print "\nOPTIONS\n   MESSAGE_file - alternate message file,"
+   print "                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE"
    print "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphathd\n"
 #       After displaying help in english check for other languages
    if language != "en_US.UTF-8" :
       print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", language, "is not supported, Would you like to help?"
    return
-#
+#	line number function
 from inspect import currentframe
 def get_line_no():
     cf = currentframe()
     return cf.f_back.f_lineno
-#
+#	default help and version arguments
 no_arguments =  int(len(sys.argv))
 if no_arguments == 2 :
    if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
@@ -58,12 +62,14 @@ if no_arguments == 2 :
          line2 = line2.split()
          print line2[1], line2[2]
       sys.exit()
+###
+#       set default MESSAGE file with path
+MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
 #       Check argument 1 for non-default MESSAGE file
 if no_arguments == 2 :
    MESSAGE_file = sys.argv[1]
+   print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",MESSAGE_file
 else :
-#       set default MESSAGE file with path
-   MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
    print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",MESSAGE_file
 #	Rotate the text
 scrollphathd.rotate(180)
