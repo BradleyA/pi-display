@@ -4,7 +4,7 @@
 
 #### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching. 
 
-create-message.sh - This script stores system information and Docker information about containers and images in a file on each system in a cluster.  These files are copied to all host and the Docker information is totaled in a file, /usr/local/data/\<cluster-name>/MESSAGE.  The MESSAGE file includes the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT to display the information.
+create-message.sh - This script stores system information and Docker information about containers and images in a file on each system in a cluster.  These files are copied to all hosts and the Docker information is totaled in a file, /usr/local/data/\<cluster-name>/MESSAGE.  The MESSAGE file includes the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT and  Scroll-pHAT-HD to display the information.
 
 This script reads /usr/local/data/\<cluster-name>/SYSTEMS file for the FQDN or IP address of the hosts in a cluster.  The file includes one FQDN host or IP address per line.  Lines starting with a '#' are ignored.
 
