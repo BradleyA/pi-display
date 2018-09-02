@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message-hd.py  3.89.212  2018-09-01_19:21:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.88-9-gb961ab4  
+# 	   complete display-help 
 # 	../scrollphathd/display-message-hd.py  3.84.198  2018-08-26_22:32:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.83  
 # 	   display-help 
 # 	../scrollphathd/display-message-hd.py  3.83.197  2018-08-26_10:39:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.82  
@@ -21,15 +23,19 @@ class color:
 ###
 def display_help():
    language = os.getenv("LANG")
-   print "\n", __file__, "- <one line description>"
-   print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
+   print "\n", __file__, "- display contents of MESSAGE file"
+   print "\nUSAGE\n  ", __file__
    print "  ", __file__, "[--help | -help | help | -h | h | -? | ?]"
    print "  ", __file__, "[--version | -version | -v]"
-   print "\nDESCRIPTION\n<<your help output goes here>>"
-   print "\nOPTIONS\n   <<your options go here>>"
-   print "\nDOCUMENTATION\n   <<URL to GITHUB README>>"
-   print "\nEXAMPLES\n   <<your code examples go here>>"
-   print "      <<line two of first example>>"
+   print "\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGE file on a"
+   print "Scroll-pHAT-HD.  The MESSAGE file includes the total number of containers,"
+   print "running containers, paused containers, stopped containers, and number of"
+   print "images in the cluster.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT"
+   print "or Scroll-pHAT-HD to display the current information.  The MESSAGE file is"
+   print "created by create-message.sh script.  The create-message.sh script reads the"
+   print "/usr/local/data/<cluster-name>/SYSTEMS file for the FQDN or IP address of the"
+   print "hosts in a cluster."
+   print "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphathd\n"
 #       After displaying help in english check for other languages
    if language != "en_US.UTF-8" :
       print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", language, "is not supported, Would you like to help?"
