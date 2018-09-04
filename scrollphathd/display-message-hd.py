@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message-hd.py  3.92.222  2018-09-03_19:36:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.91  
+# 	   FINALLY got the damn MESSAGE fro scroll in advanced close #22 
 # 	display-message-hd.py  3.91.221  2018-09-03_17:35:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.90  
 # 	   this may work out put is correct 
 # 	display-message-hd.py  3.90.220  2018-09-01_20:52:04_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.89-7-gedfe815  
@@ -12,6 +14,8 @@
 # 	display-message-hd.py  3.81.195  2018-08-21_23:01:44_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.80  
 # 	   add more standard code #22 
 ###
+DEBUG = 0       # 0 = debug off, 1 = debug on
+#
 import time
 import signal
 
@@ -65,6 +69,7 @@ if no_arguments == 2 :
          print ("{} {}".format(line2[1], line2[2]))
       sys.exit()
 ###
+if DEBUG == 1 : print ("> {}DEBUG{} {}  Name_of_command >{}<".format(color.BOLD,color.END,get_line_no(),__file__))
 #       set default MESSAGE file with path
 MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
 #       Check argument 1 for non-default MESSAGE file
@@ -74,24 +79,10 @@ if no_arguments == 2 :
 else :
    print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,MESSAGE_file))
 #
-#	def get_msg():
-#	   file = open(MESSAGE_file,"r")
-#	#    print ("{}".format(file.read())
-#	   test_lines = file.read()
-#	   file.close()
-#	#    test_lines = subprocess.check_output(["uptime", "-p"]).decode("utf-8")
-#	#    test_lines = test_lines.replace("\n","")
-#	   test_lines = '["' + test_lines + '"]'
-#	   return test_lines
 def get_msg():
    with open(MESSAGE_file,"r") as file:
       temp = file.read().splitlines()
-      print ("{}".format(temp))
-#	   with open(MESSAGE_file,"r") as file:
-#	      text_lines = file.readline()
-#	   file.close()
-#	   print ("{}".format(text_lines.splitlines()))
-#	#   temp_text_lines = text_lines.splitlines()
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  File contents >{}<".format(color.BOLD,color.END,get_line_no(),temp))
    return temp
 #	Rotate the text
 scrollphathd.rotate(180)
@@ -107,36 +98,17 @@ line_height = scrollphathd.DISPLAY_HEIGHT + 2
 offset_left = 0
 #
 lines = get_msg()
-###################
-print ("\n{}{} {} {}[INFO]{} Show lines {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,lines))
-sys.exit()
-###
-
-###################
-#	sys.exit()
-#	lines = ['CONTAINERS 26 RUNNING 0 PAUSED 0 STOPPED 26 IMAGES 106',
-#		 'Celsius: 47.8',
-#		 'Fahrenheit: 118.04',
-#		 'CPU_usage: 4',
-#		 'Memory_Usage: 129/925MB 13']
-###################
-print ("\n{}{} {} {}[INFO]{} Show lines {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,lines))
-###################
+if DEBUG == 1 : print ("> {}DEBUG{} {}  Show lines {}".format(color.BOLD,color.END,get_line_no(),lines))
+# Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
 # Draw each line in lines to the Scroll pHAT HD buffer
 # scrollphathd.write_string returns the length of the written string in pixels
 # we can use this length to calculate the offset of the next line
 # and will also use it later for the scrolling effect.
 lengths = [0] * len(lines)
-###################
-print ("\n{}{} {} {}[INFO]{} Show lengths {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,lengths))
-###################
-
 for line, text in enumerate(lines):
    lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
    offset_left += lengths[line]
-###################
-   print ("\n{}{} {} {}[INFO]{} START for line loop {}  ->{}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,line,lengths[line]))
-###################
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  START for line loop {}  ->{}<-".format(color.BOLD,color.END,get_line_no(),line,lengths[line]))
 
 # This adds a little bit of horizontal/vertical padding into the buffer at
 # the very bottom right of the last line to keep things wrapping nicely.
@@ -177,4 +149,4 @@ while True:
                 pos_y += 1
                 scrollphathd.show()
                 time.sleep(delay)
-
+###
