@@ -1,8 +1,10 @@
 #!/bin/bash
+# 	create-message.sh  3.96.226  2018-09-09_14:13:39_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.95  
+# 	   debug create-message.sh to run in crontab #24 
 # 	../create-message/create-message.sh  3.95.225  2018-09-08_21:49:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.94  
 # 	   add MESSAGEHD for scrollphathd close #23 
-###
-DEBUG=0                 # 0 = debug off, 1 = debug on
+### 
+DEBUG=1                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput bold)
@@ -62,8 +64,12 @@ PAUSED=0
 STOPPED=0
 IMAGES=0
 LOCALHOST=`hostname -f`
+#	This assumes the admin user has Docker environment variables in ~/.profile.
+#	This was added so this script will run in crontab
+env | grep -i docker
+source ~/.profile
 ###
-if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}<" 1>&2 ; fi
+if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< PATH >${PATH}<" 1>&2 ; fi
 ###
 #       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
@@ -91,9 +97,9 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port 
-		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} "; set -x 1>&2 ; fi
+		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
-			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}" ;  set +x 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date`" 1>&2 ; fi
 			TEMP="mkdir -p  ${DATA_DIR}${CLUSTER}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="chmod 775 ${DATA_DIR}${CLUSTER}"
@@ -101,10 +107,12 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			TEMP="docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP})
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 			# CPU_usage
 			scp -q    -i ~/.ssh/id_rsa /usr/local/bin/CPU_usage.sh ${ADMUSER}@${NODE}:/usr/local/bin/
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${NODE}"
@@ -114,19 +122,22 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			MEMORY2=$(echo ${MEMORY2} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
 			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
 			MEMORY3=$(echo ${MEMORY3} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
 			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
 			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 		else
-			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}" ;  set +x 1>&2 ; fi
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port."   1>&2
 			touch ${DATA_DIR}${CLUSTER}/${NODE}
 		fi
 	else
 		if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE} - Cluster Server" 1>&2 ; fi
+		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 #		Docker info
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
@@ -141,10 +152,13 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
 		echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		cd ${DATA_DIR}${CLUSTER}
 		ln -sf ${LOCALHOST} LOCAL-HOST
+		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
+		if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE} - Cluster Server" 1>&2 ; fi
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
@@ -152,6 +166,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	STOPPED=`grep -i STOPPED ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
 	IMAGES=`grep -i IMAGES ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 done
+if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}<" 1>&2 ; fi
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
 cp ${DATA_DIR}${CLUSTER}/MESSAGE ${DATA_DIR}${CLUSTER}/MESSAGEHD
@@ -159,6 +174,7 @@ tail -n +6 ${DATA_DIR}${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}${CLUSTER}/MESSAGEHD
 #	Loop through hosts in SYSTEMS file and update other host information
 if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file and update other host information"	1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
+	if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date`" 1>&2 ; fi
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE}"	1>&2
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
@@ -171,6 +187,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port."   1>&2
 		fi
 	fi
+if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date`" 1>&2 ; fi
 done
 echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Done.\n"	1>&2
 ###
