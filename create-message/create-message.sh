@@ -1,10 +1,8 @@
 #!/bin/bash
-# 	create-message.sh  3.96.226  2018-09-09_14:13:39_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.95  
-# 	   debug create-message.sh to run in crontab #24 
-# 	../create-message/create-message.sh  3.95.225  2018-09-08_21:49:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.94  
-# 	   add MESSAGEHD for scrollphathd close #23 
+# 	create-message.sh  3.97.227  2018-09-09_15:18:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.96  
+# 	   debug create-message.sh to run in crontab close #24 
 ### 
-DEBUG=1                 # 0 = debug off, 1 = debug on
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput bold)
@@ -99,29 +97,30 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 #	Check if ${NODE} is available on ssh port 
 		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
-			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date`" 1>&2 ; fi
-			TEMP="mkdir -p  ${DATA_DIR}${CLUSTER}"
-			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
-			TEMP="chmod 775 ${DATA_DIR}${CLUSTER}"
-			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
-			TEMP="docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}"
+# >>> remove after testing      TEMP="mkdir -p  ${DATA_DIR}${CLUSTER}"
+# >>> remove after testing      ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
+# >>> remove after testing      TEMP="chmod 775 ${DATA_DIR}${CLUSTER}"
+# >>> remove after testing	ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
+			TEMP="mkdir -p  ${DATA_DIR}${CLUSTER} ; chmod 775 ${DATA_DIR}${CLUSTER} ; docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
-			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP})
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
-			# CPU_usage
+# CPU_usage
 			scp -q    -i ~/.ssh/id_rsa /usr/local/bin/CPU_usage.sh ${ADMUSER}@${NODE}:/usr/local/bin/
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			#
+			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
 			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
 			MEMORY2=$(echo ${MEMORY2} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
 			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
 			MEMORY3=$(echo ${MEMORY3} | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
+			#
 			if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
 			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
@@ -137,13 +136,13 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		fi
 	else
 		if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE} - Cluster Server" 1>&2 ; fi
-		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 #		Docker info
 		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
 		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 #		CPU_usage
 		/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
@@ -165,8 +164,8 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	PAUSED=`grep -i PAUSED ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$PAUSED '{print $2 + v}'`
 	STOPPED=`grep -i STOPPED ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
 	IMAGES=`grep -i IMAGES ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
+	if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date` " 1>&2 ; fi
 done
-if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}<" 1>&2 ; fi
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
 cp ${DATA_DIR}${CLUSTER}/MESSAGE ${DATA_DIR}${CLUSTER}/MESSAGEHD
@@ -187,7 +186,6 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port."   1>&2
 		fi
 	fi
-if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO} `date`" 1>&2 ; fi
 done
 echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Done.\n"	1>&2
 ###
