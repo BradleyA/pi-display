@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	../scrollphathd/display-message-hd.py  3.94.224  2018-09-08_21:41:38_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.93  
+# 	   ready for testing 
 # 	display-message-hd.py  3.92.222  2018-09-03_19:36:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.91  
 # 	   FINALLY got the damn MESSAGE fro scroll in advanced close #22 
 # 	display-message-hd.py  3.91.221  2018-09-03_17:35:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.90  
@@ -31,20 +33,20 @@ class color:
 ###
 def display_help():
    language = os.getenv("LANG")
-   print ("\n{} - display contents of MESSAGE file".format(__file__))
-   print ("\nUSAGE\n  {} [<MESSAGE_file>]".format(__file__))
+   print ("\n{} - display contents of MESSAGEHD file".format(__file__))
+   print ("\nUSAGE\n  {} [<MESSAGEHD_file>]".format(__file__))
    print ("  {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
    print ("  {} [--version | -version | -v]".format(__file__))
-   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGE file on a")
-   print ("Scroll-pHAT-HD.  The MESSAGE file includes the total number of containers,")
+   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGEHD file on a")
+   print ("Scroll-pHAT-HD.  The MESSAGEHD file includes the total number of containers,")
    print ("running containers, paused containers, stopped containers, and number of")
-   print ("images in the cluster.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT")
-   print ("or Scroll-pHAT-HD to display the current information.  The MESSAGE file is")
+   print ("images in the cluster.  The MESSAGEHD file is used by a Raspberry Pi Scroll-pHAT")
+   print ("or Scroll-pHAT-HD to display the current information.  The MESSAGEHD file is")
    print ("created by create-message.sh script.  The create-message.sh script reads the")
    print ("/usr/local/data/<cluster-name>/SYSTEMS file for the FQDN or IP address of the")
    print ("hosts in a cluster.")
-   print ("\nOPTIONS\n   MESSAGE_file - alternate message file,")
-   print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
+   print ("\nOPTIONS\n   MESSAGEHD_file - alternate message file,")
+   print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGEHD")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphathd\n")
 #       After displaying help in english check for other languages
    if language != "en_US.UTF-8" :
@@ -70,17 +72,17 @@ if no_arguments == 2 :
       sys.exit()
 ###
 if DEBUG == 1 : print ("> {}DEBUG{} {}  Name_of_command >{}<".format(color.BOLD,color.END,get_line_no(),__file__))
-#       set default MESSAGE file with path
-MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
-#       Check argument 1 for non-default MESSAGE file
+#       set default MESSAGEHD file with path
+MESSAGEHD_file = "/usr/local/data/us-tx-cluster-1/MESSAGEHD"
+#       Check argument 1 for non-default MESSAGEHD file
 if no_arguments == 2 :
-   MESSAGE_file = sys.argv[1]
-   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,MESSAGE_file))
+   MESSAGEHD_file = sys.argv[1]
+   print ("\n{}{} {} {}[INFO]{} Using MESSAGEHD file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,MESSAGEHD_file))
 else :
-   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,MESSAGE_file))
+   print ("\n{}{} {} {}[INFO]{} Using MESSAGEHD file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,MESSAGEHD_file))
 #
 def get_msg():
-   with open(MESSAGE_file,"r") as file:
+   with open(MESSAGEHD_file,"r") as file:
       temp = file.read().splitlines()
       if DEBUG == 1 : print ("> {}DEBUG{} {}  File contents >{}<".format(color.BOLD,color.END,get_line_no(),temp))
    return temp

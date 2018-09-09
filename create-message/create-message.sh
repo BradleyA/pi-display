@@ -1,6 +1,8 @@
 #!/bin/bash
+# 	create-message.sh  3.94.224  2018-09-08_21:41:38_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.93  
+# 	   ready for testing 
 # 	create-message.sh  3.93.223  2018-09-08_20:52:58_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.92  
-# 	   add MESSAGE-HD for scrollphathd #23 
+# 	   add MESSAGEHD for scrollphathd #23 
 # 	create-message.sh  3.83.197  2018-08-26_10:39:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.82  
 # 	   few changes to display-help create-message.sh 
 ###
@@ -75,6 +77,7 @@ if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
 touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGE file"  1>&2 ; exit 1; }
+touch ${DATA_DIR}${CLUSTER}/MESSAGEHD  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGEHD file"  1>&2 ; exit 1; }
 #       Check if SYSTEMS file on system
 #	one FQDN or IP address per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
@@ -155,9 +158,8 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
-MESSAGE-HD=${MESSAGE}
-tail -n +6 ${DATA_DIR}${CLUSTER}/${LOCALHOST} >> ${MESSAGE-HD}
-echo ${MESSAGE-HD} > ${DATA_DIR}${CLUSTER}/MESSAGE-HD
+cp ${DATA_DIR}${CLUSTER}/MESSAGE ${DATA_DIR}${CLUSTER}/MESSAGEHD
+tail -n +6 ${DATA_DIR}${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}${CLUSTER}/MESSAGEHD
 #	Loop through hosts in SYSTEMS file and update other host information
 if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file and update other host information"	1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
