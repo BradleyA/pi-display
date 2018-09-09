@@ -1,10 +1,6 @@
 #!/bin/bash
-# 	create-message.sh  3.94.224  2018-09-08_21:41:38_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.93  
-# 	   ready for testing 
-# 	create-message.sh  3.93.223  2018-09-08_20:52:58_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.92  
-# 	   add MESSAGEHD for scrollphathd #23 
-# 	create-message.sh  3.83.197  2018-08-26_10:39:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.82  
-# 	   few changes to display-help create-message.sh 
+# 	../create-message/create-message.sh  3.95.225  2018-09-08_21:49:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.94  
+# 	   add MESSAGEHD for scrollphathd close #23 
 ###
 DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
