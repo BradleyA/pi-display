@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.93.223  2018-09-08_20:52:58_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.92  
+# 	   add MESSAGE-HD for scrollphathd #23 
 # 	create-message.sh  3.83.197  2018-08-26_10:39:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.82  
 # 	   few changes to display-help create-message.sh 
 ###
@@ -153,6 +155,9 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} "
 echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
+MESSAGE-HD=${MESSAGE}
+tail -n +6 ${DATA_DIR}${CLUSTER}/${LOCALHOST} >> ${MESSAGE-HD}
+echo ${MESSAGE-HD} > ${DATA_DIR}${CLUSTER}/MESSAGE-HD
 #	Loop through hosts in SYSTEMS file and update other host information
 if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file and update other host information"	1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
