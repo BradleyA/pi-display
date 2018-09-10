@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.101.231  2018-09-10_14:19:54_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.100  
+# 	   comment out Led test functions 
 # 	display-led.py  3.100.230  2018-09-10_14:16:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.99  
 # 	   cleanup differences with local copy and git copy out of sync 
 # 	display-led.py  3.53.163  2018-07-27_19:53:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.52  
@@ -198,13 +200,13 @@ with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
 #		    for LED in range(0,7):
 #		#       if file-information(LED) == 1 then status1(LED)
 #		       if 
-
-status1(0)
-status2(1)
-status3(2)
-status4(3)
-status5(4)
-status6(5)
+###	Led test functions
+#	status1(0)
+#	status2(1)
+#	status3(2)
+#	status4(3)
+#	status5(4)
+#	status6(5)
 #   status6(6)
 #   status6(7)
 
