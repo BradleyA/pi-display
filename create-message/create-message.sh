@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.99.229  2018-09-10_14:03:38_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.98  
+# 	   typo 
 # 	../create-message/create-message.sh  3.98.228  2018-09-09_20:55:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.97  
 # 	   change spacing; cut code for reread date file at the beginning of each loop #25 
 # 	create-message.sh  3.97.227  2018-09-09_15:18:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.96  
@@ -80,7 +82,7 @@ fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
 touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGE file"  1>&2 ; exit 1; }
 touch ${DATA_DIR}${CLUSTER}/MESSAGEHD  || { echo -e "\n${0} ${LINENO} [${BOLD}ERROR${NORMAL}]:  User ${ADMUSER} does not have permission to create MESSAGEHD file"  1>&2 ; exit 1; }
-#       Check if SYSTEMS file on system
+#       Check if SYSTEMS file is on system
 #	one FQDN or IP address per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
 	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARN${NORMAL}]:\tSYSTEMS file missing or empty, creating SYSTEMS file with local host.\n" 1>&2
