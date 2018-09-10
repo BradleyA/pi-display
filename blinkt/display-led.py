@@ -1,8 +1,10 @@
 #!/usr/bin/env python
-# 	../../../display-led.py  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
-# 	   completed prototype controling blinkt from container start with docker-compose 
-# 	display-led.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
-# 	   added more prices, first draft of display-led.py 
+# 	display-led.py  3.100.230  2018-09-10_14:16:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.99  
+# 	   cleanup differences with local copy and git copy out of sync 
+# 	display-led.py  3.53.163  2018-07-27_19:53:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.52  
+# 	   change default cluster directory to us-tx-cluster-1 
+# 	display-led.py  3.52.162  2018-07-27_19:42:53_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.51-1-gc84d151  
+# 	   change default cluster directory to us-tx-cluster-1 
 ###
 #	The final design should control an Blinkt LED bar and
 #		display information for a second
@@ -18,13 +20,16 @@ from blinkt import set_clear_on_exit, set_pixel, show, clear
 import time
 import subprocess
 
+import datetime
+import sys
+
 set_clear_on_exit()
 # >>> #
-CLUSTER = "cluster-1/"
+CLUSTER = "us-tx-cluster-1/"
 DATA_DIR = "/usr/local/data/"
 FILE_NAME = subprocess.check_output("hostname -f", shell=True)
 # >>> #
-print  FILE_NAME
+#	print  FILE_NAME
 FILE_NAME = DATA_DIR + CLUSTER + FILE_NAME
 print  FILE_NAME
 
@@ -34,6 +39,7 @@ def status1(LED_number):
 #   LED_number argument 0-7
     set_pixel(LED_number, 0, 255, 0, 0.2)
     show()
+    return();
 
 def status2(LED_number):
 #   Incidents causing no disruption to overall services and operations
@@ -46,6 +52,7 @@ def status2(LED_number):
         set_pixel(LED_number, 50, 205, 50, 0.2)
         show()
         time.sleep(0.15) # 1 = 1 second
+    return();
         
 def status3(LED_number):
 #  Active incident with minimal affect to overall services and operations
@@ -61,6 +68,7 @@ def status3(LED_number):
         set_pixel(LED_number, 255, 255, 0, 0.2)
         show()
         time.sleep(0.15) # 1 = 1 second
+    return();
 
 def status4(LED_number):
 #   Active emergency incidents causing significant impact to operations and possiable service disruptions
@@ -76,6 +84,7 @@ def status4(LED_number):
         set_pixel(LED_number, 255, 35, 0, 0.1)
         show()
         time.sleep(0.05) # 1 = 1 second
+    return();
 
 def status5(LED_number):
 #   Active emergency incidents causing multiple impaired operations amd unavoidable severe service disruptions
@@ -91,35 +100,92 @@ def status5(LED_number):
         set_pixel(LED_number, 255, 0, 0, 0.2)
         show()
         time.sleep(0.05) # 1 = 1 second
+    return();
 
 #       VIOLET : the statistic is  WARNING (alert)
 #   LED_number argument 0-7
 def status6(LED_number):
     set_pixel(LED_number, 127, 0, 255, 0.1)
     show()
-    time.sleep(15) # 1 = 1 second
+    time.sleep(2) # 1 = 1 second
+    return();
 
 #   process information
 def process(line):
-    print("this is in the process information function")
-    print(line)
+#    print("in process information function")
     if 'celsius:' in line.lower():
-        print("---> this is Celsius: <---")
-        print ("celsius: ->")
-        print("yy")
-    print("---> not Celsius:")
-    print("xx")
+        #   print(line[line.find(':')+2:])
+        VALUE = float(line[line.find(':')+2:])
+        LED_number = 7
+        if   VALUE < 48.5 : # < 48.5 C 119.3  1
+            status1(LED_number)
+        elif VALUE < 59   : # < 59 C   138.2  2
+            status2(LED_number)
+        elif VALUE < 69.5 : # < 69.5 C 157.1  3
+            status3(LED_number)
+        elif VALUE < 80   : # < 80 C   176    4
+            status4(LED_number)
+        elif VALUE >= 80  :   # > 80 C 176    5
+            status5(LED_number) 
+    if 'cpu_usage:' in line.lower():
+        #   print(line[line.find(':')+2:])
+        VALUE = int(line[line.find(':')+2:])
+        LED_number = 6
+        if   VALUE < 70 : # < 70 %
+            status1(LED_number)
+        elif VALUE < 80 : # < 80 %
+            status2(LED_number)
+        elif VALUE < 85 : # < 85 %
+            status3(LED_number)
+        elif VALUE < 90 : # < 90 %
+            status4(LED_number)
+        elif VALUE >= 90 : # >= 95 %
+            status5(LED_number) 
+    if 'memory_usage:' in line.lower():
+        #   print(line.split(' ')[2])
+        VALUE = int(line.split(' ')[2])
+        LED_number = 5
+        if   VALUE < 70 : # < 70 %
+            status1(LED_number)
+        elif VALUE < 80 : # < 80 %
+            status2(LED_number)
+        elif VALUE < 85 : # < 85 %
+            status3(LED_number)
+        elif VALUE < 90 : # < 90 %
+            status4(LED_number)
+        elif VALUE >= 90 : # >= 95 %
+            status5(LED_number) 
+    if 'disk_usage:' in line.lower():
+        #   print(line.split(' ')[2])
+        VALUE = int(line.split(' ')[2])
+        LED_number = 4
+        if   VALUE < 70 : # < 70 %
+            status1(LED_number)
+        elif VALUE < 80 : # < 80 %
+            status2(LED_number)
+        elif VALUE < 85 : # < 85 %
+            status3(LED_number)
+        elif VALUE < 90 : # < 90 %
+            status4(LED_number)
+        elif VALUE >= 90 : # >= 95 %
+            status5(LED_number) 
+    return();
 
 #####
 #   read file and process information
 # >>>  need to replace path and file name with variables
-with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
+#	>> how to find hostname and set variable
+with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
     print  FILE_NAME
-    print("begin for loop")
+    print time.strftime("%Y-%m-%d %H:%M")
+    print sys.argv[0]
+    print time.strftime("%Y-%m-%d %H:%M")
+    #	print("begin for loop")
     for line in f:
-        print("this is in the for loop")
-        print(line)
+#        print("in for loop")
+#        print(line)
         process(line)
+    #   print("end for loop")
 
 # >>>  need to replace path and file name with variables
 #    file = open(FILE_NAME,"r")
@@ -132,8 +198,6 @@ with open('/usr/local/data/cluster-1/two-rpi3b.cptx86.com') as f:
 #		    for LED in range(0,7):
 #		#       if file-information(LED) == 1 then status1(LED)
 #		       if 
-#		
-
 
 status1(0)
 status2(1)
@@ -141,8 +205,7 @@ status3(2)
 status4(3)
 status5(4)
 status6(5)
-status6(6)
-status6(7)
+#   status6(6)
+#   status6(7)
 
-    
 #		###
