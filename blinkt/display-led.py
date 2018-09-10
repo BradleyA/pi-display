@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.102.242  2018-09-10_14:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.101-10-gf6cfd26  
+# 	   set display time to 2 seconds, see last line 
 # 	display-led.py  3.101.231  2018-09-10_14:19:54_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.100  
 # 	   comment out Led test functions 
 # 	display-led.py  3.100.230  2018-09-10_14:16:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.99  
@@ -209,5 +211,5 @@ with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
 #	status6(5)
 #   status6(6)
 #   status6(7)
-
-#		###
+time.sleep(2) # 1 = 1 second
+###
