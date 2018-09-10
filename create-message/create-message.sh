@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	../create-message/create-message.sh  3.98.228  2018-09-09_20:55:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.97  
+# 	   change spacing; cut code for reread date file at the beginning of each loop #25 
 # 	create-message.sh  3.97.227  2018-09-09_15:18:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.96  
 # 	   debug create-message.sh to run in crontab close #24 
 ### 
@@ -91,7 +93,7 @@ fi
 #	Loop through host in SYSTEMS file
 if [ "${DEBUG}" == "1" ] ; then echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  Loop through hosts in SYSTEMS file"	1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
-	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  ${NODE}"	1>&2
+	echo -e "${NORMAL}${0} ${LINENO} [${BOLD}INFO${NORMAL}]:  `date`  ${NODE}"	1>&2
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port 
