@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-# 	display-message-hd.py  3.98.228  2018-09-09_20:55:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.97  
-# 	   change spacing; cut code for reread date file at the beginning of each loop #25 
+# 	display-message-hd.py  3.103.243  2018-09-11_00:21:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.102  
+# 	   need more testing to stop font overlap setting rewind to False did not corrent incident 
 # 	display-message-hd.py  3.92.222  2018-09-03_19:36:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.91  
 # 	   FINALLY got the damn MESSAGE fro scroll in advanced close #22 
 ###
-DEBUG = 0       # 0 = debug off, 1 = debug on
+DEBUG = 1       # 0 = debug off, 1 = debug on
 #
 import time
 import signal
@@ -74,26 +74,29 @@ def get_msg():
       temp = file.read().splitlines()
       if DEBUG == 1 : print ("> {}DEBUG{} {}  File contents >{}<".format(color.BOLD,color.END,get_line_no(),temp))
    return temp
+### 
+scrollphathd.set_clear_on_exit()
 #  Rotate the text
 scrollphathd.rotate(180)
 #  Set brightness
 scrollphathd.set_brightness(0.2)
 #  If rewind is True the scroll effect will rapidly rewind after the last line
-rewind = True
+# >>> oeg	rewind = True
+rewind = False
 #  Delay is the time (in seconds) between each pixel scrolled
 delay = 0.03
 #  Determine how far apart each line should be spaced vertically
 line_height = scrollphathd.DISPLAY_HEIGHT + 2
-#  Store the left offset for each subsequent line (starts at the end of the last line)
-offset_left = 0
 #
 ###
 # >>>	#25 display-message-hd.py reread date file at the beginning of each loop #25
 ###
 while True:
+   #  Store the left offset for each subsequent line (starts at the end of the last line)
+   offset_left = 0
    #  Get message from MESSAGEHD file created by create-message.sh
    lines = get_msg()
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  Show lines {}".format(color.BOLD,color.END,get_line_no(),lines))
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  Show lines >{}<".format(color.BOLD,color.END,get_line_no(),lines))
    #  Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
    #  Draw each line in lines to the Scroll pHAT HD buffer
    #  scrollphathd.write_string returns the length of the written string in pixels
@@ -103,12 +106,12 @@ while True:
    for line, text in enumerate(lines):
       lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
       offset_left += lengths[line]
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  START for line loop {}  ->{}<-".format(color.BOLD,color.END,get_line_no(),line,lengths[line]))
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  START for line loop {}  offset_left ->{}<- ".format(color.BOLD,color.END,get_line_no(),line,offset_left))
    #  This adds a little bit of horizontal/vertical padding into the buffer at
    #  the very bottom right of the last line to keep things wrapping nicely.
    scrollphathd.set_pixel(offset_left - 1, (len(lines) * line_height) - 1, 0)
-#
-# >>>	#25	while True:
+   #
+   # >>>	#25	while True:
    #  Reset the animation
    scrollphathd.scroll_to(0, 0)
    scrollphathd.show()
@@ -116,8 +119,10 @@ while True:
    pos_x = 0
    pos_y = 0
    for current_line, line_length in enumerate(lengths):
-   #  Delay a slightly longer time at the start of each line
-      time.sleep(delay*10)
+      #  Delay a slightly longer time at the start of each line
+      #
+      # >>> org      time.sleep(delay*10)
+      time.sleep(delay*30)
       #  Scroll to the end of the current line
       for y in range(line_length):
          scrollphathd.scroll(1, 0)

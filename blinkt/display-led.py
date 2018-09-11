@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	../blinkt/display-led.py  3.103.243  2018-09-11_00:21:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.102  
+# 	   need more testing to stop font overlap setting rewind to False did not corrent incident 
 # 	display-led.py  3.102.242  2018-09-10_14:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.101-10-gf6cfd26  
 # 	   set display time to 2 seconds, see last line 
 # 	display-led.py  3.101.231  2018-09-10_14:19:54_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.100  
@@ -53,7 +55,7 @@ def status2(LED_number):
         set_pixel(LED_number, 0, 0, 0, 0)
         show()
         time.sleep(0.05) # 1 = 1 second
-        set_pixel(LED_number, 50, 205, 50, 0.2)
+        set_pixel(LED_number, 50, 205, 50, 0.1)
         show()
         time.sleep(0.15) # 1 = 1 second
     return();
@@ -180,16 +182,11 @@ def process(line):
 # >>>  need to replace path and file name with variables
 #	>> how to find hostname and set variable
 with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
-    print  FILE_NAME
-    print time.strftime("%Y-%m-%d %H:%M")
-    print sys.argv[0]
-    print time.strftime("%Y-%m-%d %H:%M")
-    #	print("begin for loop")
+    print  FILE_NAME, time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
     for line in f:
-#        print("in for loop")
-#        print(line)
         process(line)
-    #   print("end for loop")
+
+time.sleep(4) # 1 = 1 second
 
 # >>>  need to replace path and file name with variables
 #    file = open(FILE_NAME,"r")
@@ -211,5 +208,4 @@ with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
 #	status6(5)
 #   status6(6)
 #   status6(7)
-time.sleep(2) # 1 = 1 second
 ###
