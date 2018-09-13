@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.106.248  2018-09-12_21:40:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.105  
+# 	   display-led.py needs more adding template.py 
 # 	display-led.py  3.105.247  2018-09-12_21:04:15_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.104-2-g5f62b1a  
 # 	   added python template 
 # 	display-led.py  3.104.244  2018-09-12_20:46:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.103  
@@ -13,7 +15,7 @@
 #	Other containers will update a volume that this container mounts
 #		and reads (LED_number, Level)
 ###
-DEBUG = 1       # 0 = debug off, 1 = debug on
+DEBUG = 0       # 0 = debug off, 1 = debug on
 #
 from blinkt import set_clear_on_exit, set_pixel, show, clear
 
@@ -41,12 +43,12 @@ def display_help():
    if LANGUAGE != "en_US.UTF-8" :
       print ("{}{} {} {}[WARNING]{} Your language, {} is not supported, Would you like to help?".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LANGUAGE))
    return
-#       line number function
+#  Line number function
 from inspect import currentframe
 def get_line_no():
    cf = currentframe()
    return cf.f_back.f_lineno
-#       default help and version arguments
+#  Default help and version arguments
 no_arguments =  int(len(sys.argv))
 if no_arguments == 2 :
    if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
@@ -59,44 +61,44 @@ if no_arguments == 2 :
          line2 = line2.split()
          print ("{} {}".format(line2[1], line2[2]))
       sys.exit()
-#
+#  DEBUG example
 if DEBUG == 1 : print (">{} DEBUG{} {}  Name_of_command >{}<".format(color.BOLD,color.END,get_line_no(),__file__))
-#  Check argument 1 for non-default ______
-if no_arguments == 2 :
-   LINE_ARG1 = sys.argv[1]
-   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
-else :
-#       set default MESSAGE file with path
-   LINE_ARG1 = "/usr/local/data/us-tx-cluster-1/MESSAGE"
-   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
-#  Check argument 2 for non-default SSHPORT number
-if no_arguments == 3 :
-   SSHPORT = sys.argv[2]
-   print ("\n{}{} {} {}[INFO]{} Using PORT number {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,SSHPORT))
 #
+# >>>	From template - add later so command line would also work
+# >>>
+# >>>	#  Check argument 1 for non-default ______
+# >>>	if no_arguments == 2 :
+# >>>	   LINE_ARG1 = sys.argv[1]
+# >>>	   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
+# >>>	else :
+# >>>	#       set default MESSAGE file with path
+# >>>	   LINE_ARG1 = "/usr/local/data/us-tx-cluster-1/MESSAGE"
+# >>>	   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
+# >>>	#  Check argument 2 for non-default SSHPORT number
+# >>>	if no_arguments == 3 :
+# >>>	   SSHPORT = sys.argv[2]
+# >>>	   print ("\n{}{} {} {}[INFO]{} Using PORT number {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,SSHPORT))
+# >>>	#
 # >>> #
 CLUSTER = "us-tx-cluster-1/"
 DATA_DIR = "/usr/local/data/"
 FILE_NAME = subprocess.check_output("hostname -f", shell=True)
 # >>> #
-#	print  FILE_NAME
 FILE_NAME = DATA_DIR + CLUSTER + FILE_NAME
-print  FILE_NAME
+if DEBUG == 1 : print (">{} DEBUG{} {}  FILE_NAME >{}<".format(color.BOLD,color.END,get_line_no(),FILE_NAME))
 #
 set_clear_on_exit()
-#
-def status1(LED_number):
 #   Normal services and operations
 #	GREEN : no known incidents
 #   LED_number argument 0-7
+def status1(LED_number):
     set_pixel(LED_number, 0, 255, 0, 0.2)
     show()
     return();
-
-def status2(LED_number):
 #   Incidents causing no disruption to overall services and operations
 #	LIGHT GREEN : an incident (watch)
 #   LED_number argument 0-7
+def status2(LED_number):
     for i in range(0, 5):
         set_pixel(LED_number, 0, 0, 0, 0)
         show()
@@ -105,11 +107,10 @@ def status2(LED_number):
         show()
         time.sleep(0.15) # 1 = 1 second
     return();
-        
-def status3(LED_number):
 #  Active incident with minimal affect to overall services and operations
 #	YELLOW : additional incidents WARNING (alert)
 #   LED_number argument 0-7
+def status3(LED_number):
     for i in range(0, 5):
         set_pixel(LED_number, 0, 255, 0, 0.8)
         show()
@@ -121,11 +122,10 @@ def status3(LED_number):
         show()
         time.sleep(0.15) # 1 = 1 second
     return();
-
-def status4(LED_number):
 #   Active emergency incidents causing significant impact to operations and possiable service disruptions
 #	ORANGE : CRITICAL ERROR
 #   LED_number argument 0-7
+def status4(LED_number):
     for i in range(0,10):
         set_pixel(LED_number, 255, 255, 0, 0.8)
         show()
@@ -137,11 +137,10 @@ def status4(LED_number):
         show()
         time.sleep(0.05) # 1 = 1 second
     return();
-
-def status5(LED_number):
 #   Active emergency incidents causing multiple impaired operations amd unavoidable severe service disruptions
 #	RED : Emergency Conditions : FATAL ERROR : 
 #   LED_number argument 0-7
+def status5(LED_number):
     for i in range(0,10):
         set_pixel(LED_number, 255, 35, 0, 0.8)
         show()
@@ -153,7 +152,7 @@ def status5(LED_number):
         show()
         time.sleep(0.05) # 1 = 1 second
     return();
-
+#
 #       VIOLET : the statistic is  WARNING (alert)
 #   LED_number argument 0-7
 def status6(LED_number):
@@ -161,7 +160,6 @@ def status6(LED_number):
     show()
     time.sleep(2) # 1 = 1 second
     return();
-
 #   process information
 def process(line):
 #    print("in process information function")
@@ -228,9 +226,9 @@ def process(line):
 # >>>  need to replace path and file name with variables
 #	>> how to find hostname and set variable
 with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
-    print  FILE_NAME, time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
-    for line in f:
-        process(line)
+   print ("\n{}{} {} {}[INFO]{}  {} {} ".format(color.END,__file__,get_line_no(),color.BOLD,color.END,time.strftime("%Y-%m-%d-%H-%M-%S-%Z"),FILE_NAME))
+   for line in f:
+      process(line)
 
 time.sleep(10) # 1 = 1 second
 
