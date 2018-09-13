@@ -29,7 +29,7 @@ To install, change directory to the location you want to download the scripts. U
 
 ### System OS script tested
 
- * Ubuntu 16.04.3 LTS (armv7l)
+ * Ubuntu 16.04.3-5 LTS (armv7l)
 
 ### Design Principles
  * Have a simple setup process and a minimal learning curve
