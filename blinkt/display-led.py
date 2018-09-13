@@ -1,18 +1,8 @@
 #!/usr/bin/env python
+# 	display-led.py  3.105.247  2018-09-12_21:04:15_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.104-2-g5f62b1a  
+# 	   added python template 
 # 	display-led.py  3.104.244  2018-09-12_20:46:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.103  
 # 	   change sleep from 4 to 10 for display-led 
-# 	../blinkt/display-led.py  3.103.243  2018-09-11_00:21:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.102  
-# 	   need more testing to stop font overlap setting rewind to False did not corrent incident 
-# 	display-led.py  3.102.242  2018-09-10_14:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.101-10-gf6cfd26  
-# 	   set display time to 2 seconds, see last line 
-# 	display-led.py  3.101.231  2018-09-10_14:19:54_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.100  
-# 	   comment out Led test functions 
-# 	display-led.py  3.100.230  2018-09-10_14:16:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.99  
-# 	   cleanup differences with local copy and git copy out of sync 
-# 	display-led.py  3.53.163  2018-07-27_19:53:15_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.52  
-# 	   change default cluster directory to us-tx-cluster-1 
-# 	display-led.py  3.52.162  2018-07-27_19:42:53_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.51-1-gc84d151  
-# 	   change default cluster directory to us-tx-cluster-1 
 ###
 #	The final design should control an Blinkt LED bar and
 #		display information for a second
@@ -23,15 +13,67 @@
 #	Other containers will update a volume that this container mounts
 #		and reads (LED_number, Level)
 ###
-
+DEBUG = 1       # 0 = debug off, 1 = debug on
+#
 from blinkt import set_clear_on_exit, set_pixel, show, clear
-import time
+
 import subprocess
-
-import datetime
 import sys
-
-set_clear_on_exit()
+import time
+import os
+###
+class color:
+   BOLD = '\033[1m'
+   END = '\033[0m'
+###
+def display_help():
+   LANGUAGE = os.getenv("LANG")
+   print ("\n{} - <one line description>".format( __file__))
+   print ("\nUSAGE\n   {} [xxx | yyy | zzz]".format(__file__))
+   print ("   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
+   print ("   {} [--version | -version | -v]".format(__file__))
+   print ("\nDESCRIPTION\n<<your help output goes here>>")
+   print ("\nOPTIONS\n   <<your options go here>>")
+   print ("\nDOCUMENTATION\n   <<URL to GITHUB README>>")
+   print ("\nEXAMPLES\n   <<your code examples description goes here>>")
+   print ("   {} <<code example goes here>>\n".format(__file__))
+#  After displaying help in english check for other languages
+   if LANGUAGE != "en_US.UTF-8" :
+      print ("{}{} {} {}[WARNING]{} Your language, {} is not supported, Would you like to help?".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LANGUAGE))
+   return
+#       line number function
+from inspect import currentframe
+def get_line_no():
+   cf = currentframe()
+   return cf.f_back.f_lineno
+#       default help and version arguments
+no_arguments =  int(len(sys.argv))
+if no_arguments == 2 :
+   if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
+      display_help()
+      sys.exit()
+   if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
+      with open(__file__) as f:
+         f.readline()
+         line2 = f.readline()
+         line2 = line2.split()
+         print ("{} {}".format(line2[1], line2[2]))
+      sys.exit()
+#
+if DEBUG == 1 : print (">{} DEBUG{} {}  Name_of_command >{}<".format(color.BOLD,color.END,get_line_no(),__file__))
+#  Check argument 1 for non-default ______
+if no_arguments == 2 :
+   LINE_ARG1 = sys.argv[1]
+   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
+else :
+#       set default MESSAGE file with path
+   LINE_ARG1 = "/usr/local/data/us-tx-cluster-1/MESSAGE"
+   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
+#  Check argument 2 for non-default SSHPORT number
+if no_arguments == 3 :
+   SSHPORT = sys.argv[2]
+   print ("\n{}{} {} {}[INFO]{} Using PORT number {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,SSHPORT))
+#
 # >>> #
 CLUSTER = "us-tx-cluster-1/"
 DATA_DIR = "/usr/local/data/"
@@ -40,7 +82,9 @@ FILE_NAME = subprocess.check_output("hostname -f", shell=True)
 #	print  FILE_NAME
 FILE_NAME = DATA_DIR + CLUSTER + FILE_NAME
 print  FILE_NAME
-
+#
+set_clear_on_exit()
+#
 def status1(LED_number):
 #   Normal services and operations
 #	GREEN : no known incidents
