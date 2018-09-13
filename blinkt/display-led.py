@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-led.py  3.104.244  2018-09-12_20:46:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.103  
+# 	   change sleep from 4 to 10 for display-led 
 # 	../blinkt/display-led.py  3.103.243  2018-09-11_00:21:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.102  
 # 	   need more testing to stop font overlap setting rewind to False did not corrent incident 
 # 	display-led.py  3.102.242  2018-09-10_14:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.101-10-gf6cfd26  
@@ -186,7 +188,7 @@ with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
     for line in f:
         process(line)
 
-time.sleep(4) # 1 = 1 second
+time.sleep(10) # 1 = 1 second
 
 # >>>  need to replace path and file name with variables
 #    file = open(FILE_NAME,"r")
