@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	scrollphat.test.py  3.109.251  2018-09-15_11:10:15_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.108  
+# 	   begin changing scroll-phat/examples/test-all.py for screen test 
 ###
 DEBUG = 0       # 0 = debug off, 1 = debug on
 #
@@ -21,10 +23,9 @@ def display_help():
    print ("   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
    print ("   {} [--version | -version | -v]".format(__file__))
    print ("\nDESCRIPTION\n<<your help output goes here>>")
-   print ("test-all-1.py")
-   print ("... Pimoroni Scroll pHAT HD 17x7 Pixels Display for Raspberry Pi ...")
-   print ("\nOPTIONS\n   <<your options go here>>")
-   print ("\nDOCUMENTATION\n   <<URL to GITHUB README>>")
+   print ("Modified Pimoroni scroll-phat/examples/test-all.py and renamed scrollphat.test.py")
+   print ("for Raspberry Pi.")
+   print ("\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display")
    print ("\nEXAMPLES\n   <<your code examples description goes here>>")
    print ("   {} <<code example goes here>>\n".format(__file__))
 #  After displaying help in english check for other languages
