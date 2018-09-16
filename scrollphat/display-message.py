@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.114.256  2018-09-15_22:10:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.113  
+# 	   add DEBUG in get_msg() 
 # 	display-message.py  3.113.255  2018-09-15_22:00:00_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.112  
 # 	   remove Updating uptime message close #13 
 # 	display-message.py  3.112.254  2018-09-15_21:58:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.111  
@@ -93,6 +95,7 @@ def get_timeout():
 
 #  Read MESSAGE_FILE contents and return contents
 def get_msg() :
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
    file = open(MESSAGE_FILE,"r")
    val = file.read()
    file.close()
