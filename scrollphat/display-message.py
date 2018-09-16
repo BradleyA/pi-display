@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.113.255  2018-09-15_22:00:00_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.112  
+# 	   remove Updating uptime message close #13 
 # 	display-message.py  3.112.254  2018-09-15_21:58:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.111  
 # 	   DEBUG, comments, print pythom3 
 # 	display-message.py  3.84.198  2018-08-26_22:32:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.83  
@@ -113,9 +115,6 @@ while True:
          scrollphat.write_string(msg)
          timeout = get_timeout()
          count = 0
-#		incident #13
-         print ("Updating uptime message")
-#	 display_help()
       else:
          count = count+ 1
    except KeyboardInterrupt:
