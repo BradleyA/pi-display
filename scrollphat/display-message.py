@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-# 	display-message.py  3.111.253  2018-09-15_21:24:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.110  
-# 	   updating template 
+# 	display-message.py  3.112.254  2018-09-15_21:58:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.111  
+# 	   DEBUG, comments, print pythom3 
 # 	display-message.py  3.84.198  2018-08-26_22:32:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.83  
 # 	   display-help 
 # 	display-message.py  3.71.184  2018-07-31_22:58:30_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.70  
 # 	   completed adding help-message.py code into display-message.py close #19 
 ###
-DEBUG = 0       # 0 = debug off, 1 = debug on
+DEBUG = 1       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
@@ -47,44 +47,53 @@ def get_line_no():
 def get_time_stamp():
    return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
 
-#
+#  Default help and version arguments
 no_arguments =  int(len(sys.argv))
 if no_arguments == 2 :
+#  Default help output  
    if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
       display_help()
       sys.exit()
+#  Default version output  
    if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
       with open(__file__) as f:
          f.readline()
          line2 = f.readline()
          line2 = line2.split()
-         print line2[1], line2[2]
+         print ("{} {}".format(line2[1], line2[2]))
       sys.exit()
-#	Check argument 1 for non-default MESSAGE file
+
+#  DEBUG example
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name_of_command >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), __file__))
+
+#  Check if there is an argument after command if TRUE use the argument to replace MESSAGE filename else use default MESSAGE
+# >>>   needs testing
 if no_arguments == 2 :
-   MESSAGE_file = sys.argv[1]
+#  Set non-default MESSAGE file with path
+   MESSAGE_FILE = sys.argv[1]
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
 else :
-#	set default MESSAGE file with path
-   MESSAGE_file = "/usr/local/data/us-tx-cluster-1/MESSAGE"
-print "\n",color.END,__file__,get_line_no(),color.BOLD,"[INFO]",color.END,"Using MESSAGE file",MESSAGE_file
-#	Set brightness
+#  Set default MESSAGE file with path
+   MESSAGE_FILE = "/usr/local/data/us-tx-cluster-1/MESSAGE"
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
+
+#  Set brightness
 scrollphat.set_brightness(4)
 # Every refresh_interval seconds we'll refresh the uptime
 # Only has to change every 60 seconds.
 pause = 0.12
 ticks_per_second = 1/pause
 refresh_interval = 60
-#
+
+#  timeout
 def get_timeout():
    return ticks_per_second * refresh_interval
-#
-def get_msg():
-   file = open(MESSAGE_file,"r")
-#    print file.read()
+
+#  Read MESSAGE_FILE contents and return contents
+def get_msg() :
+   file = open(MESSAGE_FILE,"r")
    val = file.read()
    file.close()
-#    val = subprocess.check_output(["uptime", "-p"]).decode("utf-8")
-#    val = val.replace("\n","")
    val = val + " ---->  "
    return val
 
