@@ -1,9 +1,13 @@
 #!/usr/bin/env python
+# 	display-message.py  3.111.253  2018-09-15_21:24:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.110  
+# 	   updating template 
 # 	display-message.py  3.84.198  2018-08-26_22:32:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.83  
 # 	   display-help 
 # 	display-message.py  3.71.184  2018-07-31_22:58:30_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.70  
 # 	   completed adding help-message.py code into display-message.py close #19 
 ###
+DEBUG = 0       # 0 = debug off, 1 = debug on
+#
 import subprocess
 import sys
 import time
@@ -14,26 +18,35 @@ class color:
    BOLD = '\033[1m'
    END = '\033[0m'
 ###
+LANGUAGE = os.getenv("LANG")
 def display_help():
-   language = os.getenv("LANG")
-   print "\n", __file__, "- <one line description>"
-   print "\nUSAGE\n  ", __file__, "[xxx | yyy | zzz]"
-   print "  ", __file__, "[--help | -help | help | -h | h | -? | ?]"
-   print "  ", __file__, "[--version | -version | -v]"
-   print "\nDESCRIPTION\n<<your help output goes here>>"
-   print "\nOPTIONS\n   <<your options go here>>"
-   print "\nDOCUMENTATION\n   <<URL to GITHUB README>>"
-   print "\nEXAMPLES\n   <<your code examples go here>>"
-   print "      <<line two of first example>>"
-#	After displaying help in english check for other languages
-   if language != "en_US.UTF-8" :
-      print color.END,__file__,get_line_no(),color.BOLD,"[WARNING]",color.END,"Your language,", language, "is not supported, Would you like to help?"
+   print ("\n{} - <one line description>".format( __file__))
+   print ("\nUSAGE\n   {} [xxx | yyy | zzz]".format(__file__))
+   print ("   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
+   print ("   {} [--version | -version | -v]".format(__file__))
+   print ("\nDESCRIPTION\n<<your help output goes here>>")
+   print ("\nOPTIONS\n   <<your options go here>>")
+   print ("\nDOCUMENTATION\n   <<URL to GITHUB README>>")
+   print ("\nEXAMPLES\n   <<your code examples description goes here>>")
+   print ("   {} <<code example goes here>>\n".format(__file__))
+#  After displaying help in english check for other languages
+   if LANGUAGE != "en_US.UTF-8" :
+      print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp(), LANGUAGE))
+#  elif LANGUAGE != "fr_CA.UTF-8" :
+#     print display_help in french
+#  else :
    return
-#
+
+#  Line number function
 from inspect import currentframe
 def get_line_no():
-    cf = currentframe()
-    return cf.f_back.f_lineno
+   cf = currentframe()
+   return cf.f_back.f_lineno
+
+#  date and time function
+def get_time_stamp():
+   return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
+
 #
 no_arguments =  int(len(sys.argv))
 if no_arguments == 2 :
