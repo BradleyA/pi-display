@@ -1,12 +1,8 @@
 #!/usr/bin/env python
-# 	display-message.py  3.114.256  2018-09-15_22:10:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.113  
-# 	   add DEBUG in get_msg() 
+# 	display-message.py  3.115.257  2018-09-15_22:46:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.114  
+# 	   + 2 count 
 # 	display-message.py  3.113.255  2018-09-15_22:00:00_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.112  
 # 	   remove Updating uptime message close #13 
-# 	display-message.py  3.112.254  2018-09-15_21:58:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.111  
-# 	   DEBUG, comments, print pythom3 
-# 	display-message.py  3.84.198  2018-08-26_22:32:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.83  
-# 	   display-help 
 # 	display-message.py  3.71.184  2018-07-31_22:58:30_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.70  
 # 	   completed adding help-message.py code into display-message.py close #19 
 ###
@@ -18,12 +14,12 @@ import time
 import os
 import scrollphat
 ###
-class color:
+class color :
    BOLD = '\033[1m'
    END = '\033[0m'
 ###
 LANGUAGE = os.getenv("LANG")
-def display_help():
+def display_help() :
    print ("\n{} - <one line description>".format( __file__))
    print ("\nUSAGE\n   {} [xxx | yyy | zzz]".format(__file__))
    print ("   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
@@ -43,12 +39,12 @@ def display_help():
 
 #  Line number function
 from inspect import currentframe
-def get_line_no():
+def get_line_no() :
    cf = currentframe()
    return cf.f_back.f_lineno
 
 #  date and time function
-def get_time_stamp():
+def get_time_stamp() :
    return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
 
 #  Default help and version arguments
@@ -60,7 +56,7 @@ if no_arguments == 2 :
       sys.exit()
 #  Default version output  
    if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
-      with open(__file__) as f:
+      with open(__file__) as f :
          f.readline()
          line2 = f.readline()
          line2 = line2.split()
@@ -83,14 +79,14 @@ else :
 
 #  Set brightness
 scrollphat.set_brightness(4)
-# Every refresh_interval seconds we'll refresh the uptime
+# Every refresh_interval seconds we'll refresh
 # Only has to change every 60 seconds.
 pause = 0.12
 ticks_per_second = 1/pause
 refresh_interval = 60
 
 #  timeout
-def get_timeout():
+def get_timeout() :
    return ticks_per_second * refresh_interval
 
 #  Read MESSAGE_FILE contents and return contents
@@ -108,19 +104,21 @@ msg = get_msg()
 scrollphat.set_rotate(True)
 scrollphat.write_string(msg)
 
-while True:
-   try:
+while True :
+   try :
       scrollphat.scroll()
       time.sleep(pause)
 
-      if(count > timeout):
+      if (count > timeout) :
          msg = get_msg()
+         if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), msg))
+         if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  count >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), count))
          scrollphat.write_string(msg)
          timeout = get_timeout()
          count = 0
-      else:
-         count = count+ 1
-   except KeyboardInterrupt:
+      else :
+         count = count + 2
+   except KeyboardInterrupt :
       scrollphat.clear()
       sys.exit(-1)
 ###
