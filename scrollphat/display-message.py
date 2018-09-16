@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.117.259  2018-09-16_13:57:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.116  
+# 	   added python version to first DEBUG statement 
 # 	display-message.py  3.116.258  2018-09-16_12:55:31_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.115  
 # 	   first draft on display_help content 
 # 	display-message.py  3.115.257  2018-09-15_22:46:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.114  
@@ -14,7 +16,6 @@ import subprocess
 import sys
 import time
 import os
-import scrollphat
 ###
 class color :
    BOLD = '\033[1m'
@@ -77,7 +78,15 @@ if no_arguments == 2 :
       sys.exit()
 
 #  DEBUG example
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name_of_command >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), __file__))
+import platform
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), __file__, platform.python_version()))
+
+#  
+try:
+   import scrollphat
+except:
+   print ("\n{}{} {} {}[ERROR]{}  {}  scrollphat unsupported on this system >{}<".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp(), sys.argv[1]))
+   sys.exit()
 
 #  Check if there is an argument after command if TRUE use the argument to replace MESSAGE filename else use default MESSAGE
 # >>>   needs testing
