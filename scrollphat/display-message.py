@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.116.258  2018-09-16_12:55:31_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.115  
+# 	   first draft on display_help content 
 # 	display-message.py  3.115.257  2018-09-15_22:46:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.114  
 # 	   + 2 count 
 # 	display-message.py  3.113.255  2018-09-15_22:00:00_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.112  
@@ -20,15 +22,26 @@ class color :
 ###
 LANGUAGE = os.getenv("LANG")
 def display_help() :
-   print ("\n{} - <one line description>".format( __file__))
-   print ("\nUSAGE\n   {} [xxx | yyy | zzz]".format(__file__))
+   print ("\n{} - display contents of MESSAGE file".format( __file__))
+   print ("\nUSAGE\n   {} [<MESSAGE_FILE>]".format(__file__))
    print ("   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
    print ("   {} [--version | -version | -v]".format(__file__))
-   print ("\nDESCRIPTION\n<<your help output goes here>>")
-   print ("\nOPTIONS\n   <<your options go here>>")
-   print ("\nDOCUMENTATION\n   <<URL to GITHUB README>>")
-   print ("\nEXAMPLES\n   <<your code examples description goes here>>")
-   print ("   {} <<code example goes here>>\n".format(__file__))
+   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGE file on a")
+   print ("Scroll-pHAT.  The MESSAGE file includes the total number of containers,")
+   print ("running containers, paused containers, stopped containers, and number of")
+   print ("images in the cluster.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT")
+   print ("to display the current information.  The MESSAGE file is created by")
+   print ("create-message.sh script.  The create-message.sh script reads the")
+   print ("/usr/local/data/<cluster-name>/SYSTEMS file for the FQDN or IP address of the")
+   print ("hosts in a cluster.")
+   print ("\nTo display the contents of a different file than the defualt file.  Enter")
+   print ("the file name with the absolute path to its location as an option to")
+   print ("{}.".format(__file__))
+   print ("\nOPTIONS\n   MESSAGE_FILE - alternate message file,")
+   print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
+   print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphat")
+   print ("\nEXAMPLES\n   Display contents of a different file")
+   print ("\n   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
       print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp(), LANGUAGE))
