@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.119.261  2018-09-16_23:32:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.118  
+# 	   begin testing import incidents code 
 # 	display-message.py  3.118.260  2018-09-16_22:30:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.117  
 # 	   added import error notification library missing 
 # 	display-message.py  3.117.259  2018-09-16_13:57:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.116  
@@ -95,6 +97,8 @@ except ImportError :
       sys.exit("\n{}{} {} {}[ERROR]{}  {}  This library requires python3-scrollphat. To install:\n\tsudo apt-get install python3-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
    else :
       sys.exit("\n{}{} {} {}[ERROR]{}  {}  Unknow library incident".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+except IOError :
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory . . . not sure what this is. . . missing the scrollphat ?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
 
 #  Check if there is an argument after command if TRUE use the argument to replace MESSAGE filename else use default MESSAGE
 # >>>   needs testing
