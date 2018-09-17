@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.118.260  2018-09-16_22:30:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.117  
+# 	   added import error notification library missing 
 # 	display-message.py  3.117.259  2018-09-16_13:57:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.116  
 # 	   added python version to first DEBUG statement 
 # 	display-message.py  3.116.258  2018-09-16_12:55:31_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.115  
@@ -82,11 +84,17 @@ import platform
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), __file__, platform.python_version()))
 
 #  
-try:
-   import scrollphat
-except:
-   print ("\n{}{} {} {}[ERROR]{}  {}  scrollphat unsupported on this system >{}<".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp(), sys.argv[1]))
-   sys.exit()
+# >>>	import scrollphat
+try :
+   import scrollphat 
+except ImportError :
+   if sys.version_info[0] < 3 :
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  This library requires python-scrollphat. To install:\n\tsudo apt-get install python-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+# >>>	org      sys.exit("This library requires python-smbus\nInstall with: sudo apt-get install python-smbus")
+   elif sys.version_info[0] == 3 :
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  This library requires python3-scrollphat. To install:\n\tsudo apt-get install python3-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+   else :
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Unknow library incident".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
 
 #  Check if there is an argument after command if TRUE use the argument to replace MESSAGE filename else use default MESSAGE
 # >>>   needs testing
