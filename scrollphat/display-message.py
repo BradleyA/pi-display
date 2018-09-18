@@ -1,18 +1,8 @@
 #!/usr/bin/env python
-# 	display-message.py  3.119.261  2018-09-16_23:32:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.118  
-# 	   begin testing import incidents code 
-# 	display-message.py  3.118.260  2018-09-16_22:30:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.117  
-# 	   added import error notification library missing 
-# 	display-message.py  3.117.259  2018-09-16_13:57:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.116  
-# 	   added python version to first DEBUG statement 
-# 	display-message.py  3.116.258  2018-09-16_12:55:31_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.115  
-# 	   first draft on display_help content 
+# 	display-message.py  3.120.262  2018-09-18_15:39:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.119  
+# 	   remove else from import errors, add MESSAGE variables 
 # 	display-message.py  3.115.257  2018-09-15_22:46:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.114  
 # 	   + 2 count 
-# 	display-message.py  3.113.255  2018-09-15_22:00:00_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.112  
-# 	   remove Updating uptime message close #13 
-# 	display-message.py  3.71.184  2018-07-31_22:58:30_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.70  
-# 	   completed adding help-message.py code into display-message.py close #19 
 ###
 DEBUG = 1       # 0 = debug off, 1 = debug on
 #
@@ -31,7 +21,7 @@ def display_help() :
    print ("\nUSAGE\n   {} [<MESSAGE_FILE>]".format(__file__))
    print ("   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
    print ("   {} [--version | -version | -v]".format(__file__))
-   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGE file on a")
+   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/us-tx-cluster-1/MESSAGE file on a")
    print ("Scroll-pHAT.  The MESSAGE file includes the total number of containers,")
    print ("running containers, paused containers, stopped containers, and number of")
    print ("images in the cluster.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT")
@@ -95,20 +85,22 @@ except ImportError :
 # >>>	org      sys.exit("This library requires python-smbus\nInstall with: sudo apt-get install python-smbus")
    elif sys.version_info[0] == 3 :
       sys.exit("\n{}{} {} {}[ERROR]{}  {}  This library requires python3-scrollphat. To install:\n\tsudo apt-get install python3-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
-   else :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Unknow library incident".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
 except IOError :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory . . . not sure what this is. . . missing the scrollphat ?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory . is the hat not installed on raspberry pi . . not sure what this is. . . missing the scrollphat ?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
 
 #  Check if there is an argument after command if TRUE use the argument to replace MESSAGE filename else use default MESSAGE
 # >>>   needs testing
+DATA_DIR = "/usr/local/data/"
+CLUSTER = "us-tx-cluster-1/"
+MESSAGE_FILE = DATA_DIR + CLUSTER + "MESSAGE"
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Set default MESSAGE_FILE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
+#
 if no_arguments == 2 :
 #  Set non-default MESSAGE file with path
    MESSAGE_FILE = sys.argv[1]
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
 else :
 #  Set default MESSAGE file with path
-   MESSAGE_FILE = "/usr/local/data/us-tx-cluster-1/MESSAGE"
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
 
 #  Set brightness
