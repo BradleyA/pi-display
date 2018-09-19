@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.121.263  2018-09-18_22:14:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.120  
+# 	   code design for environmental variables 
 # 	display-message.py  3.120.262  2018-09-18_15:39:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.119  
 # 	   remove else from import errors, add MESSAGE variables 
 # 	display-message.py  3.115.257  2018-09-15_22:46:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.114  
@@ -27,11 +29,12 @@ def display_help() :
    print ("images in the cluster.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT")
    print ("to display the current information.  The MESSAGE file is created by")
    print ("create-message.sh script.  The create-message.sh script reads the")
-   print ("/usr/local/data/<cluster-name>/SYSTEMS file for the FQDN or IP address of the")
+   print ("/usr/local/data/us-tx-cluster-1/SYSTEMS file for the FQDN or IP address of the")
    print ("hosts in a cluster.")
    print ("\nTo display the contents of a different file than the defualt file.  Enter")
    print ("the file name with the absolute path to its location as an option to")
    print ("{}.".format(__file__))
+# >>>	3   environment variables needs to be added in display-help
    print ("\nOPTIONS\n   MESSAGE_FILE - alternate message file,")
    print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphat")
@@ -90,9 +93,22 @@ except IOError :
 
 #  Check if there is an argument after command if TRUE use the argument to replace MESSAGE filename else use default MESSAGE
 # >>>   needs testing
-DATA_DIR = "/usr/local/data/"
-CLUSTER = "us-tx-cluster-1/"
-MESSAGE_FILE = DATA_DIR + CLUSTER + "MESSAGE"
+if os.environ.has_key("DATA_DIR") :
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  DATA_DIR set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), DATA_DIR))
+else
+#  Set DATA_DIR with default
+   DATA_DIR = "/usr/local/data/"
+if os.environ.has_key("CLUSTER") :
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  CLUSTER set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), CLUSTER))
+else
+#  Set CLUSTER with default
+   CLUSTER = "us-tx-cluster-1/"
+if os.environ.has_key("MESSAGE_FILE") :
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE_FILE set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
+else
+#  Set MESSAGE_FILE with default
+   MESSAGE_FILE = "MESSAGE"
+MESSAGE = DATA_DIR + CLUSTER + MESSAGE_FILE
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Set default MESSAGE_FILE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
 #
 if no_arguments == 2 :
