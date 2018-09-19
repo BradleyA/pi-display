@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+# 	display-message.py  3.123.265  2018-09-19_16:41:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.122  
+# 	   update environmet section set python3, get_msg update 
 # 	display-message.py  3.122.264  2018-09-19_14:24:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.121  
 # 	   add support for environment variables to override default 
 # 	display-message.py  3.121.263  2018-09-18_22:14:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.120  
@@ -99,33 +101,48 @@ if no_arguments == 2 :
    MESSAGE = sys.argv[1]
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE))
 else :
+#  if no argument; -> use default and/or environment variables for MESSAGE
    #  Check DATA_DIR; set using os environment variable
    if "DATA_DIR" in os.environ :
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  DATA_DIR set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), os.getenv("DATA_DIR")))
       DATA_DIR = os.getenv("DATA_DIR")
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable DATA_DIR >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), DATA_DIR))
    else :
    #  Set DATA_DIR with default
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  DATA_DIR NOT set with environment variable".format(color.BOLD, color.END, get_line_no(), get_time_stamp()))
       DATA_DIR = "/usr/local/data/"
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), DATA_DIR))
    if "CLUSTER" in os.environ :
    #  Check CLUSTER; set using os environment variable
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  CLUSTER set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), os.getenv("CLUSTER")))
       CLUSTER = os.getenv("CLUSTER")
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable CLUSTER >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), CLUSTER))
    else :
    #  Set CLUSTER with default
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  CLUSTER NOT set with environment variable".format(color.BOLD, color.END, get_line_no(), get_time_stamp()))
       CLUSTER = "us-tx-cluster-1/"
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable CLUSTER NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), CLUSTER))
    if "MESSAGE_FILE" in os.environ :
    #  Check MESSAGE_FILE; set using os environment variable
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE_FILE set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), os.getenv("MESSAGE_FILE")))
       MESSAGE_FILE = os.getenv("MESSAGE_FILE")
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable MESSAGE_FILE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
    else :
    #  Set MESSAGE_FILE with default
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE_FILE NOT set with environment variable".format(color.BOLD, color.END, get_line_no(), get_time_stamp()))
       MESSAGE_FILE = "MESSAGE"
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable MESSAGE_FILE NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
    #  Set default MESSAGE file with path
    MESSAGE = DATA_DIR + CLUSTER + MESSAGE_FILE
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE))
+
+#  Read TEMP_FILE contents and return contents
+def get_msg(TEMP_FILE) :
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), TEMP_FILE))
+   file = open(TEMP_FILE,"r")
+   FILE_CONTENT = file.read()
+   file.close()
+   FILE_CONTENT = FILE_CONTENT + " ---> "
+   return FILE_CONTENT
+###
+
+#  timeout
+def get_timeout() :
+   return ticks_per_second * refresh_interval
 
 #  Set brightness
 scrollphat.set_brightness(4)
@@ -135,22 +152,9 @@ pause = 0.12
 ticks_per_second = 1/pause
 refresh_interval = 60
 
-#  timeout
-def get_timeout() :
-   return ticks_per_second * refresh_interval
-
-#  Read MESSAGE_FILE contents and return contents
-def get_msg() :
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
-   file = open(MESSAGE_FILE,"r")
-   val = file.read()
-   file.close()
-   val = val + " ---->  "
-   return val
-
 timeout = get_timeout()
 count = 0
-msg = get_msg()
+msg = get_msg(MESSAGE)
 scrollphat.set_rotate(True)
 scrollphat.write_string(msg)
 
@@ -160,7 +164,7 @@ while True :
       time.sleep(pause)
 
       if (count > timeout) :
-         msg = get_msg()
+         msg = get_msg(MESSAGE)
          if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), msg))
          if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  count >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), count))
          scrollphat.write_string(msg)
