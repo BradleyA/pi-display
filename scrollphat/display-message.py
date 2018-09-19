@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message.py  3.122.264  2018-09-19_14:24:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.121  
+# 	   add support for environment variables to override default 
 # 	display-message.py  3.121.263  2018-09-18_22:14:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.120  
 # 	   code design for environmental variables 
 # 	display-message.py  3.120.262  2018-09-18_15:39:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.119  
@@ -91,33 +93,39 @@ except ImportError :
 except IOError :
       sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory . is the hat not installed on raspberry pi . . not sure what this is. . . missing the scrollphat ?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
 
-#  Check if there is an argument after command if TRUE use the argument to replace MESSAGE filename else use default MESSAGE
-# >>>   needs testing
-if os.environ.has_key("DATA_DIR") :
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  DATA_DIR set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), DATA_DIR))
-else
-#  Set DATA_DIR with default
-   DATA_DIR = "/usr/local/data/"
-if os.environ.has_key("CLUSTER") :
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  CLUSTER set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), CLUSTER))
-else
-#  Set CLUSTER with default
-   CLUSTER = "us-tx-cluster-1/"
-if os.environ.has_key("MESSAGE_FILE") :
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE_FILE set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
-else
-#  Set MESSAGE_FILE with default
-   MESSAGE_FILE = "MESSAGE"
-MESSAGE = DATA_DIR + CLUSTER + MESSAGE_FILE
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Set default MESSAGE_FILE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
-#
+#  if argument; use argument -> do not use default or environment variables for MESSAGE
 if no_arguments == 2 :
-#  Set non-default MESSAGE file with path
-   MESSAGE_FILE = sys.argv[1]
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
+#  Set non-default MESSAGE file including path
+   MESSAGE = sys.argv[1]
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE))
 else :
-#  Set default MESSAGE file with path
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
+   #  Check DATA_DIR; set using os environment variable
+   if "DATA_DIR" in os.environ :
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  DATA_DIR set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), os.getenv("DATA_DIR")))
+      DATA_DIR = os.getenv("DATA_DIR")
+   else :
+   #  Set DATA_DIR with default
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  DATA_DIR NOT set with environment variable".format(color.BOLD, color.END, get_line_no(), get_time_stamp()))
+      DATA_DIR = "/usr/local/data/"
+   if "CLUSTER" in os.environ :
+   #  Check CLUSTER; set using os environment variable
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  CLUSTER set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), os.getenv("CLUSTER")))
+      CLUSTER = os.getenv("CLUSTER")
+   else :
+   #  Set CLUSTER with default
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  CLUSTER NOT set with environment variable".format(color.BOLD, color.END, get_line_no(), get_time_stamp()))
+      CLUSTER = "us-tx-cluster-1/"
+   if "MESSAGE_FILE" in os.environ :
+   #  Check MESSAGE_FILE; set using os environment variable
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE_FILE set with environment variable >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), os.getenv("MESSAGE_FILE")))
+      MESSAGE_FILE = os.getenv("MESSAGE_FILE")
+   else :
+   #  Set MESSAGE_FILE with default
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE_FILE NOT set with environment variable".format(color.BOLD, color.END, get_line_no(), get_time_stamp()))
+      MESSAGE_FILE = "MESSAGE"
+   #  Set default MESSAGE file with path
+   MESSAGE = DATA_DIR + CLUSTER + MESSAGE_FILE
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE))
 
 #  Set brightness
 scrollphat.set_brightness(4)
