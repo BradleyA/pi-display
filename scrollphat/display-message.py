@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
+# 	display-message.py  3.125.267  2018-09-19_23:34:41_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.124  
+# 	   completed display-help 
 # 	display-message.py  3.124.266  2018-09-19_16:49:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.123  
 # 	   typo 
 # 	display-message.py  3.123.265  2018-09-19_16:41:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.122  
-# 	   update environmet section set python3, get_msg update 
-# 	display-message.py  3.122.264  2018-09-19_14:24:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.121  
 # 	   add support for environment variables to override default 
-# 	display-message.py  3.121.263  2018-09-18_22:14:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.120  
-# 	   code design for environmental variables 
-# 	display-message.py  3.120.262  2018-09-18_15:39:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.119  
-# 	   remove else from import errors, add MESSAGE variables 
 # 	display-message.py  3.115.257  2018-09-15_22:46:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.114  
 # 	   + 2 count 
 ###
@@ -29,20 +25,22 @@ def display_help() :
    print ("\nUSAGE\n   {} [<MESSAGE_FILE>]".format(__file__))
    print ("   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
    print ("   {} [--version | -version | -v]".format(__file__))
-   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/us-tx-cluster-1/MESSAGE file on a")
-   print ("Scroll-pHAT.  The MESSAGE file includes the total number of containers,")
-   print ("running containers, paused containers, stopped containers, and number of")
-   print ("images in the cluster.  The MESSAGE file is used by a Raspberry Pi Scroll-pHAT")
-   print ("to display the current information.  The MESSAGE file is created by")
-   print ("create-message.sh script.  The create-message.sh script reads the")
-   print ("/usr/local/data/us-tx-cluster-1/SYSTEMS file for the FQDN or IP address of the")
-   print ("hosts in a cluster.")
-   print ("\nTo display the contents of a different file than the defualt file.  Enter")
-   print ("the file name with the absolute path to its location as an option to")
-   print ("{}.".format(__file__))
+   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/us-tx-cluster-1/MESSAGE (default)")
+   print ("file on a Pimoroni Scroll-pHAT.  The Pimoroni Scroll-pHAT is attatched to a")
+   print ("Raspberry Pi.  The default MESSAGE file name and absolute path can be")
+   print ("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGE_FILE).")
+   print ("The environment variables can be overwritten by entering the MESSAGE file and")
+   print ("absolute path as an argument to the display-message.py script.")
+   print ("\nThe MESSAGE file contents includes the total number of containers, running")
+   print ("containers, paused containers, stopped containers, and number of images in the")
+   print ("cluster.")
 
-# >>>	3   environment variables needs to be added in display-help
-
+   print ("\nThe MESSAGE file is created by create-message.sh script.  The")
+   print ("create-message.sh script reads the /usr/local/data/us-tx-cluster-1/SYSTEMS file")
+   print ("for the FQDN or IP address of the hosts in a cluster.")
+   print ("\nEnvironment Variables\n   DATA_DIR      (default /usr/local/data/)")
+   print ("   CLUSTER       (default us-tx-cluster-1/)")
+   print ("   MESSAGE_FILE  (default MESSAGE)")
    print ("\nOPTIONS\n   MESSAGE_FILE - alternate message file,")
    print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphat")
