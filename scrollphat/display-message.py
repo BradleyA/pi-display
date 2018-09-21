@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message.py  3.127.269  2018-09-20_21:47:13_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.126  
+# 	   update get_msg, import scrollphat 
 # 	display-message.py  3.126.268  2018-09-20_19:48:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.125  
 # 	   update display_help 
 # 	display-message.py  3.125.267  2018-09-19_23:34:41_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.124  
@@ -74,7 +76,7 @@ def get_line_no() :
    cf = currentframe()
    return cf.f_back.f_lineno
 
-#  date and time function
+#  Date and time function
 def get_time_stamp() :
    return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
 
@@ -99,17 +101,16 @@ import platform
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), __file__, platform.python_version()))
 
 #  
-# >>>	import scrollphat
+#  import scrollphat and check if scrollphat installed 
 try :
    import scrollphat 
 except ImportError :
    if sys.version_info[0] < 3 :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  This library requires python-scrollphat. To install:\n\tsudo apt-get install python-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
-# >>>	org      sys.exit("This library requires python-smbus\nInstall with: sudo apt-get install python-smbus")
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Library scrollphat required. To install:\n\tsudo apt-get install python-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
    elif sys.version_info[0] == 3 :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  This library requires python3-scrollphat. To install:\n\tsudo apt-get install python3-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Library scrollphat required. To install:\n\tsudo apt-get install python3-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
 except IOError :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory . is the hat not installed on raspberry pi . . not sure what this is. . . missing the scrollphat ?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory.  Is scrollphat installed on raspberry pi?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
 
 #  if argument; use argument -> do not use default or environment variables for MESSAGE
 if no_arguments == 2 :
@@ -117,7 +118,7 @@ if no_arguments == 2 :
    MESSAGE = sys.argv[1]
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE))
 else :
-#  if no argument; -> use default and/or environment variables for MESSAGE
+#  if no argument; -> use default if environment variables not defined
    #  Check DATA_DIR; set using os environment variable
    if "DATA_DIR" in os.environ :
       DATA_DIR = os.getenv("DATA_DIR")
@@ -142,7 +143,7 @@ else :
    #  Set MESSAGE_FILE with default
       MESSAGE_FILE = "MESSAGE"
       if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable MESSAGE_FILE NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
-   #  Set default MESSAGE file with path
+   #  Set MESSAGE with absolute path
    MESSAGE = DATA_DIR + CLUSTER + MESSAGE_FILE
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE))
 
@@ -150,10 +151,10 @@ if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(colo
 def get_msg(TEMP_FILE) :
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), TEMP_FILE))
    file = open(TEMP_FILE,"r")
-   FILE_CONTENT = file.read()
+   CONTENT = file.read()
    file.close()
-   FILE_CONTENT = FILE_CONTENT + " ---> "
-   return FILE_CONTENT
+   CONTENT = CONTENT.rstrip('\n')
+   return CONTENT
 ###
 
 #  timeout
@@ -170,7 +171,9 @@ refresh_interval = 60
 
 timeout = get_timeout()
 count = 0
+scrollphat.clear()
 msg = get_msg(MESSAGE)
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), msg))
 scrollphat.set_rotate(True)
 scrollphat.write_string(msg)
 
@@ -180,6 +183,7 @@ while True :
       time.sleep(pause)
 
       if (count > timeout) :
+         scrollphat.clear()
          msg = get_msg(MESSAGE)
          if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), msg))
          if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  count >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), count))
@@ -187,7 +191,7 @@ while True :
          timeout = get_timeout()
          count = 0
       else :
-         count = count + 2
+         count = count + 1
    except KeyboardInterrupt :
       scrollphat.clear()
       sys.exit(-1)
