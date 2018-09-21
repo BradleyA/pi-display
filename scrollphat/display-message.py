@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
-# 	display-message.py  3.129.271  2018-09-20_22:10:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.128  
-# 	   rename get_date_stamp 
-# 	display-message.py  3.128.270  2018-09-20_21:59:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.127  
-# 	   import scrollphat and check if scrollphat installed close #20 
-# 	display-message.py  3.127.269  2018-09-20_21:47:13_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.126  
-# 	   update get_msg, import scrollphat 
+# 	display-message.py  3.130.272  2018-09-20_22:20:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.129  
+# 	   get_msg change DEBUG print to INFO 
 ###
-DEBUG = 1       # 0 = debug off, 1 = debug on
+DEBUG = 0       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
@@ -142,7 +138,7 @@ if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(colo
 
 #  Read TEMP_FILE contents and return contents
 def get_msg(TEMP_FILE) :
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), TEMP_FILE))
+   print ("\n{}{} {} {}[INFO]{}  {}  Reading MESSAGE file >{}<".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), TEMP_FILE))
    file = open(TEMP_FILE,"r")
    CONTENT = file.read()
    file.close()
@@ -185,4 +181,6 @@ while True :
    except KeyboardInterrupt :
       scrollphat.clear()
       sys.exit(-1)
+
+print ("\n{}{} {} {}[INFO]{}  {}  Done.\n".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
 ###
