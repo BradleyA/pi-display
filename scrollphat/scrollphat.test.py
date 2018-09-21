@@ -1,10 +1,12 @@
 #!/usr/bin/env python
+# 	scrollphat.test.py  3.126.268  2018-09-20_19:48:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.125  
+# 	   update display_help 
 # 	scrollphat.test.py  3.110.252  2018-09-15_21:17:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.109  
 # 	   add DEBUG, get_time_stamp(), update display_help() 
 # 	scrollphat.test.py  3.109.251  2018-09-15_11:10:15_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.108  
 # 	   begin changing scroll-phat/examples/test-all.py for screen test 
 ###
-DEBUG = 0       # 0 = debug off, 1 = debug on
+DEBUG = 1       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys

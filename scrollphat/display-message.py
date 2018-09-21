@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message.py  3.126.268  2018-09-20_19:48:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.125  
+# 	   update display_help 
 # 	display-message.py  3.125.267  2018-09-19_23:34:41_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.124  
 # 	   completed display-help 
 # 	display-message.py  3.124.266  2018-09-19_16:49:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.123  
@@ -31,21 +33,33 @@ def display_help() :
    print ("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGE_FILE).")
    print ("The environment variables can be overwritten by entering the MESSAGE file and")
    print ("absolute path as an argument to the display-message.py script.")
-   print ("\nThe MESSAGE file contents includes the total number of containers, running")
-   print ("containers, paused containers, stopped containers, and number of images in the")
-   print ("cluster.")
-
-   print ("\nThe MESSAGE file is created by create-message.sh script.  The")
+   print ("\nThe default MESSAGE file is created by create-message.sh script.  The")
    print ("create-message.sh script reads the /usr/local/data/us-tx-cluster-1/SYSTEMS file")
-   print ("for the FQDN or IP address of the hosts in a cluster.")
-   print ("\nEnvironment Variables\n   DATA_DIR      (default /usr/local/data/)")
+   print ("for the FQDN or IP address of the hosts in a cluster.  The default MESSAGE file")
+   print ("contents includes the total number of containers, running containers, paused")
+   print ("containers, stopped containers, and number of images in the cluster.")
+   print ("\nEnvironment Variables")
+   print ("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
+   print ("line to set the CLUSTER environment variable.  Use the -n option with export")
+   print ("to remove the exported information from the CLUSTER environment variable;")
+   print ("export -n CLUSTER.  Setting an environment variable to be defined at login")
+   print ("by adding it to ~/.bashrc file or you can just modify the script with your")
+   print ("default location for DATA_DIR, CLUSTER, and MESSAGE_FILE.  You are on your")
+   print ("own defining environment variables if you are using other shells.")
+   print ("   DATA_DIR      (default /usr/local/data/)")
    print ("   CLUSTER       (default us-tx-cluster-1/)")
    print ("   MESSAGE_FILE  (default MESSAGE)")
    print ("\nOPTIONS\n   MESSAGE_FILE - alternate message file,")
    print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphat")
-   print ("\nEXAMPLES\n   Display contents of a different file")
-   print ("\n   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
+   print ("\nEXAMPLES\n   Display contents using default file and path")
+   print ("\n   {}".format(__file__))
+   print ("\n   Display contents using a different cluster name and file name (bash)\n")
+   print ("   export CLUSTER='us-west1/'")
+   print ("   export MESSAGE_FILE='CONTAINER'")
+   print ("   {}".format(__file__))
+   print ("\n   Display contents from a different file and absolute path\n")
+   print ("   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
       print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp(), LANGUAGE))
