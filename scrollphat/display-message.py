@@ -1,16 +1,8 @@
 #!/usr/bin/env python3
+# 	display-message.py  3.128.270  2018-09-20_21:59:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.127  
+# 	   import scrollphat and check if scrollphat installed close #20 
 # 	display-message.py  3.127.269  2018-09-20_21:47:13_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.126  
 # 	   update get_msg, import scrollphat 
-# 	display-message.py  3.126.268  2018-09-20_19:48:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.125  
-# 	   update display_help 
-# 	display-message.py  3.125.267  2018-09-19_23:34:41_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.124  
-# 	   completed display-help 
-# 	display-message.py  3.124.266  2018-09-19_16:49:47_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.123  
-# 	   typo 
-# 	display-message.py  3.123.265  2018-09-19_16:41:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.122  
-# 	   add support for environment variables to override default 
-# 	display-message.py  3.115.257  2018-09-15_22:46:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.114  
-# 	   + 2 count 
 ###
 DEBUG = 1       # 0 = debug off, 1 = debug on
 #
@@ -100,7 +92,6 @@ if no_arguments == 2 :
 import platform
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), __file__, platform.python_version()))
 
-#  
 #  import scrollphat and check if scrollphat installed 
 try :
    import scrollphat 
@@ -168,7 +159,6 @@ scrollphat.set_brightness(4)
 pause = 0.12
 ticks_per_second = 1/pause
 refresh_interval = 60
-
 timeout = get_timeout()
 count = 0
 scrollphat.clear()
@@ -181,12 +171,10 @@ while True :
    try :
       scrollphat.scroll()
       time.sleep(pause)
-
       if (count > timeout) :
          scrollphat.clear()
          msg = get_msg(MESSAGE)
          if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), msg))
-         if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  count >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), count))
          scrollphat.write_string(msg)
          timeout = get_timeout()
          count = 0
