@@ -1,10 +1,6 @@
 #!/usr/bin/env python
-# 	scrollphat.test.py  3.126.268  2018-09-20_19:48:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.125  
-# 	   update display_help 
-# 	scrollphat.test.py  3.110.252  2018-09-15_21:17:55_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.109  
-# 	   add DEBUG, get_time_stamp(), update display_help() 
-# 	scrollphat.test.py  3.109.251  2018-09-15_11:10:15_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.108  
-# 	   begin changing scroll-phat/examples/test-all.py for screen test 
+# 	scrollphat.test.py  3.131.273  2018-09-20_22:49:26_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.130  
+# 	   rename get_date_stamp 
 ###
 DEBUG = 1       # 0 = debug off, 1 = debug on
 #
@@ -12,9 +8,6 @@ import subprocess
 import sys
 import time
 import os
-#
-import math
-import scrollphat
 ###
 class color:
    BOLD = '\033[1m'
@@ -31,7 +24,7 @@ def display_help():
    print ("\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display")
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
-      print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp(), LANGUAGE))
+      print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), LANGUAGE))
 #  elif LANGUAGE != "fr_CA.UTF-8" :
 #     print display_help in french
 #  else :
@@ -39,12 +32,12 @@ def display_help():
 
 #  Line number function
 from inspect import currentframe
-def get_line_no():
+def get_line_no() :
    cf = currentframe()
    return cf.f_back.f_lineno
 
-#  date and time function
-def get_time_stamp():
+#  Date and time function
+def get_date_stamp() :
    return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
 
 #  Default help and version arguments
@@ -56,16 +49,22 @@ if no_arguments == 2 :
       sys.exit()
 #  Default version output  
    if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
-      with open(__file__) as f:
+      with open(__file__) as f :
          f.readline()
          line2 = f.readline()
          line2 = line2.split()
          print ("{} {}".format(line2[1], line2[2]))
       sys.exit()
-#  DEBUG
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name_of_command >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), __file__))
-###
 
+#  DEBUG example
+import platform
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, platform.python_version()))
+
+
+#
+import math
+import scrollphat
+#
 scrollphat.set_brightness(1)
 #
 def set_checker(offset) :
@@ -91,5 +90,5 @@ for count in range(8):
 #
 scrollphat.clear()
 sys.exit(-1)
-print ("\n{}{} {} {}[INFO]{}  {}  Done.\n".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+print ("\n{}{} {} {}[INFO]{}  {}  Done.\n".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
 ###
