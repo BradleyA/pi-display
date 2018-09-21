@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message.py  3.129.271  2018-09-20_22:10:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.128  
+# 	   rename get_date_stamp 
 # 	display-message.py  3.128.270  2018-09-20_21:59:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.127  
 # 	   import scrollphat and check if scrollphat installed close #20 
 # 	display-message.py  3.127.269  2018-09-20_21:47:13_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.126  
@@ -56,7 +58,7 @@ def display_help() :
    print ("   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
-      print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp(), LANGUAGE))
+      print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), LANGUAGE))
 #  elif LANGUAGE != "fr_CA.UTF-8" :
 #     print display_help in french
 #  else :
@@ -69,7 +71,7 @@ def get_line_no() :
    return cf.f_back.f_lineno
 
 #  Date and time function
-def get_time_stamp() :
+def get_date_stamp() :
    return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
 
 #  Default help and version arguments
@@ -90,57 +92,57 @@ if no_arguments == 2 :
 
 #  DEBUG example
 import platform
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), __file__, platform.python_version()))
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, platform.python_version()))
 
 #  import scrollphat and check if scrollphat installed 
 try :
    import scrollphat 
 except ImportError :
    if sys.version_info[0] < 3 :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Library scrollphat required. To install:\n\tsudo apt-get install python-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Library scrollphat required. To install:\n\tsudo apt-get install python-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
    elif sys.version_info[0] == 3 :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Library scrollphat required. To install:\n\tsudo apt-get install python3-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Library scrollphat required. To install:\n\tsudo apt-get install python3-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
 except IOError :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory.  Is scrollphat installed on raspberry pi?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_time_stamp()))
+      sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory.  Is scrollphat installed on raspberry pi?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
 
 #  if argument; use argument -> do not use default or environment variables for MESSAGE
 if no_arguments == 2 :
 #  Set non-default MESSAGE file including path
    MESSAGE = sys.argv[1]
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE))
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE))
 else :
 #  if no argument; -> use default if environment variables not defined
    #  Check DATA_DIR; set using os environment variable
    if "DATA_DIR" in os.environ :
       DATA_DIR = os.getenv("DATA_DIR")
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable DATA_DIR >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), DATA_DIR))
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable DATA_DIR >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), DATA_DIR))
    else :
    #  Set DATA_DIR with default
       DATA_DIR = "/usr/local/data/"
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), DATA_DIR))
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), DATA_DIR))
    if "CLUSTER" in os.environ :
    #  Check CLUSTER; set using os environment variable
       CLUSTER = os.getenv("CLUSTER")
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable CLUSTER >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), CLUSTER))
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable CLUSTER >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), CLUSTER))
    else :
    #  Set CLUSTER with default
       CLUSTER = "us-tx-cluster-1/"
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable CLUSTER NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), CLUSTER))
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable CLUSTER NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), CLUSTER))
    if "MESSAGE_FILE" in os.environ :
    #  Check MESSAGE_FILE; set using os environment variable
       MESSAGE_FILE = os.getenv("MESSAGE_FILE")
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable MESSAGE_FILE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable MESSAGE_FILE >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE_FILE))
    else :
    #  Set MESSAGE_FILE with default
       MESSAGE_FILE = "MESSAGE"
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable MESSAGE_FILE NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE_FILE))
+      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable MESSAGE_FILE NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE_FILE))
    #  Set MESSAGE with absolute path
    MESSAGE = DATA_DIR + CLUSTER + MESSAGE_FILE
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), MESSAGE))
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE))
 
 #  Read TEMP_FILE contents and return contents
 def get_msg(TEMP_FILE) :
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), TEMP_FILE))
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), TEMP_FILE))
    file = open(TEMP_FILE,"r")
    CONTENT = file.read()
    file.close()
@@ -163,7 +165,7 @@ timeout = get_timeout()
 count = 0
 scrollphat.clear()
 msg = get_msg(MESSAGE)
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), msg))
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), msg))
 scrollphat.set_rotate(True)
 scrollphat.write_string(msg)
 
@@ -174,7 +176,7 @@ while True :
       if (count > timeout) :
          scrollphat.clear()
          msg = get_msg(MESSAGE)
-         if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_time_stamp(), msg))
+         if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  MESSAGE >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), msg))
          scrollphat.write_string(msg)
          timeout = get_timeout()
          count = 0
