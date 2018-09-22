@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+# 	display-led.py  3.141.283  2018-09-22_13:30:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.140  
+# 	   set python3 remove \n from logging information 
 # 	display-led.py  3.106.248  2018-09-12_21:40:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.105  
 # 	   display-led.py needs more adding template.py 
 # 	display-led.py  3.105.247  2018-09-12_21:04:15_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.104-2-g5f62b1a  
@@ -69,15 +71,15 @@ if DEBUG == 1 : print (">{} DEBUG{} {}  Name_of_command >{}<".format(color.BOLD,
 # >>>	#  Check argument 1 for non-default ______
 # >>>	if no_arguments == 2 :
 # >>>	   LINE_ARG1 = sys.argv[1]
-# >>>	   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
+# >>>	   print ("{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
 # >>>	else :
 # >>>	#       set default MESSAGE file with path
 # >>>	   LINE_ARG1 = "/usr/local/data/us-tx-cluster-1/MESSAGE"
-# >>>	   print ("\n{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
+# >>>	   print ("{}{} {} {}[INFO]{} Using MESSAGE file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,LINE_ARG1))
 # >>>	#  Check argument 2 for non-default SSHPORT number
 # >>>	if no_arguments == 3 :
 # >>>	   SSHPORT = sys.argv[2]
-# >>>	   print ("\n{}{} {} {}[INFO]{} Using PORT number {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,SSHPORT))
+# >>>	   print ("{}{} {} {}[INFO]{} Using PORT number {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,SSHPORT))
 # >>>	#
 # >>> #
 CLUSTER = "us-tx-cluster-1/"
@@ -226,7 +228,7 @@ def process(line):
 # >>>  need to replace path and file name with variables
 #	>> how to find hostname and set variable
 with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
-   print ("\n{}{} {} {}[INFO]{}  {} {} ".format(color.END,__file__,get_line_no(),color.BOLD,color.END,time.strftime("%Y-%m-%d-%H-%M-%S-%Z"),FILE_NAME))
+   print ("{}{} {} {}[INFO]{}  {} {} ".format(color.END,__file__,get_line_no(),color.BOLD,color.END,time.strftime("%Y-%m-%d-%H-%M-%S-%Z"),FILE_NAME))
    for line in f:
       process(line)
 
