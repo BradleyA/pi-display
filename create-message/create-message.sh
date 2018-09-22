@@ -1,20 +1,14 @@
 #!/bin/bash
+# 	create-message.sh  3.139.281  2018-09-21_23:02:20_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.138  
+# 	   mark #31 in code for crontab testing 
 # 	create-message.sh  3.137.279  2018-09-21_22:47:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.136  
 # 	   support environment variables for CLI arguments close #29 
 # 	create-message.sh  3.136.278  2018-09-21_19:18:35_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.135  
 # 	   close #26 
 # 	create-message.sh  3.135.277  2018-09-21_18:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.134  
 # 	   crap what a bug, LOCAL-HOST link on six was overwritting four and five on the second and thrid run #26 
-# 	create-message.sh  3.134.276  2018-09-21_17:00:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.133  
-# 	   formating or DEBUG and ERROR lines 
-# 	create-message.sh  3.133.275  2018-09-21_12:34:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.132  
-# 	   add DEBUG to help with #26 
-# 	create-message.sh  3.132.274  2018-09-21_11:33:36_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.131  
-# 	   begin changing echo statements for INFO ERROR DEBUG WARNING to include DATE_STAMP 
-# 	create-message.sh  3.99.229  2018-09-10_14:03:38_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.98  
-# 	   typo 
 ### 
-DEBUG=1                 # 0 = debug off, 1 = debug on
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput bold)
@@ -93,7 +87,7 @@ LOCALHOST=`hostname -f`
 
 #	This assumes the admin user has Docker environment variables in ~/.profile.
 #	This was added so this script will run in crontab
-# >>>	Need to look at the crontab log when testing using craontab
+# >>>	#31	Need to look at the crontab log when testing using craontab
 source ~/.profile
 TEMP=`env | grep -i docker`
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Docker environment variables after source command >${TEMP}<" 1>&2 ; fi
