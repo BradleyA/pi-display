@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.137.279  2018-09-21_22:47:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.136  
+# 	   support environment variables for CLI arguments close #29 
 # 	create-message.sh  3.136.278  2018-09-21_19:18:35_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.135  
 # 	   close #26 
 # 	create-message.sh  3.135.277  2018-09-21_18:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.134  
@@ -12,7 +14,7 @@
 # 	create-message.sh  3.99.229  2018-09-10_14:03:38_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.98  
 # 	   typo 
 ### 
-DEBUG=0                 # 0 = debug off, 1 = debug on
+DEBUG=1                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput bold)
@@ -75,9 +77,13 @@ if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] ||
 fi
 
 ### 
-CLUSTER=${1:-us-tx-cluster-1}
+#	order of precedence: CLI argument, environment variable, default code
+if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
+#	order of precedence: CLI argument, default code
 ADMUSER=${2:-${USER}}
-DATA_DIR=${3:-/usr/local/data/}
+#	order of precedence: CLI argument, environment variable, default code
+if [ $# -ge  3 ]  ; then DATA_DIR=${1} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}<" 1>&2 ; fi
 CONTAINERS=0
 RUNNING=0
 PAUSED=0
@@ -95,28 +101,28 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< PATH >${PATH}<" 1>&2 ; fi
 
 #       Check if cluster directory is on system
-if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
-	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  Creating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
-	mkdir -p  ${DATA_DIR}${CLUSTER} || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${DATA_DIR}${CLUSTER} directory" 1>&2 ; exit 1; }
-	chmod 775 ${DATA_DIR}${CLUSTER}
+if [ ! -d ${DATA_DIR}/${CLUSTER} ] ; then
+	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  Creating missing directory: ${DATA_DIR}/${CLUSTER}\n" 1>&2
+	mkdir -p  ${DATA_DIR}/${CLUSTER} || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
+	chmod 775 ${DATA_DIR}/${CLUSTER}
 fi
 
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
-touch ${DATA_DIR}${CLUSTER}/MESSAGE  || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGE file" 1>&2 ; exit 1; }
-touch ${DATA_DIR}${CLUSTER}/MESSAGEHD  || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGEHD file" 1>&2 ; exit 1; }
+touch ${DATA_DIR}/${CLUSTER}/MESSAGE  || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGE file" 1>&2 ; exit 1; }
+touch ${DATA_DIR}/${CLUSTER}/MESSAGEHD  || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGEHD file" 1>&2 ; exit 1; }
 #       Check if SYSTEMS file is on system
 #	one FQDN or IP address per line for all hosts in cluster
-if ! [ -e ${DATA_DIR}${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}${CLUSTER}/SYSTEMS ] ; then
+if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  SYSTEMS file missing or empty, creating SYSTEMS file with local host.\n" 1>&2
-	echo -e "\tEdit ${DATA_DIR}${CLUSTER}/SYSTEMS file and add additional hosts that are in the cluster.\n"
-	echo -e "###     List of hosts used by cluster-command.sh & create-message.sh"  > ${DATA_DIR}${CLUSTER}/SYSTEMS
-	echo -e "#       One FQDN or IP address per line for all hosts in cluster" > ${DATA_DIR}${CLUSTER}/SYSTEMS
-	echo -e "###" > ${DATA_DIR}${CLUSTER}/SYSTEMS
-	hostname -f > ${DATA_DIR}${CLUSTER}/SYSTEMS
+	echo -e "\tEdit ${DATA_DIR}/${CLUSTER}/SYSTEMS file and add additional hosts that are in the cluster.\n"
+	echo -e "###     List of hosts used by cluster-command.sh & create-message.sh"  > ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo -e "#       One FQDN or IP address per line for all hosts in cluster" > ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo -e "###" > ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	hostname -f > ${DATA_DIR}/${CLUSTER}/SYSTEMS
 fi
 #	Loop through host in SYSTEMS file
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Loop through hosts in SYSTEMS file" 1>&2 ; fi
-for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
+for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  host >${NODE}<" 1>&2
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
@@ -124,17 +130,17 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  ${LOCALHOST} != ${NODE}" 1>&2 ; fi
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Make directory and gather docker info on ${NODE}" 1>&2 ; fi
-			TEMP="mkdir -p  ${DATA_DIR}${CLUSTER} ; chmod 775 ${DATA_DIR}${CLUSTER} ; docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${NODE}"
+			TEMP="mkdir -p  ${DATA_DIR}/${CLUSTER} ; chmod 775 ${DATA_DIR}/${CLUSTER} ; docker system info | head -5 > ${DATA_DIR}/${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CELSIUS, FAHRENHEIT from ${NODE}" 1>&2 ; fi
 			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
 			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP})
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
-			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}/${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CPU" 1>&2 ; fi
 			scp -q    -i ~/.ssh/id_rsa /usr/local/bin/CPU_usage.sh ${ADMUSER}@${NODE}:/usr/local/bin/
-			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${NODE}"
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY" 1>&2 ; fi
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
@@ -145,64 +151,64 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  DISK" 1>&2 ; fi
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
 			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
-			TEMP="echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${NODE}"
+			TEMP="echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
-			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}/${NODE} ${DATA_DIR}${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Copy SYSTEMS file from ${LOCALHOST} to ${NODE} " 1>&2 ; fi
-			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}
 		else
-			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port." 1>&2
-			touch ${DATA_DIR}${CLUSTER}/${NODE}
+			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port." 1>&2
+			touch ${DATA_DIR}/${CLUSTER}/${NODE}
 		fi
 	else
 		get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  ${NODE} - Cluster Server" 1>&2
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Gather docker info on ${NODE}" 1>&2 ; fi
-		docker system info | head -5 > ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		docker system info | head -5 > ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CELSIUS, FAHRENHEIT from ${NODE}" 1>&2 ; fi
 		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
-		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
-		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CPU" 1>&2 ; fi
-		/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY" 1>&2 ; fi
 		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
-		echo ${MEMORY} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
-		echo ${MEMORY2} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
-		echo ${MEMORY3} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
+		echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  DISK" 1>&2 ; fi
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
-		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
-		cd ${DATA_DIR}${CLUSTER}
+		echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+		cd ${DATA_DIR}/${CLUSTER}
 		rm LOCAL-HOST	# bug fix #26
 	fi
-	CONTAINERS=`grep -i CONTAINERS ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
-	RUNNING=`grep -i RUNNING ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
-	PAUSED=`grep -i PAUSED ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$PAUSED '{print $2 + v}'`
-	STOPPED=`grep -i STOPPED ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
-	IMAGES=`grep -i IMAGES ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
+	CONTAINERS=`grep -i CONTAINERS ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
+	RUNNING=`grep -i RUNNING ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
+	PAUSED=`grep -i PAUSED ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$PAUSED '{print $2 + v}'`
+	STOPPED=`grep -i STOPPED ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
+	IMAGES=`grep -i IMAGES ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Add Docker information from $NODE{}" 1>&2 ; fi
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES}"
-echo ${MESSAGE} > ${DATA_DIR}${CLUSTER}/MESSAGE
-cp ${DATA_DIR}${CLUSTER}/MESSAGE ${DATA_DIR}${CLUSTER}/MESSAGEHD
-tail -n +6 ${DATA_DIR}${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}${CLUSTER}/MESSAGEHD
+echo ${MESSAGE} > ${DATA_DIR}/${CLUSTER}/MESSAGE
+cp ${DATA_DIR}/${CLUSTER}/MESSAGE ${DATA_DIR}/${CLUSTER}/MESSAGEHD
+tail -n +6 ${DATA_DIR}/${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}/${CLUSTER}/MESSAGEHD
 #	Loop through hosts in SYSTEMS file and update other host information
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Loop through hosts in SYSTEMS file and update other host information" 1>&2 ; fi
-for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
+for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Copy file to host ${NODE}" 1>&2
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
-			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
-			TEMP="cd ${DATA_DIR}${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
+			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}
+			TEMP="cd ${DATA_DIR}/${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 		else
-			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port." 1>&2
+			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port." 1>&2
 		fi
 	fi
 done
