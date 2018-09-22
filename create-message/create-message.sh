@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.140.282  2018-09-22_13:18:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.139  
+# 	   added -Txterm to tput lines, remove n to logging information, close #32 
 # 	create-message.sh  3.139.281  2018-09-21_23:02:20_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.138  
 # 	   mark #31 in code for crontab testing 
 # 	create-message.sh  3.137.279  2018-09-21_22:47:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.136  
@@ -11,8 +13,8 @@
 DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
-BOLD=$(tput bold)
-NORMAL=$(tput sgr0)
+BOLD=$(tput -Txterm bold)
+NORMAL=$(tput -Txterm sgr0)
 ###
 display_help() {
 echo -e "\n${NORMAL}${0} - Store Docker and system information"
@@ -47,11 +49,11 @@ echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES"
 echo -e "   Store message information for a cluster-2\n\n   ${0} cluster-2\n"
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
-        get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Your language, ${LANG}, is not supported.\n\tWould you like to help?\n" 1>&2
+        get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Your language, ${LANG}, is not supported.\tWould you like to help?\n" 1>&2
 #       elif [ "${LANG}" == "fr_CA.UTF-8" ] ; then
 #               get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Display help in ${LANG}" 1>&2
 #       else
-#               get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Your language, ${LANG}, is not supported.\n\tWould you like to help?\n" 1>&2
+#               get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Your language, ${LANG}, is not supported.\tWould you like to help?\n" 1>&2
 fi
 }
 
@@ -96,18 +98,18 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL
 
 #       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}/${CLUSTER} ] ; then
-	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  Creating missing directory: ${DATA_DIR}/${CLUSTER}\n" 1>&2
-	mkdir -p  ${DATA_DIR}/${CLUSTER} || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
+	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
+	mkdir -p  ${DATA_DIR}/${CLUSTER} || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}/${CLUSTER}
 fi
 
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
-touch ${DATA_DIR}/${CLUSTER}/MESSAGE  || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGE file" 1>&2 ; exit 1; }
-touch ${DATA_DIR}/${CLUSTER}/MESSAGEHD  || { get_date_stamp ; echo -e "\n${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGEHD file" 1>&2 ; exit 1; }
+touch ${DATA_DIR}/${CLUSTER}/MESSAGE  || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGE file" 1>&2 ; exit 1; }
+touch ${DATA_DIR}/${CLUSTER}/MESSAGEHD  || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGEHD file" 1>&2 ; exit 1; }
 #       Check if SYSTEMS file is on system
 #	one FQDN or IP address per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
-	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  SYSTEMS file missing or empty, creating SYSTEMS file with local host.\n" 1>&2
+	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  SYSTEMS file missing or empty, creating SYSTEMS file with local host." 1>&2
 	echo -e "\tEdit ${DATA_DIR}/${CLUSTER}/SYSTEMS file and add additional hosts that are in the cluster.\n"
 	echo -e "###     List of hosts used by cluster-command.sh & create-message.sh"  > ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo -e "#       One FQDN or IP address per line for all hosts in cluster" > ${DATA_DIR}/${CLUSTER}/SYSTEMS
@@ -207,5 +209,5 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	fi
 done
 ln -sf ${LOCALHOST} LOCAL-HOST	# bug fix #26
-get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Done.\n" 1>&2
+get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Done." 1>&2
 ###
