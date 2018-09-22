@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.142.284  2018-09-22_14:28:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.141  
+# 	   no incidnet while testing source ~/.profile in crontab close #31 
 # 	create-message.sh  3.140.282  2018-09-22_13:18:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.139  
 # 	   added -Txterm to tput lines, remove n to logging information, close #32 
 # 	create-message.sh  3.139.281  2018-09-21_23:02:20_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.138  
@@ -49,7 +51,7 @@ echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES"
 echo -e "   Store message information for a cluster-2\n\n   ${0} cluster-2\n"
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
-        get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Your language, ${LANG}, is not supported.\tWould you like to help?\n" 1>&2
+        get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Your language, ${LANG}, is not supported.\tWould you like to help?" 1>&2
 #       elif [ "${LANG}" == "fr_CA.UTF-8" ] ; then
 #               get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Display help in ${LANG}" 1>&2
 #       else
@@ -87,14 +89,13 @@ STOPPED=0
 IMAGES=0
 LOCALHOST=`hostname -f`
 
-#	This assumes the admin user has Docker environment variables in ~/.profile.
-#	This was added so this script will run in crontab
-# >>>	#31	Need to look at the crontab log when testing using craontab
+#
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< PATH >${PATH}<" 1>&2 ; fi
+
+#	set admin user Docker environment variables (crontab support) in ~/.profile. #31
 source ~/.profile
 TEMP=`env | grep -i docker`
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Docker environment variables after source command >${TEMP}<" 1>&2 ; fi
-#
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< PATH >${PATH}<" 1>&2 ; fi
 
 #       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}/${CLUSTER} ] ; then
@@ -106,8 +107,8 @@ fi
 #	Create MESSAGE file 1) create file for initial running on host, 2) check for write permission
 touch ${DATA_DIR}/${CLUSTER}/MESSAGE  || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGE file" 1>&2 ; exit 1; }
 touch ${DATA_DIR}/${CLUSTER}/MESSAGEHD  || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create MESSAGEHD file" 1>&2 ; exit 1; }
-#       Check if SYSTEMS file is on system
-#	one FQDN or IP address per line for all hosts in cluster
+
+#       Check if SYSTEMS file is on system, one FQDN or IP address per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  SYSTEMS file missing or empty, creating SYSTEMS file with local host." 1>&2
 	echo -e "\tEdit ${DATA_DIR}/${CLUSTER}/SYSTEMS file and add additional hosts that are in the cluster.\n"
@@ -116,6 +117,7 @@ if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}/${CLUSTER}/SYST
 	echo -e "###" > ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	hostname -f > ${DATA_DIR}/${CLUSTER}/SYSTEMS
 fi
+
 #	Loop through host in SYSTEMS file
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Loop through hosts in SYSTEMS file" 1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
@@ -192,6 +194,7 @@ MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPE
 echo ${MESSAGE} > ${DATA_DIR}/${CLUSTER}/MESSAGE
 cp ${DATA_DIR}/${CLUSTER}/MESSAGE ${DATA_DIR}/${CLUSTER}/MESSAGEHD
 tail -n +6 ${DATA_DIR}/${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}/${CLUSTER}/MESSAGEHD
+
 #	Loop through hosts in SYSTEMS file and update other host information
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Loop through hosts in SYSTEMS file and update other host information" 1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
