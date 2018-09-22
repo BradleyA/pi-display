@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.144.286  2018-09-22_15:30:25_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.143  
+# 	   environment support for MESSAGE file close #35 
 # 	create-message.sh  3.143.285  2018-09-22_15:27:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.142  
 # 	   environment support for MESSAGE file 
 # 	create-message.sh  3.142.284  2018-09-22_14:28:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.141  
@@ -98,6 +100,7 @@ if [ $# -ge  3 ]  ; then DATA_DIR=${3} ; elif [ "${DATA_DIR}" == "" ] ; then DAT
 #	order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  4 ]  ; then MESSAGE_FILE=${4} ; elif [ "${MESSAGE_FILE}" == "" ] ; then MESSAGE_FILE="MESSAGE" ; fi
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< MESSAGE_FILE >${MESSAGE_FILE}<" 1>&2 ; fi
+
 CONTAINERS=0
 RUNNING=0
 PAUSED=0
