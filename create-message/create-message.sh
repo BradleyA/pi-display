@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.136.278  2018-09-21_19:18:35_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.135  
+# 	   close #26 
 # 	create-message.sh  3.135.277  2018-09-21_18:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.134  
 # 	   crap what a bug, LOCAL-HOST link on six was overwritting four and five on the second and thrid run #26 
 # 	create-message.sh  3.134.276  2018-09-21_17:00:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.133  
@@ -10,7 +12,7 @@
 # 	create-message.sh  3.99.229  2018-09-10_14:03:38_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.98  
 # 	   typo 
 ### 
-DEBUG=1                 # 0 = debug off, 1 = debug on
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput bold)
@@ -85,16 +87,13 @@ LOCALHOST=`hostname -f`
 
 #	This assumes the admin user has Docker environment variables in ~/.profile.
 #	This was added so this script will run in crontab
-# >>>	Need to look a the crontab log when testing using craontab
-TEMP=`env | grep -i docker`
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Docker environment variables >${TEMP}<" 1>&2 ; fi
+# >>>	Need to look at the crontab log when testing using craontab
 source ~/.profile
 TEMP=`env | grep -i docker`
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Docker environment variables after source command >${TEMP}<" 1>&2 ; fi
 #
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< PATH >${PATH}<" 1>&2 ; fi
 
-###
 #       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}${CLUSTER} ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  Creating missing directory: ${DATA_DIR}${CLUSTER}\n" 1>&2
@@ -178,7 +177,7 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}${CLUSTER}/${LOCALHOST}
 		cd ${DATA_DIR}${CLUSTER}
-		rm LOCAL-HOST
+		rm LOCAL-HOST	# bug fix #26
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${DATA_DIR}${CLUSTER}/${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
@@ -199,16 +198,14 @@ for NODE in $(cat ${DATA_DIR}${CLUSTER}/SYSTEMS | grep -v "#" ); do
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
-set -x
 			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}${CLUSTER}
 			TEMP="cd ${DATA_DIR}${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
-set +x
 		else
 			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port." 1>&2
 		fi
 	fi
 done
-ln -sf ${LOCALHOST} LOCAL-HOST
+ln -sf ${LOCALHOST} LOCAL-HOST	# bug fix #26
 get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Done.\n" 1>&2
 ###
