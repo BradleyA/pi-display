@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	../scrollphat/display-message.py  3.138.280  2018-09-21_22:53:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.137  
+# 	   added / in path so i user does not with environment varibales or arguments 
 # 	display-message.py  3.130.272  2018-09-20_22:20:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.129  
 # 	   get_msg change DEBUG print to INFO 
 ###
@@ -133,7 +135,7 @@ else :
       MESSAGE_FILE = "MESSAGE"
       if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable MESSAGE_FILE NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE_FILE))
    #  Set MESSAGE with absolute path
-   MESSAGE = DATA_DIR + CLUSTER + MESSAGE_FILE
+   MESSAGE = DATA_DIR + "/" + CLUSTER + "/" + MESSAGE_FILE
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE))
 
 #  Read TEMP_FILE contents and return contents
