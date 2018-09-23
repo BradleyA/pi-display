@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.149.291  2018-09-23_13:09:19_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.148  
+# 	   remove Usage in labels close #34 
 # 	create-message.sh  3.148.290  2018-09-22_22:16:58_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.147  
 # 	   first pass at understanding MEMORY remoted \n and _Usage #34 
 # 	create-message.sh  3.147.289  2018-09-22_21:32:00_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.146  
@@ -165,7 +167,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${NODE}"
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY" 1>&2 ; fi
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'free -m | grep Mem:')
-			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %d", $3,$2,$3*100/$2 }')
+			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory: %s/%sMB %d", $3,$2,$3*100/$2 }')
 			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
 			MEMORY2=$(echo ${MEMORY2} | sed 's/=/: /' | awk '{printf ".Memory_%s", $1" "$2 }')
 			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
@@ -175,7 +177,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY3 >${MEMORY3}<<<" 1>&2 ; fi
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  DISK" 1>&2 ; fi
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
-			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
+			DISK=$(echo ${DISK} | awk '{printf "Disk: %d/%dGB %d\n", $3,$2,$5}')
 			TEMP="echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
@@ -198,14 +200,14 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CPU" 1>&2 ; fi
 		/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY" 1>&2 ; fi
-		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
+		MEMORY=$(free -m | awk 'NR==2{printf "Memory: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
 		echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-		MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
+		MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
 		echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-		MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_Usage_%s\n", $1" "$2 }')
+		MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
 		echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  DISK" 1>&2 ; fi
-		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
+		DISK=$(df -h | awk '$NF=="/"{printf "Disk: %d/%dGB %d\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		cd ${DATA_DIR}/${CLUSTER}
 		#       Check if LOCAL-HOST file is on system
