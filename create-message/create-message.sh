@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.147.289  2018-09-22_21:32:00_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.146  
+# 	   display_help for environment variables completed eariler #29 #35 #33 close #30 
 # 	create-message.sh  3.146.288  2018-09-22_21:19:39_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.145  
 # 	   added SYSTEMS_FILE for SYSTEMS file to support environment variable completed testing close #33 
 # 	create-message.sh  3.144.286  2018-09-22_15:30:25_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.143  
@@ -91,7 +93,6 @@ if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] ||
         exit 0
 fi
 
-### 
 #	order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
 #	order of precedence: CLI argument, default code
