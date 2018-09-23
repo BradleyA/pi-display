@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.151.293  2018-09-23_14:04:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.150  
+# 	   done with all open incidents for create-message.sh  turn off DEBUG 
 # 	create-message.sh  3.150.292  2018-09-23_13:43:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.149  
 # 	   added _Usage be to disk and memory because display_lad.py requires close #34 
 # 	create-message.sh  3.149.291  2018-09-23_13:09:19_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.148  
@@ -24,7 +26,7 @@
 # 	create-message.sh  3.135.277  2018-09-21_18:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.134  
 # 	   crap what a bug, LOCAL-HOST link on six was overwritting four and five on the second and thrid run #26 
 ### 
-DEBUG=1                 # 0 = debug off, 1 = debug on
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
