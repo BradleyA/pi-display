@@ -1,10 +1,8 @@
 #!/bin/bash
-# 	create-message.sh  3.145.287  2018-09-22_20:58:41_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.144  
-# 	   added SYSTEMS_FILE for SYSTEMS file to support environment variable 
+# 	create-message.sh  3.146.288  2018-09-22_21:19:39_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.145  
+# 	   added SYSTEMS_FILE for SYSTEMS file to support environment variable completed testing close #33 
 # 	create-message.sh  3.144.286  2018-09-22_15:30:25_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.143  
 # 	   environment support for MESSAGE file close #35 
-# 	create-message.sh  3.143.285  2018-09-22_15:27:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.142  
-# 	   environment support for MESSAGE file 
 # 	create-message.sh  3.142.284  2018-09-22_14:28:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.141  
 # 	   no incidnet while testing source ~/.profile in crontab close #31 
 # 	create-message.sh  3.140.282  2018-09-22_13:18:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.139  
@@ -212,7 +210,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	PAUSED=`grep -i PAUSED ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$PAUSED '{print $2 + v}'`
 	STOPPED=`grep -i STOPPED ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
 	IMAGES=`grep -i IMAGES ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
-	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Add Docker information from $NODE{}" 1>&2 ; fi
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Add Docker information from ${NODE}" 1>&2 ; fi
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES}"
 echo ${MESSAGE} > ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}
