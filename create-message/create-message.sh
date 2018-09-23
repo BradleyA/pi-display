@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.145.287  2018-09-22_20:58:41_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.144  
+# 	   added SYSTEMS_FILE for SYSTEMS file to support environment variable 
 # 	create-message.sh  3.144.286  2018-09-22_15:30:25_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.143  
 # 	   environment support for MESSAGE file close #35 
 # 	create-message.sh  3.143.285  2018-09-22_15:27:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.142  
@@ -16,7 +18,7 @@
 # 	create-message.sh  3.135.277  2018-09-21_18:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.134  
 # 	   crap what a bug, LOCAL-HOST link on six was overwritting four and five on the second and thrid run #26 
 ### 
-DEBUG=0                 # 0 = debug off, 1 = debug on
+DEBUG=1                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
@@ -24,24 +26,23 @@ NORMAL=$(tput -Txterm sgr0)
 ###
 display_help() {
 echo -e "\n${NORMAL}${0} - Store Docker and system information"
-echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>] [<MESSAGE_FILE>]"
-echo    "   ${0} [--help | -help | help | -h | h | -? | ?]"
+echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>] [<MESSAGE_FILE>] [SYSTEMS_FILE]"
+echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION\nThis script stores Docker information about containers and images in a file"
 echo    "on each system in a cluster.  These files are copied to a host and totaled"
-echo    "in a file, /usr/local/data/<cluster-name>/MESSAGE.  The MESSAGE file includes"
+echo    "in a file, /usr/local/data/us-tx-cluster-1/MESSAGE.  The MESSAGE file includes"
 echo    "the total number of containers, running containers, paused containers,"
 echo    "stopped containers, and number of images.  The MESSAGE file is used by a"
 echo    "Raspberry Pi Scroll-pHAT and Scroll-pHAT-HD to display the information."
-echo -e "\nThis script reads /usr/local/data/<cluster-name>/SYSTEMS file for hosts."
+echo -e "\nThis script reads /usr/local/data/us-tx-cluster-1/SYSTEMS file for hosts."
 echo    "The hosts are one FQDN or IP address per line for all hosts in a cluster."
-echo    "Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file"
-echo    "is used by Linux-admin/cluster-command.sh, pi-display/create-message.sh,"
-echo    "user-work-files/bin/find-code.sh and other scripts.  A different path and"
-echo    "cluster command host file can be entered on the command line as the"
-echo    "second argument."
+echo    "Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file is"
+echo    "used by Linux-admin/cluster-command/cluster-command.sh, markit/find-code.sh,"
+echo    "pi-display/create-message/create-message.sh, and other scripts.  A different"
+echo    "SYSTEMS file can be entered on the command line or environment variable."
 echo -e "\nSystem inforamtion about each host is stored in"
-echo    "/usr/local/data/<cluster-name>/<host>.  The system information includes cpu"
+echo    "/usr/local/data/us-tx-cluster-1/<host>.  The system information includes cpu"
 echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, and disk"
 echo    "usage.  The system information will be used by blinkt to display system"
 echo    "information about each system in near real time."
@@ -53,16 +54,18 @@ echo    "line to set the CLUSTER environment variable to 'us-west1'.  Use the co
 echo    "unset CLUSTER to remove the exported information from the CLUSTER environment"
 echo    "variable.  To set an environment variable to be defined at login, add it to"
 echo    "~/.bashrc file or you can modify this script with your default location for"
-echo    "CLUSTER, DATA_DIR, and MESSAGE_FILE.  You are on your own defining environment"
-echo    "variables if you are using other shells."
+echo    "CLUSTER, DATA_DIR, MESSAGE_FILE, and SYSTEMS_FILE.  You are on your own"
+echo    "defining environment variables if you are using other shells."
 echo    "   CLUSTER       (default us-tx-cluster-1/)"
 echo    "   DATA_DIR      (default /usr/local/data/)"
 echo    "   MESSAGE_FILE  (default MESSAGE)"
+echo    "   SYSTEMS_FILE  (default SYSTEMS)"
 echo -e "\nOPTIONS"
 echo    "   CLUSTER       name of cluster directory, default us-tx-cluster-1"
 echo    "   ADMUSER       site SRE administrator, default is user running script"
 echo    "   DATA_DIR      path to cluster data directory, default /usr/local/data/"
 echo    "   MESSAGE_FILE  name of MESSAGE file, default MESSAGE and MESSAGEHD"
+echo    "   SYSTEMS_FILE  name of SYSTEMS file, (default SYSTEMS)"
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES"
 echo -e "   Store message information for a cluster-2\n\n   ${0} cluster-2\n"
@@ -81,7 +84,7 @@ DATE_STAMP=`date +%Y-%m-%d-%H-%M-%S-%Z`
 }
 
 #	Default help and version arguments
-if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
+if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] ; then
         display_help
         exit 0
 fi
@@ -99,8 +102,10 @@ ADMUSER=${2:-${USER}}
 if [ $# -ge  3 ]  ; then DATA_DIR=${3} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
 #	order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  4 ]  ; then MESSAGE_FILE=${4} ; elif [ "${MESSAGE_FILE}" == "" ] ; then MESSAGE_FILE="MESSAGE" ; fi
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< MESSAGE_FILE >${MESSAGE_FILE}<" 1>&2 ; fi
-
+#	order of precedence: CLI argument, environment variable, default code
+if [ $# -ge  5 ]  ; then SYSTEMS_FILE=${5} ; elif [ "${SYSTEMS_FILE}" == "" ] ; then SYSTEMS_FILE="SYSTEMS" ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< MESSAGE_FILE >${MESSAGE_FILE}< SYSTEMS_FILE >${SYSTEMS_FILE}<" 1>&2 ; fi
+#
 CONTAINERS=0
 RUNNING=0
 PAUSED=0
@@ -127,19 +132,18 @@ fi
 touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}  || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${MESSAGE_FILE} file" 1>&2 ; exit 1; }
 touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD  || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${MESSAGE_FILE}HD file" 1>&2 ; exit 1; }
 
-#       Check if SYSTEMS file is on system, one FQDN or IP address per line for all hosts in cluster
-if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] || ! [ -s ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
-	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  SYSTEMS file missing or empty, creating SYSTEMS file with local host." 1>&2
-	echo -e "\tEdit ${DATA_DIR}/${CLUSTER}/SYSTEMS file and add additional hosts that are in the cluster.\n"
-	echo -e "###     List of hosts used by cluster-command.sh & create-message.sh"  > ${DATA_DIR}/${CLUSTER}/SYSTEMS
-	echo -e "#       One FQDN or IP address per line for all hosts in cluster" > ${DATA_DIR}/${CLUSTER}/SYSTEMS
-	echo -e "###" > ${DATA_DIR}/${CLUSTER}/SYSTEMS
-	hostname -f > ${DATA_DIR}/${CLUSTER}/SYSTEMS
+#       Check if ${SYSTEMS_FILE} file is on system, one FQDN or IP address per line for all hosts in cluster
+if ! [ -e ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ] || ! [ -s ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ] ; then
+	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${SYSTEMS_FILE} file missing or empty, creating ${SYSTEMS_FILE} file with local host.  Edit ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file and add additional hosts that are in the cluster." 1>&2
+	echo -e "###     List of hosts used by cluster-command.sh & create-message.sh"  > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
+	echo -e "#       One FQDN or IP address per line for all hosts in cluster" > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
+	echo -e "###" > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
+	hostname -f > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
 fi
 
-#	Loop through host in SYSTEMS file
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Loop through hosts in SYSTEMS file" 1>&2 ; fi
-for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
+#	Loop through hosts in ${SYSTEMS_FILE} file
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Loop through hosts in ${SYSTEMS_FILE} file" 1>&2 ; fi
+for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  host >${NODE}<" 1>&2
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
@@ -172,10 +176,10 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
 			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER}
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Copy SYSTEMS file from ${LOCALHOST} to ${NODE} " 1>&2 ; fi
-			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/SYSTEMS ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Copy ${SYSTEMS_FILE} file from ${LOCALHOST} to ${NODE} " 1>&2 ; fi
+			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}
 		else
-			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port." 1>&2
+			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
 			touch ${DATA_DIR}/${CLUSTER}/${NODE}
 		fi
 	else
@@ -200,7 +204,8 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		cd ${DATA_DIR}/${CLUSTER}
-		rm LOCAL-HOST	# bug fix #26
+		#       Check if LOCAL-HOST file is on system
+		if [ -e LOCAL-HOST ] ; then rm LOCAL-HOST ; fi	# bad bug fix #26
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
@@ -214,9 +219,9 @@ echo ${MESSAGE} > ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}
 cp ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE} ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
 tail -n +6 ${DATA_DIR}/${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
 
-#	Loop through hosts in SYSTEMS file and update other host information
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Loop through hosts in SYSTEMS file and update other host information" 1>&2 ; fi
-for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
+#	Loop through hosts in ${SYSTEMS_FILE} file and update other host information
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Loop through hosts in ${SYSTEMS_FILE} file and update other host information" 1>&2 ; fi
+for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Copy file to host ${NODE}" 1>&2
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
@@ -226,7 +231,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/SYSTEMS | grep -v "#" ); do
 			TEMP="cd ${DATA_DIR}/${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 		else
-			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/SYSTEMS file is not responding to ${LOCALHOST} on ssh port." 1>&2
+			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
 		fi
 	fi
 done
