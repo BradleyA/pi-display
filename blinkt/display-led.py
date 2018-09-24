@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.155.297  2018-09-24_18:30:14_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.154  
+# 	   start working on display_help #28 
 # 	display-led.py  3.154.296  2018-09-23_21:01:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.153  
 # 	   second cut at adding template.py #28 
 # 	display-led.py  3.153.295  2018-09-23_20:54:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.152  
@@ -37,8 +39,8 @@ class color:
 LANGUAGE = os.getenv("LANG")
 def display_help():
    LANGUAGE = os.getenv("LANG")
-   print ("\n{} - <one line description>".format( __file__))
-   print ("\nUSAGE\n   {} [xxx | yyy | zzz]".format(__file__))
+   print ("\n{} - display system status on blinkt".format( __file__))
+   print ("\nUSAGE\n   {} [<CLUSTER>] [<DATA_DIR>]".format(__file__))
    print ("   {} [--help | -help | help | -h | h | -?]".format(__file__))
    print ("   {} [--version | -version | -v]".format(__file__))
    print ("\nDESCRIPTION\n<<your help output goes here>>")
@@ -90,19 +92,6 @@ if no_arguments == 2 :
 #  DEBUG example
 import platform
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, platform.python_version()))
-
-# >>>	need to edit this from scrollphat
-#  import scrollphat and check if scrollphat installed 
-try :
-   import scrollphat
-except ImportError :
-   if sys.version_info[0] < 3 :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Library scrollphat required. To install:\n\tsudo apt-get install python-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
-   elif sys.version_info[0] == 3 :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  Library scrollphat required. To install:\n\tsudo apt-get install python3-scrollphat".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
-except IOError :
-      sys.exit("\n{}{} {} {}[ERROR]{}  {}  No such file or directory.  Is scrollphat installed on raspberry pi?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
-
 
 # >>>   need to edit this from scrollphat
 #  if argument; use argument -> do not use default or environment variables for MESSAGE
