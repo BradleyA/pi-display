@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.154.296  2018-09-23_21:01:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.153  
+# 	   second cut at adding template.py #28 
 # 	display-led.py  3.153.295  2018-09-23_20:54:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.152  
 # 	   first cut at adding template.py #28 
 # 	display-led.py  3.152.294  2018-09-23_20:28:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.151  
@@ -139,15 +141,24 @@ else :
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE))
 
 
+# >>>   need to edit this from scrollphat
+#  Read TEMP_FILE contents and return contents
+def get_msg(TEMP_FILE) :
+   print ("\n{}{} {} {}[INFO]{}  {}  Reading MESSAGE file >{}<".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), TEMP_FILE))
+   file = open(TEMP_FILE,"r")
+   CONTENT = file.read()
+   file.close()
+   CONTENT = CONTENT.rstrip('\n')
+   return CONTENT
 
+
+###
 CLUSTER = "us-tx-cluster-1/"
 DATA_DIR = "/usr/local/data/"
 import socket
 FILE_NAME = socket.getfqdn()
 FILE_NAME = DATA_DIR + "/" + CLUSTER + "/" + FILE_NAME
 if DEBUG == 1 : print (">{} DEBUG{} {}  FILE_NAME >{}< FILE_NAME >{}<".format(color.BOLD, color.END, get_line_no(), FILE_NAME, FILE_NAME))
-
-
 
 
 from blinkt import set_clear_on_exit, set_pixel, show, clear
@@ -317,4 +328,6 @@ time.sleep(10) # 1 = 1 second
 #	status6(5)
 #   status6(6)
 #   status6(7)
+###
+print ("\n{}{} {} {}[INFO]{}  {}  Done.\n".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
 ###
