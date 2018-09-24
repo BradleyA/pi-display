@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.152.294  2018-09-23_20:28:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.151  
+# 	   correct run error close #38 
 # 	display-led.py  3.141.283  2018-09-22_13:30:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.140  
 # 	   set python3 remove \n from logging information 
 # 	display-led.py  3.106.248  2018-09-12_21:40:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.105  
@@ -17,7 +19,7 @@
 #	Other containers will update a volume that this container mounts
 #		and reads (LED_number, Level)
 ###
-DEBUG = 0       # 0 = debug off, 1 = debug on
+DEBUG = 1       # 0 = debug off, 1 = debug on
 #
 from blinkt import set_clear_on_exit, set_pixel, show, clear
 
@@ -84,10 +86,10 @@ if DEBUG == 1 : print (">{} DEBUG{} {}  Name_of_command >{}<".format(color.BOLD,
 # >>> #
 CLUSTER = "us-tx-cluster-1/"
 DATA_DIR = "/usr/local/data/"
-FILE_NAME = subprocess.check_output("hostname -f", shell=True)
-# >>> #
-FILE_NAME = DATA_DIR + CLUSTER + FILE_NAME
-if DEBUG == 1 : print (">{} DEBUG{} {}  FILE_NAME >{}<".format(color.BOLD,color.END,get_line_no(),FILE_NAME))
+import socket
+FILE_NAME = socket.getfqdn()
+FILE_NAME = DATA_DIR + "/" + CLUSTER + "/" + FILE_NAME
+if DEBUG == 1 : print (">{} DEBUG{} {}  FILE_NAME >{}< FILE_NAME >{}<".format(color.BOLD, color.END, get_line_no(), FILE_NAME, FILE_NAME))
 #
 set_clear_on_exit()
 #   Normal services and operations

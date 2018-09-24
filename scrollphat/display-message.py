@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	../scrollphat/display-message.py  3.152.294  2018-09-23_20:28:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.151  
+# 	   correct run error close #38 
 # 	../scrollphat/display-message.py  3.138.280  2018-09-21_22:53:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.137  
 # 	   added / in path so i user does not with environment varibales or arguments 
 # 	display-message.py  3.130.272  2018-09-20_22:20:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.129  
@@ -35,6 +37,9 @@ def display_help() :
    print ("\nEnvironment Variables")
    print ("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
    print ("line to set the CLUSTER environment variable.  Use the -n option with export")
+
+# >>>	need to change to unset CLUSTER not export -n CLUSTER
+
    print ("to remove the exported information from the CLUSTER environment variable;")
    print ("export -n CLUSTER.  Setting an environment variable to be defined at login")
    print ("by adding it to ~/.bashrc file or you can just modify the script with your")
