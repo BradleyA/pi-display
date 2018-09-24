@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	../scrollphat/display-message.py  3.153.295  2018-09-23_20:54:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.152  
+# 	   first cut at adding template.py #28 
 # 	../scrollphat/display-message.py  3.152.294  2018-09-23_20:28:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.151  
 # 	   correct run error close #38 
 # 	../scrollphat/display-message.py  3.138.280  2018-09-21_22:53:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.137  
@@ -15,13 +17,13 @@ import os
 ###
 class color :
    BOLD = '\033[1m'
-   END = '\033[0m'
+   END  = '\033[0m'
 ###
 LANGUAGE = os.getenv("LANG")
 def display_help() :
    print ("\n{} - display contents of MESSAGE file".format( __file__))
    print ("\nUSAGE\n   {} [<MESSAGE_FILE>]".format(__file__))
-   print ("   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
+   print ("   {} [--help | -help | help | -h | h | -?]".format(__file__))
    print ("   {} [--version | -version | -v]".format(__file__))
    print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/us-tx-cluster-1/MESSAGE (default)")
    print ("file on a Pimoroni Scroll-pHAT.  The Pimoroni Scroll-pHAT is attatched to a")
