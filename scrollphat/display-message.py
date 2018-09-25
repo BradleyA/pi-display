@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
-# 	../scrollphat/display-message.py  3.159.301  2018-09-25_10:31:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.158  
-# 	   minor changes to display_help 
-# 	../scrollphat/display-message.py  3.153.295  2018-09-23_20:54:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.152  
-# 	   first cut at adding template.py #28 
-# 	../scrollphat/display-message.py  3.152.294  2018-09-23_20:28:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.151  
-# 	   correct run error close #38 
-# 	../scrollphat/display-message.py  3.138.280  2018-09-21_22:53:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.137  
-# 	   added / in path so i user does not with environment varibales or arguments 
-# 	display-message.py  3.130.272  2018-09-20_22:20:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.129  
-# 	   get_msg change DEBUG print to INFO 
+# 	display-message.py  3.160.302  2018-09-25_10:37:56_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.159  
+# 	   scrollphat/display-message.py correct display_help close #39 
 ###
 DEBUG = 0       # 0 = debug off, 1 = debug on
 #
@@ -40,15 +32,12 @@ def display_help() :
    print ("containers, stopped containers, and number of images in the cluster.")
    print ("\nEnvironment Variables")
    print ("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
-   print ("line to set the CLUSTER environment variable.  Use the -n option with export")
-
-# >>>	need to change to unset CLUSTER not export -n CLUSTER
-
-   print ("to remove the exported information from the CLUSTER environment variable;")
-   print ("export -n CLUSTER.  Setting an environment variable to be defined at login")
-   print ("by adding it to ~/.bashrc file or you can just modify the script with your")
-   print ("default location for DATA_DIR, CLUSTER, and MESSAGE_FILE.  You are on your")
-   print ("own defining environment variables if you are using other shells.")
+   print ("line to set the CLUSTER environment variable.  Use the command, unset CLUSTER")
+   print ("to remove the exported information from the CLUSTER environment variable.")
+   print ("Setting an environment variable to be defined at login by adding it to")
+   print ("~/.bashrc file or you can just modify the script with your default location")
+   print ("for CLUSTER and DATA_DIR.  You are on your own defining environment variables")
+   print ("if you are using other shells.")
    print ("   DATA_DIR      (default absolute path /usr/local/data/)")
    print ("   CLUSTER       (default us-tx-cluster-1/)")
    print ("   MESSAGE_FILE  (default MESSAGE)")
