@@ -1,26 +1,8 @@
 #!/usr/bin/env python3
-# 	display-led.py  3.158.300  2018-09-24_22:06:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.157  
-# 	   complete template.py changes close #28 
-# 	display-led.py  3.157.299  2018-09-24_20:09:19_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.156  
-# 	   completed display_help for display-led.py #28 
-# 	display-led.py  3.155.297  2018-09-24_18:30:14_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.154  
-# 	   start working on display_help #28 
-# 	display-led.py  3.154.296  2018-09-23_21:01:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.153  
-# 	   second cut at adding template.py #28 
-# 	display-led.py  3.153.295  2018-09-23_20:54:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.152  
-# 	   first cut at adding template.py #28 
-# 	display-led.py  3.152.294  2018-09-23_20:28:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.151  
-# 	   correct run error close #38 
-# 	display-led.py  3.141.283  2018-09-22_13:30:59_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.140  
-# 	   set python3 remove \n from logging information 
-# 	display-led.py  3.106.248  2018-09-12_21:40:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.105  
-# 	   display-led.py needs more adding template.py 
-# 	display-led.py  3.105.247  2018-09-12_21:04:15_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.104-2-g5f62b1a  
-# 	   added python template 
-# 	display-led.py  3.104.244  2018-09-12_20:46:52_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.103  
-# 	   change sleep from 4 to 10 for display-led 
+# 	display-led.py  3.159.301  2018-09-25_10:31:06_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.158  
+# 	   minor changes to display_help 
 ###
-#	The final design should control an Blinkt LED bar and
+#	The final design should control an Blinkt LED bar on Raspberry pi and
 #		display information for a second
 #		So this means it will take 8 seconds to display all LEDS?
 #	Each color level function will exit with the primary color on
@@ -61,10 +43,10 @@ def display_help():
    print ("for CLUSTER and DATA_DIR.  You are on your own defining environment variables")
    print ("if you are using other shells.")
    print ("   CLUSTER       (default us-tx-cluster-1/)")
-   print ("   DATA_DIR      (default /usr/local/data/)")
+   print ("   DATA_DIR      (default absolute path /usr/local/data/)")
    print ("\nOPTIONS")
-   print ("   CLUSTER       name of cluster directory, default us-tx-cluster-1")
-   print ("   DATA_DIR      path to cluster data directory, default /usr/local/data/")
+   print ("   CLUSTER       name of cluster directory, default us-tx-cluster-1/")
+   print ("   DATA_DIR      absolute path to cluster data directory, default /usr/local/data/")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/blinkt")
    print ("\nEXAMPLES\n   Display contents using default file and path\n")
    print ("   {} \n".format(__file__))
@@ -298,7 +280,7 @@ with open(FILE_NAME) as f:
    for line in f:
       process(line)
 
-time.sleep(10) # 1 = 1 second
+time.sleep(7) # 1 = 1 second
 
 # >>>  need to replace path and file name with variables
 #    file = open(FILE_NAME,"r")
