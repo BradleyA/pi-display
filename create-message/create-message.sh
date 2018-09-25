@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.156.298  2018-09-24_19:19:51_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.155  
+# 	   changes to display_help 
 # 	create-message.sh  3.151.293  2018-09-23_14:04:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.150  
 # 	   done with all open incidents for create-message.sh  turn off DEBUG 
 # 	create-message.sh  3.150.292  2018-09-23_13:43:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.149  
@@ -37,12 +39,15 @@ echo -e "\n${NORMAL}${0} - Store Docker and system information"
 echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>] [<MESSAGE_FILE>] [SYSTEMS_FILE]"
 echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
-echo -e "\nDESCRIPTION\nThis script stores Docker information about containers and images in a file"
-echo    "on each system in a cluster.  These files are copied to a host and totaled"
-echo    "in a file, /usr/local/data/us-tx-cluster-1/MESSAGE.  The MESSAGE file includes"
-echo    "the total number of containers, running containers, paused containers,"
-echo    "stopped containers, and number of images.  The MESSAGE file is used by a"
-echo    "Raspberry Pi Scroll-pHAT and Scroll-pHAT-HD to display the information."
+echo -e "\nDESCRIPTION\nThis script stores Docker information and system information in a file,"
+echo    "/usr/local/data/us-tx-cluster-1/<hostname>, on each system in SYSTEMS_FILE."
+echo    "These <hostname> files are copied to a host and totaled in a file,"
+echo    "/usr/local/data/us-tx-cluster-1/MESSAGE and MESSAGEHD.  The MESSAGE files"
+echo    "includes the total number of containers, running containers, paused containers,"
+echo    "stopped containers, and number of images.  The MESSAGE files are used by a"
+echo    "Raspberry Pi with Pimoroni Scroll-pHAT or Pimoroni Scroll-pHAT-HD to display"
+echo    "the information.  The <hostname> file on each system is used by a Raspberry Pi"
+echo    "with a Pimoroni blinkt."
 echo -e "\nThis script reads /usr/local/data/us-tx-cluster-1/SYSTEMS file for hosts."
 echo    "The hosts are one FQDN or IP address per line for all hosts in a cluster."
 echo    "Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file is"
@@ -50,9 +55,9 @@ echo    "used by Linux-admin/cluster-command/cluster-command.sh, markit/find-cod
 echo    "pi-display/create-message/create-message.sh, and other scripts.  A different"
 echo    "SYSTEMS file can be entered on the command line or environment variable."
 echo -e "\nSystem inforamtion about each host is stored in"
-echo    "/usr/local/data/us-tx-cluster-1/<host>.  The system information includes cpu"
-echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, and disk"
-echo    "usage.  The system information will be used by blinkt to display system"
+echo    "/usr/local/data/us-tx-cluster-1/<hostname>.  The system information includes"
+echo    "cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and"
+echo    "disk usage.  The system information will be used by blinkt to display system"
 echo    "information about each system in near real time."
 echo -e "\nTo avoid many login prompts for each host in a cluster, enter the following:"
 echo    "${BOLD}ssh-copy-id uadmin@<host-name>${NORMAL} to each host in the SYSTEMS file."
