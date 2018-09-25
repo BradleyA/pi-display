@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.158.300  2018-09-24_22:06:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.157  
+# 	   complete template.py changes close #28 
 # 	display-led.py  3.157.299  2018-09-24_20:09:19_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.156  
 # 	   completed display_help for display-led.py #28 
 # 	display-led.py  3.155.297  2018-09-24_18:30:14_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.154  
@@ -104,77 +106,57 @@ if no_arguments == 2 :
 import platform
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, platform.python_version()))
 
-# >>>   need to edit this from scrollphat
-#  if argument; use argument -> do not use default or environment variables for MESSAGE
-if no_arguments == 2 :
-#  Set non-default MESSAGE file including path
-   MESSAGE = sys.argv[1]
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE))
-else :
-#  if no argument; -> use default if environment variables not defined
-   #  Check DATA_DIR; set using os environment variable
-   if "DATA_DIR" in os.environ :
-      DATA_DIR = os.getenv("DATA_DIR")
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable DATA_DIR >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), DATA_DIR))
-   else :
-   #  Set DATA_DIR with default
-      DATA_DIR = "/usr/local/data/"
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), DATA_DIR))
-   if "CLUSTER" in os.environ :
+#  if argument; use argument -> do not use environment variables or default for CLUSTER
+if no_arguments >= 2 :
+   CLUSTER = sys.argv[1]
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using 1 argument CLUSTER >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), CLUSTER))
+elif "CLUSTER" in os.environ :
    #  Check CLUSTER; set using os environment variable
-      CLUSTER = os.getenv("CLUSTER")
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable CLUSTER >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), CLUSTER))
-   else :
+   CLUSTER = os.getenv("CLUSTER")
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable CLUSTER >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), CLUSTER))
+else :
    #  Set CLUSTER with default
-      CLUSTER = "us-tx-cluster-1/"
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable CLUSTER NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), CLUSTER))
-   if "MESSAGE_FILE" in os.environ :
-   #  Check MESSAGE_FILE; set using os environment variable
-      MESSAGE_FILE = os.getenv("MESSAGE_FILE")
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable MESSAGE_FILE >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE_FILE))
-   else :
-   #  Set MESSAGE_FILE with default
-      MESSAGE_FILE = "MESSAGE"
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable MESSAGE_FILE NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE_FILE))
-   #  Set MESSAGE with absolute path
-   MESSAGE = DATA_DIR + "/" + CLUSTER + "/" + MESSAGE_FILE
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGE))
+   CLUSTER = "us-tx-cluster-1/"
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable CLUSTER NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), CLUSTER))
 
+#  if argument; use argument -> do not use environment variables or default for DATA_DIR
+if no_arguments == 3 :
+   DATA_DIR = sys.argv[2]
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using 2 argument DATA_DIR >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), DATA_DIR))
+elif "DATA_DIR" in os.environ :
+   #  Check DATA_DIR; set using os environment variable
+   DATA_DIR = os.getenv("DATA_DIR")
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using environment variable DATA_DIR >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), DATA_DIR))
+else :
+   #  Set DATA_DIR with default
+   DATA_DIR = "/usr/local/data/"
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), DATA_DIR))
 
-# >>>   need to edit this from scrollphat
-#  Read TEMP_FILE contents and return contents
-def get_msg(TEMP_FILE) :
-   print ("\n{}{} {} {}[INFO]{}  {}  Reading MESSAGE file >{}<".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), TEMP_FILE))
-   file = open(TEMP_FILE,"r")
-   CONTENT = file.read()
-   file.close()
-   CONTENT = CONTENT.rstrip('\n')
-   return CONTENT
+#  Return a fully qualified domain name
+import socket
+LOCALHOST = socket.getfqdn()
 
+#
+FILE_NAME = DATA_DIR + "/" + CLUSTER + "/" + LOCALHOST
+if DEBUG == 1 : print (">{} DEBUG{} {}  FILE_NAME >{}<".format(color.BOLD, color.END, get_line_no(), FILE_NAME, FILE_NAME))
 
 ###
-CLUSTER = "us-tx-cluster-1/"
-DATA_DIR = "/usr/local/data/"
-import socket
-FILE_NAME = socket.getfqdn()
-FILE_NAME = DATA_DIR + "/" + CLUSTER + "/" + FILE_NAME
-if DEBUG == 1 : print (">{} DEBUG{} {}  FILE_NAME >{}< FILE_NAME >{}<".format(color.BOLD, color.END, get_line_no(), FILE_NAME, FILE_NAME))
-
-
 from blinkt import set_clear_on_exit, set_pixel, show, clear
 #
 set_clear_on_exit()
+
+def status1(LED_number):
 #   Normal services and operations
 #	GREEN : no known incidents
 #   LED_number argument 0-7
-def status1(LED_number):
     set_pixel(LED_number, 0, 255, 0, 0.2)
     show()
     return();
+
+def status2(LED_number):
 #   Incidents causing no disruption to overall services and operations
 #	LIGHT GREEN : an incident (watch)
 #   LED_number argument 0-7
-def status2(LED_number):
     for i in range(0, 5):
         set_pixel(LED_number, 0, 0, 0, 0)
         show()
@@ -183,10 +165,11 @@ def status2(LED_number):
         show()
         time.sleep(0.15) # 1 = 1 second
     return();
+
+def status3(LED_number):
 #  Active incident with minimal affect to overall services and operations
 #	YELLOW : additional incidents WARNING (alert)
 #   LED_number argument 0-7
-def status3(LED_number):
     for i in range(0, 5):
         set_pixel(LED_number, 0, 255, 0, 0.8)
         show()
@@ -198,10 +181,11 @@ def status3(LED_number):
         show()
         time.sleep(0.15) # 1 = 1 second
     return();
+
+def status4(LED_number):
 #   Active emergency incidents causing significant impact to operations and possiable service disruptions
 #	ORANGE : CRITICAL ERROR
 #   LED_number argument 0-7
-def status4(LED_number):
     for i in range(0,10):
         set_pixel(LED_number, 255, 255, 0, 0.8)
         show()
@@ -213,10 +197,11 @@ def status4(LED_number):
         show()
         time.sleep(0.05) # 1 = 1 second
     return();
+
+def status5(LED_number):
 #   Active emergency incidents causing multiple impaired operations amd unavoidable severe service disruptions
 #	RED : Emergency Conditions : FATAL ERROR : 
 #   LED_number argument 0-7
-def status5(LED_number):
     for i in range(0,10):
         set_pixel(LED_number, 255, 35, 0, 0.8)
         show()
@@ -228,21 +213,24 @@ def status5(LED_number):
         show()
         time.sleep(0.05) # 1 = 1 second
     return();
+
+def status6(LED_number):
 #
 #       VIOLET : the statistic is  WARNING (alert)
 #   LED_number argument 0-7
-def status6(LED_number):
     set_pixel(LED_number, 127, 0, 255, 0.1)
     show()
     time.sleep(2) # 1 = 1 second
     return();
-#   process information
+
 def process(line):
+#   process information
 #    print("in process information function")
     if 'celsius:' in line.lower():
         #   print(line[line.find(':')+2:])
         VALUE = float(line[line.find(':')+2:])
         LED_number = 7
+        if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  celsius: VALUE >{}< LED_number >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), VALUE, LED_number))
         if   VALUE < 48.5 : # < 48.5 C 119.3  1
             status1(LED_number)
         elif VALUE < 59   : # < 59 C   138.2  2
@@ -257,6 +245,7 @@ def process(line):
         #   print(line[line.find(':')+2:])
         VALUE = int(line[line.find(':')+2:])
         LED_number = 6
+        if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  cpu_usage: VALUE >{}< LED_number >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), VALUE, LED_number))
         if   VALUE < 70 : # < 70 %
             status1(LED_number)
         elif VALUE < 80 : # < 80 %
@@ -271,6 +260,7 @@ def process(line):
         #   print(line.split(' ')[2])
         VALUE = int(line.split(' ')[2])
         LED_number = 5
+        if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  memory_usage: VALUE >{}< LED_number >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), VALUE, LED_number))
         if   VALUE < 70 : # < 70 %
             status1(LED_number)
         elif VALUE < 80 : # < 80 %
@@ -285,6 +275,7 @@ def process(line):
         #   print(line.split(' ')[2])
         VALUE = int(line.split(' ')[2])
         LED_number = 4
+        if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  disk_usage: VALUE >{}< LED_number >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), VALUE, LED_number))
         if   VALUE < 70 : # < 70 %
             status1(LED_number)
         elif VALUE < 80 : # < 80 %
@@ -301,7 +292,8 @@ def process(line):
 #   read file and process information
 # >>>  need to replace path and file name with variables
 #	>> how to find hostname and set variable
-with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
+#	with open('/usr/local/data/us-tx-cluster-1/two-rpi3b.cptx86.com') as f:
+with open(FILE_NAME) as f:
    print ("{}{} {} {}[INFO]{}  {} {} ".format(color.END,__file__,get_line_no(),color.BOLD,color.END,time.strftime("%Y-%m-%d-%H-%M-%S-%Z"),FILE_NAME))
    for line in f:
       process(line)
