@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.157.299  2018-09-24_20:09:19_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.156  
+# 	   completed display_help for display-led.py #28 
 # 	display-led.py  3.155.297  2018-09-24_18:30:14_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.154  
 # 	   start working on display_help #28 
 # 	display-led.py  3.154.296  2018-09-23_21:01:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.153  
@@ -43,18 +45,27 @@ def display_help():
    print ("\nUSAGE\n   {} [<CLUSTER>] [<DATA_DIR>]".format(__file__))
    print ("   {} [--help | -help | help | -h | h | -?]".format(__file__))
    print ("   {} [--version | -version | -v]".format(__file__))
-   print ("\nDESCRIPTION\n<<your help output goes here>>")
-
+   print ("\nDESCRIPTION\nThis script displays the system information stored in a file,")
+   print ("/usr/local/data/us-tx-cluster-1/<hostname>, on each system.  The system")
+   print ("information is displayed using a Raspberry Pi with Pimoroni Blinkt.  The system")
+   print ("information includes cpu temperature in Celsius and Fahrenheit, the system")
+   print ("load, memory usage, and disk usage.")
    print ("\nEnvironment Variables")
    print ("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
-   print ("line to set the CLUSTER environment variable.  Use the -n option with export")
-
-# >>>   need to change to unset CLUSTER not export -n CLUSTER
-
-   print ("\nOPTIONS\n   <<your options go here>>")
-   print ("\nDOCUMENTATION\n   <<URL to GITHUB README>>")
-   print ("\nEXAMPLES\n   <<your code examples description goes here>>")
-   print ("   {} <<code example goes here>>\n".format(__file__))
+   print ("line to set the CLUSTER environment variable.  Use the command, unset CLUSTER")
+   print ("to remove the exported information from the CLUSTER environment variable.")
+   print ("Setting an environment variable to be defined at login by adding it to")
+   print ("~/.bashrc file or you can just modify the script with your default location")
+   print ("for CLUSTER and DATA_DIR.  You are on your own defining environment variables")
+   print ("if you are using other shells.")
+   print ("   CLUSTER       (default us-tx-cluster-1/)")
+   print ("   DATA_DIR      (default /usr/local/data/)")
+   print ("\nOPTIONS")
+   print ("   CLUSTER       name of cluster directory, default us-tx-cluster-1")
+   print ("   DATA_DIR      path to cluster data directory, default /usr/local/data/")
+   print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/blinkt")
+   print ("\nEXAMPLES\n   Display contents using default file and path\n")
+   print ("   {} \n".format(__file__))
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
       print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), LANGUAGE))
