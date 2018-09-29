@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+# 	display-message-hd.py  3.167.309  2018-09-29_13:01:35_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.166  
+# 	   splitlines works for dsiplay_message-hd.py NOT rstrip close #41 
 # 	display-message-hd.py  3.166.308  2018-09-28_22:59:21_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.165  
 # 	   still not clearing previous string placement 
 # 	display-message-hd.py  3.165.307  2018-09-28_22:49:27_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.164  
@@ -79,7 +81,7 @@ from platform import python_version
 #
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, python_version()))
 
-#
+# >>>>	check about moving this code import down
 import signal
 import scrollphathd
 from scrollphathd.fonts import font3x5
@@ -95,21 +97,13 @@ if no_arguments == 2 :
 else :
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGEHD file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGEHD_file))
 
-#  Read TEMP_FILE contents and return contents
+#  Read TEMP_FILE contents and return contents #41
 def get_msg(TEMP_FILE) :
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), TEMP_FILE))
    file = open(TEMP_FILE,"r")
    CONTENT = file.read().splitlines()
    file.close()
-# >>>	   CONTENT = CONTENT.rstrip('\n') #25
    return CONTENT
-
-# >>>  replace this with the code above, need to test be for deleting because of splitlines() function required before upgrade #25
-#	def get_msg():
-#	   with open(MESSAGEHD_file,"r") as file:
-#	      temp = file.read().splitlines()
-#	      if DEBUG == 1 : print ("> {}DEBUG{} {}  File contents >{}<".format(color.BOLD,color.END,get_line_no(),temp))
-#	   return temp
 
 ### 
 scrollphathd.set_clear_on_exit()
@@ -125,28 +119,26 @@ delay = 0.03
 #  Determine how far apart each line should be spaced vertically
 line_height = scrollphathd.DISPLAY_HEIGHT + 2
 #
-###
-# >>>	#25 display-message-hd.py reread date file at the beginning of each loop #25
-###
 while True:
    #  Store the left offset for each subsequent line (starts at the end of the last line)
    offset_left = 0
    #  Get message from MESSAGEHD file created by create-message.sh
-   lines = ""	#   clear previous test from line (memory buffer?) #19
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Show lines >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lines)) # 19
    lines = get_msg(MESSAGEHD_file)
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Show lines >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lines)) # 19
-   # >>> #19
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Show lines >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lines)) #25
    #  Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
    #  Draw each line in lines to the Scroll pHAT HD buffer
    #  scrollphathd.write_string returns the length of the written string in pixels
    #  we can use this length to calculate the offset of the next line
    #  and will also use it later for the scrolling effect.
    lengths = [0] * len(lines)
+
+   scrollphathd.fill(0,0,6)  #25
+
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<  ".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lengths, offset_left, line_height)) #25
    for line, text in enumerate(lines):
       lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
       offset_left += lengths[line]
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}   WHAT IS THIS >>>??? for line loop {}  offset_left ->{}<-".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), line, line,offset_left))
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  After 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<  ".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lengths, offset_left, line_height)) #25
    #  This adds a little bit of horizontal/vertical padding into the buffer at
    #  the very bottom right of the last line to keep things wrapping nicely.
    scrollphathd.set_pixel(offset_left - 1, (len(lines) * line_height) - 1, 0)
@@ -183,6 +175,7 @@ while True:
             pos_y += 1
             scrollphathd.show()
             time.sleep(delay)
-###
-#  Example Done
+
+#  Done
 print ("{}{} {} {}[INFO]{}  {}  Done.".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
+###
