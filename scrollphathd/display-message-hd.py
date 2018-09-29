@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message-hd.py  3.172.314  2018-09-29_18:46:10_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.171  
+# 	   update print for INFO DEBUG 
 # 	display-message-hd.py  3.171.313  2018-09-29_17:49:30_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.170  
 # 	   update Begin script INFO #25 
 ###
@@ -79,7 +81,8 @@ print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Begin".format(color.END, get_da
 #  DEBUG example
 from platform import python_version
 #
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, python_version()))
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Version of python >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), python_version()))
+
 
 # >>>	#40
 #  Set default MESSAGEHD file with path
@@ -88,13 +91,13 @@ MESSAGEHD_file = "/usr/local/data/us-tx-cluster-1/MESSAGEHD"
 #  Check argument 1 for non-default MESSAGEHD file
 if no_arguments == 2 :
    MESSAGEHD_file = sys.argv[1]
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGEHD file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGEHD_file))
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), MESSAGEHD_file))
 else :
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGEHD file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGEHD_file))
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), MESSAGEHD_file))
 
 #  Read TEMP_FILE contents and return contents #41
 def get_msg(TEMP_FILE) :
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), TEMP_FILE))
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Reading MESSAGE file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), TEMP_FILE))
    file = open(TEMP_FILE,"r")
    CONTENT = file.read().splitlines()
    file.close()
@@ -123,7 +126,7 @@ while True:
    offset_left = 0
    #  Get message from MESSAGEHD file created by create-message.sh
    lines = get_msg(MESSAGEHD_file)
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Show lines >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lines)) #25
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Show lines >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), lines))  #25
    #  Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
    #  Draw each line in lines to the Scroll pHAT HD buffer
    #  scrollphathd.write_string returns the length of the written string in pixels
@@ -132,11 +135,11 @@ while True:
    lengths = [0] * len(lines)
    #  
    scrollphathd.fill(0,0,0)  #25
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<  ".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lengths, offset_left, line_height)) #25
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), lengths, offset_left, line_height))  #25
    for line, text in enumerate(lines):
       lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
       offset_left += lengths[line]
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  After 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<  ".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lengths, offset_left, line_height)) #25
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  After 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), lengths, offset_left, line_height))  #25
    #  This adds a little bit of horizontal/vertical padding into the buffer at
    #  the very bottom right of the last line to keep things wrapping nicely.
    scrollphathd.set_pixel(offset_left - 1, (len(lines) * line_height) - 1, 0)
@@ -173,5 +176,5 @@ while True:
             time.sleep(delay)
 
 #  Done
-print ("{}{} {} version {} {}[INFO]{}  {}  {}  Done.".format(color.END, get_date_stamp(), __file__, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getuid()))
+print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid()))
 ###
