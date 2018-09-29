@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message-hd.py  3.164.306  2018-09-28_22:39:36_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.163  
+# 	   update 2 print DEBUG statements #25 
 # 	display-message-hd.py  3.163.305  2018-09-28_22:25:26_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.162  
 # 	   add template.py function and formating 
 # 	display-message-hd.py  3.103.243  2018-09-11_00:21:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.102  
@@ -138,7 +140,7 @@ while True:
    for line, text in enumerate(lines):
       lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
       offset_left += lengths[line]
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  START for line loop {}  offset_left ->{}<- ".format(color.BOLD,color.END,get_line_no(),line,offset_left))
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}   WHAT IS THIS >>>??? for line loop {}  offset_left ->{}<-".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), line, line,offset_left))
    #  This adds a little bit of horizontal/vertical padding into the buffer at
    #  the very bottom right of the last line to keep things wrapping nicely.
    scrollphathd.set_pixel(offset_left - 1, (len(lines) * line_height) - 1, 0)
@@ -176,3 +178,5 @@ while True:
             scrollphathd.show()
             time.sleep(delay)
 ###
+#  Example Done
+print ("{}{} {} {}[INFO]{}  {}  Done.".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
