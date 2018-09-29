@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message-hd.py  3.165.307  2018-09-28_22:49:27_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.164  
+# 	   update DEBUG and CONTENT, scroll phat working, need to test overlap incident #25 
 # 	display-message-hd.py  3.164.306  2018-09-28_22:39:36_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.163  
 # 	   update 2 print DEBUG statements #25 
 # 	display-message-hd.py  3.163.305  2018-09-28_22:25:26_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.162  
@@ -95,12 +97,12 @@ else :
 def get_msg(TEMP_FILE) :
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), TEMP_FILE))
    file = open(TEMP_FILE,"r")
-   CONTENT = file.read()
+   CONTENT = file.read().splitlines()
    file.close()
-   CONTENT = CONTENT.rstrip('\n')
+# >>>	   CONTENT = CONTENT.rstrip('\n') #25
    return CONTENT
 
-#  replace this with the code above, need to test be for deleting because of splitlines() function required before upgrade
+# >>>  replace this with the code above, need to test be for deleting because of splitlines() function required before upgrade #25
 #	def get_msg():
 #	   with open(MESSAGEHD_file,"r") as file:
 #	      temp = file.read().splitlines()
@@ -129,8 +131,9 @@ while True:
    offset_left = 0
    #  Get message from MESSAGEHD file created by create-message.sh
    lines = ""	#   clear previous test from line (memory buffer?) #19
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Show lines >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), ,lines))
    lines = get_msg(MESSAGEHD_file)
-   if DEBUG == 1 : print ("> {}DEBUG{} {}  Show lines >{}<".format(color.BOLD,color.END,get_line_no(),lines))
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Show lines >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), ,lines))
    #  Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
    #  Draw each line in lines to the Scroll pHAT HD buffer
    #  scrollphathd.write_string returns the length of the written string in pixels
