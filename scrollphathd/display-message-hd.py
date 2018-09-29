@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	display-message-hd.py  3.163.305  2018-09-28_22:25:26_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.162  
+# 	   add template.py function and formating 
 # 	display-message-hd.py  3.103.243  2018-09-11_00:21:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.102  
 # 	   need more testing to stop font overlap setting rewind to False did not corrent incident 
 # 	display-message-hd.py  3.92.222  2018-09-03_19:36:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.91  
@@ -6,24 +8,20 @@
 ###
 DEBUG = 1       # 0 = debug off, 1 = debug on
 #
-import time
-import signal
-
-import scrollphathd
-from scrollphathd.fonts import font3x5
-
+import subprocess
 import sys
+import time
 import os
 ###
 class color:
    BOLD = '\033[1m'
-   END = '\033[0m'
+   END  = '\033[0m'
 ###
 def display_help():
    language = os.getenv("LANG")
    print ("\n{} - display contents of MESSAGEHD file".format(__file__))
    print ("\nUSAGE\n  {} [<MESSAGEHD_file>]".format(__file__))
-   print ("  {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
+   print ("  {} [--help | -help | help | -h | h | -?]".format(__file__))
    print ("  {} [--version | -version | -v]".format(__file__))
    print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGEHD file on a")
    print ("Scroll-pHAT-HD.  The MESSAGEHD file includes the total number of containers,")
@@ -37,43 +35,76 @@ def display_help():
    print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGEHD")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphathd\n")
 #  After displaying help in english check for other languages
-   if language != "en_US.UTF-8" :
-      print ("{}{} {} {}[WARNING]  Your language, {} is not supported, Would you like to help?".format(color.END,__file__,get_line_no(),color.BOLD,color.END))
+   if LANGUAGE != "en_US.UTF-8" :
+      print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), LANGUAGE))
+#  elif LANGUAGE != "fr_CA.UTF-8" :
+#     print display_help in french
+#  else :
    return
-#  line number function
+
+#  Line number function
 from inspect import currentframe
-def get_line_no():
+def get_line_no() :
    cf = currentframe()
    return cf.f_back.f_lineno
-#  default help and version arguments
+
+#  Date and time function
+def get_date_stamp() :
+   return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
+
+#  Default help and version arguments
 no_arguments =  int(len(sys.argv))
 if no_arguments == 2 :
-   if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
+#  Default help output  
+   if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' :
       display_help()
       sys.exit()
+#  Default version output  
    if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
-      with open(__file__) as f:
+      with open(__file__) as f :
          f.readline()
          line2 = f.readline()
          line2 = line2.split()
          print ("{} {}".format(line2[1], line2[2]))
       sys.exit()
-###
-if DEBUG == 1 : print ("> {}DEBUG{} {}  Name_of_command >{}<".format(color.BOLD,color.END,get_line_no(),__file__))
+
+#  DEBUG example
+from platform import python_version
+#
+if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, python_version()))
+
+#
+import signal
+import scrollphathd
+from scrollphathd.fonts import font3x5
+
+# >>>	#40
 #  set default MESSAGEHD file with path
 MESSAGEHD_file = "/usr/local/data/us-tx-cluster-1/MESSAGEHD"
+
 #  Check argument 1 for non-default MESSAGEHD file
 if no_arguments == 2 :
    MESSAGEHD_file = sys.argv[1]
-   print ("\n{}{} {} {}[INFO]{} Using MESSAGEHD file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,MESSAGEHD_file))
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGEHD file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGEHD_file))
 else :
-   print ("\n{}{} {} {}[INFO]{} Using MESSAGEHD file {}".format(color.END,__file__,get_line_no(),color.BOLD,color.END,MESSAGEHD_file))
-#
-def get_msg():
-   with open(MESSAGEHD_file,"r") as file:
-      temp = file.read().splitlines()
-      if DEBUG == 1 : print ("> {}DEBUG{} {}  File contents >{}<".format(color.BOLD,color.END,get_line_no(),temp))
-   return temp
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Using MESSAGEHD file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), MESSAGEHD_file))
+
+#  Read TEMP_FILE contents and return contents
+def get_msg(TEMP_FILE) :
+   if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Reading MESSAGE file >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), TEMP_FILE))
+   file = open(TEMP_FILE,"r")
+   CONTENT = file.read()
+   file.close()
+   CONTENT = CONTENT.rstrip('\n')
+   return CONTENT
+
+#  replace this with the code above, need to test be for deleting because of splitlines() function required before upgrade
+#	def get_msg():
+#	   with open(MESSAGEHD_file,"r") as file:
+#	      temp = file.read().splitlines()
+#	      if DEBUG == 1 : print ("> {}DEBUG{} {}  File contents >{}<".format(color.BOLD,color.END,get_line_no(),temp))
+#	   return temp
+
 ### 
 scrollphathd.set_clear_on_exit()
 #  Rotate the text
@@ -95,7 +126,8 @@ while True:
    #  Store the left offset for each subsequent line (starts at the end of the last line)
    offset_left = 0
    #  Get message from MESSAGEHD file created by create-message.sh
-   lines = get_msg()
+   lines = ""	#   clear previous test from line (memory buffer?) #19
+   lines = get_msg(MESSAGEHD_file)
    if DEBUG == 1 : print ("> {}DEBUG{} {}  Show lines >{}<".format(color.BOLD,color.END,get_line_no(),lines))
    #  Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
    #  Draw each line in lines to the Scroll pHAT HD buffer
