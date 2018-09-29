@@ -1,18 +1,10 @@
 #!/usr/bin/env python3
+# 	display-message-hd.py  3.168.310  2018-09-29_13:22:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.167  
+# 	   need to test more : scrollphathd.fill to remove previous buffer #25 
 # 	display-message-hd.py  3.167.309  2018-09-29_13:01:35_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.166  
 # 	   splitlines works for dsiplay_message-hd.py NOT rstrip close #41 
-# 	display-message-hd.py  3.166.308  2018-09-28_22:59:21_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.165  
-# 	   still not clearing previous string placement 
-# 	display-message-hd.py  3.165.307  2018-09-28_22:49:27_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.164  
-# 	   update DEBUG and CONTENT, scroll phat working, need to test overlap incident #25 
-# 	display-message-hd.py  3.164.306  2018-09-28_22:39:36_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.163  
-# 	   update 2 print DEBUG statements #25 
-# 	display-message-hd.py  3.163.305  2018-09-28_22:25:26_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.162  
-# 	   add template.py function and formating 
 # 	display-message-hd.py  3.103.243  2018-09-11_00:21:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.102  
 # 	   need more testing to stop font overlap setting rewind to False did not corrent incident 
-# 	display-message-hd.py  3.92.222  2018-09-03_19:36:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.91  
-# 	   FINALLY got the damn MESSAGE fro scroll in advanced close #22 
 ###
 DEBUG = 1       # 0 = debug off, 1 = debug on
 #
@@ -131,9 +123,8 @@ while True:
    #  we can use this length to calculate the offset of the next line
    #  and will also use it later for the scrolling effect.
    lengths = [0] * len(lines)
-
-   scrollphathd.fill(0,0,6)  #25
-
+   #  
+   scrollphathd.fill(0,0,0)  #25
    if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<  ".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), lengths, offset_left, line_height)) #25
    for line, text in enumerate(lines):
       lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
@@ -142,8 +133,6 @@ while True:
    #  This adds a little bit of horizontal/vertical padding into the buffer at
    #  the very bottom right of the last line to keep things wrapping nicely.
    scrollphathd.set_pixel(offset_left - 1, (len(lines) * line_height) - 1, 0)
-   #
-   # >>>	#25	while True:
    #  Reset the animation
    scrollphathd.scroll_to(0, 0)
    scrollphathd.show()
