@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message-hd.py  3.170.312  2018-09-29_17:45:58_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.169  
+# 	   update display_help LANG and INFO statement #25 
 # 	display-message-hd.py  3.169.311  2018-09-29_17:26:12_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.168  
 # 	   update display_help and SCRIPT_VERSION SCRIPT_NAME #25 
 # 	display-message-hd.py  3.168.310  2018-09-29_13:22:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.167  
@@ -15,8 +17,8 @@ class color:
    BOLD = '\033[1m'
    END  = '\033[0m'
 ###
+LANGUAGE = os.getenv("LANG")
 def display_help():
-   language = os.getenv("LANG")
    print ("\n{} - display contents of MESSAGEHD file".format(__file__))
    print ("\nUSAGE\n  {} [<MESSAGEHD_file>]".format(__file__))
    print ("  {} [--help | -help | help | -h | h | -?]".format(__file__))
@@ -33,9 +35,9 @@ def display_help():
    print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGEHD")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphathd\n")
 #  After displaying help in english check for other languages
-   if os.getenv("LANGUAGE") != "en_US.UTF-8" :
-      print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), os.getenv("LANGUAGE")))
-#  elif LANGUAGE != "fr_CA.UTF-8" :
+   if LANGUAGE != "en_US.UTF-8" :
+      print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), LANGUAGE))
+#  elif LANGUAGE == "fr_CA.UTF-8" :
 #     print display_help in french
 #  else :
    return
