@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
+# 	display-message-hd.py  3.169.311  2018-09-29_17:26:12_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.168  
+# 	   update display_help and SCRIPT_VERSION SCRIPT_NAME #25 
 # 	display-message-hd.py  3.168.310  2018-09-29_13:22:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.167  
 # 	   need to test more : scrollphathd.fill to remove previous buffer #25 
-# 	display-message-hd.py  3.167.309  2018-09-29_13:01:35_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.166  
-# 	   splitlines works for dsiplay_message-hd.py NOT rstrip close #41 
-# 	display-message-hd.py  3.103.243  2018-09-11_00:21:18_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.102  
-# 	   need more testing to stop font overlap setting rewind to False did not corrent incident 
 ###
 DEBUG = 1       # 0 = debug off, 1 = debug on
 #
@@ -35,8 +33,8 @@ def display_help():
    print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGEHD")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphathd\n")
 #  After displaying help in english check for other languages
-   if LANGUAGE != "en_US.UTF-8" :
-      print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), LANGUAGE))
+   if os.getenv("LANGUAGE") != "en_US.UTF-8" :
+      print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), os.getenv("LANGUAGE")))
 #  elif LANGUAGE != "fr_CA.UTF-8" :
 #     print display_help in french
 #  else :
@@ -52,6 +50,19 @@ def get_line_no() :
 def get_date_stamp() :
    return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
 
+#  Set fully qualified domain name
+from socket import getfqdn
+#
+LOCALHOST = getfqdn()
+
+#  Version  
+with open(__file__) as f :
+   f.readline()
+   line2 = f.readline()
+   line2 = line2.split()
+   SCRIPT_NAME = line2[1]
+   SCRIPT_VERSION = line2[2]
+
 #  Default help and version arguments
 no_arguments =  int(len(sys.argv))
 if no_arguments == 2 :
@@ -61,25 +72,19 @@ if no_arguments == 2 :
       sys.exit()
 #  Default version output  
    if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
-      with open(__file__) as f :
-         f.readline()
-         line2 = f.readline()
-         line2 = line2.split()
-         print ("{} {}".format(line2[1], line2[2]))
+      print ("{} {}".format(SCRIPT_NAME, SCRIPT_VERSION))
       sys.exit()
+
+#  Begin script INFO
+print ("{}{} {} version {} {}[INFO]{}  {}  {}  {} {}  Begin".format(color.END, get_date_stamp(), __file__, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid()))
 
 #  DEBUG example
 from platform import python_version
 #
 if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, python_version()))
 
-# >>>>	check about moving this code import down
-import signal
-import scrollphathd
-from scrollphathd.fonts import font3x5
-
 # >>>	#40
-#  set default MESSAGEHD file with path
+#  Set default MESSAGEHD file with path
 MESSAGEHD_file = "/usr/local/data/us-tx-cluster-1/MESSAGEHD"
 
 #  Check argument 1 for non-default MESSAGEHD file
@@ -98,6 +103,10 @@ def get_msg(TEMP_FILE) :
    return CONTENT
 
 ### 
+import signal
+import scrollphathd
+from scrollphathd.fonts import font3x5
+
 scrollphathd.set_clear_on_exit()
 #  Rotate the text
 scrollphathd.rotate(180)
@@ -166,5 +175,5 @@ while True:
             time.sleep(delay)
 
 #  Done
-print ("{}{} {} {}[INFO]{}  {}  Done.".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
+print ("{}{} {} version {} {}[INFO]{}  {}  {}  Done.".format(color.END, get_date_stamp(), __file__, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getuid()))
 ###
