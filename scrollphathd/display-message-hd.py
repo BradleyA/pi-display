@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-# 	display-message-hd.py  3.170.312  2018-09-29_17:45:58_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.169  
-# 	   update display_help LANG and INFO statement #25 
-# 	display-message-hd.py  3.169.311  2018-09-29_17:26:12_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.168  
-# 	   update display_help and SCRIPT_VERSION SCRIPT_NAME #25 
-# 	display-message-hd.py  3.168.310  2018-09-29_13:22:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.167  
-# 	   need to test more : scrollphathd.fill to remove previous buffer #25 
+# 	display-message-hd.py  3.171.313  2018-09-29_17:49:30_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.170  
+# 	   update Begin script INFO #25 
 ###
 DEBUG = 1       # 0 = debug off, 1 = debug on
 #
@@ -78,7 +74,7 @@ if no_arguments == 2 :
       sys.exit()
 
 #  Begin script INFO
-print ("{}{} {} version {} {}[INFO]{}  {}  {}  {} {}  Begin".format(color.END, get_date_stamp(), __file__, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid()))
+print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Begin".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid()))
 
 #  DEBUG example
 from platform import python_version
