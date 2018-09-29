@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-# 	display-message-hd.py  3.172.314  2018-09-29_18:46:10_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.171  
-# 	   update print for INFO DEBUG 
-# 	display-message-hd.py  3.171.313  2018-09-29_17:49:30_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.170  
-# 	   update Begin script INFO #25 
+# 	display-message-hd.py  3.173.315  2018-09-29_18:51:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.172  
+# 	   no more incidnet with #25 close #25 
 ###
 DEBUG = 1       # 0 = debug off, 1 = debug on
 #
@@ -134,7 +132,7 @@ while True:
    #  and will also use it later for the scrolling effect.
    lengths = [0] * len(lines)
    #  
-   scrollphathd.fill(0,0,0)  #25
+   scrollphathd.fill(0,0,0)  #25  This is what fixed incident #25
    if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), lengths, offset_left, line_height))  #25
    for line, text in enumerate(lines):
       lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
