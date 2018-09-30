@@ -1,10 +1,12 @@
 #!/bin/bash
+# 	create-message.sh  3.177.319  2018-09-30_18:13:53_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.176  
+# 	   continue work Change echo or print DEBUG INFO WARNING ERROR #43 
 # 	create-message.sh  3.176.318  2018-09-30_12:32:30_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.175  
 # 	   begin change log format #43 
 # 	create-message.sh  3.135.277  2018-09-21_18:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.134  
 # 	   crap what a bug, LOCAL-HOST link on six was overwritting four and five on the second and thrid run #26 
 ### 
-DEBUG=0                 # 0 = debug off, 1 = debug on
+DEBUG=1                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
@@ -141,71 +143,69 @@ if ! [ -e ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ] || ! [ -s ${DATA_DIR}/${CLUST
 	hostname -f > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
 fi
 
-# >>>	STOP here continue here with updates #43
-
 #	Loop through hosts in ${SYSTEMS_FILE} file
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Loop through hosts in ${SYSTEMS_FILE} file" 1>&2 ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Loop through hosts in ${SYSTEMS_FILE} file" 1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
-	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  host >${NODE}<" 1>&2
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  host >${NODE}<" 1>&2
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port 
-		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  ${LOCALHOST} != ${NODE}" 1>&2 ; fi
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  ${LOCALHOST} != ${NODE}" 1>&2 ; fi
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Make directory and gather docker info on ${NODE}" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Make directory and gather docker info on ${NODE}" 1>&2 ; fi
 			TEMP="mkdir -p  ${DATA_DIR}/${CLUSTER} ; chmod 775 ${DATA_DIR}/${CLUSTER} ; docker system info | head -5 > ${DATA_DIR}/${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CELSIUS, FAHRENHEIT from ${NODE}" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CELSIUS, FAHRENHEIT from ${NODE}" 1>&2 ; fi
 			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
 			CELSIUS=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP})
 			FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 			TEMP="echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}/${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CPU" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CPU" 1>&2 ; fi
 			scp -q    -i ~/.ssh/id_rsa /usr/local/bin/CPU_usage.sh ${ADMUSER}@${NODE}:/usr/local/bin/
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} "/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${NODE}"
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY" 1>&2 ; fi
 			MEMORY=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'free -m | grep Mem:')
 			MEMORY=$(echo ${MEMORY} | awk '{printf "Memory_Usage: %s/%sMB %d", $3,$2,$3*100/$2 }')
 			MEMORY2=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem arm')
 			MEMORY2=$(echo ${MEMORY2} | sed 's/=/: /' | awk '{printf ".Memory_%s", $1" "$2 }')
 			MEMORY3=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'vcgencmd get_mem gpu')
 			MEMORY3=$(echo ${MEMORY3} | sed 's/=/: /' | awk '{printf ".Memory_%s", $1" "$2 }')
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY >${MEMORY}<" 1>&2 ; fi
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY2 >${MEMORY2}<<" 1>&2 ; fi
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY3 >${MEMORY3}<<<" 1>&2 ; fi
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  DISK" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY >${MEMORY}<" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY2 >${MEMORY2}<<" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY3 >${MEMORY3}<<<" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  DISK" 1>&2 ; fi
 			DISK=$(ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} 'df -h  | grep -m 1 "^/"')
 			DISK=$(echo ${DISK} | awk '{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 			TEMP="echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${NODE} ; echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
 			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER}
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Copy ${SYSTEMS_FILE} file from ${LOCALHOST} to ${NODE} " 1>&2 ; fi
+			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Copy ${SYSTEMS_FILE} file from ${LOCALHOST} to ${NODE}" 1>&2 ; fi
 			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}
 		else
-			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
+			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
 			touch ${DATA_DIR}/${CLUSTER}/${NODE}
 		fi
 	else
-		get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  ${NODE} - Cluster Server" 1>&2
-		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Gather docker info on ${NODE}" 1>&2 ; fi
+		get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  - Cluster Server" 1>&2
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Gather docker info on ${NODE}" 1>&2 ; fi
 		docker system info | head -5 > ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CELSIUS, FAHRENHEIT from ${NODE}" 1>&2 ; fi
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CELSIUS, FAHRENHEIT from ${NODE}" 1>&2 ; fi
 		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
 		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 		echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CPU" 1>&2 ; fi
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CPU" 1>&2 ; fi
 		/usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  MEMORY" 1>&2 ; fi
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY" 1>&2 ; fi
 		MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
 		echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
 		echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
 		echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  DISK" 1>&2 ; fi
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  DISK" 1>&2 ; fi
 		DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
 		echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		cd ${DATA_DIR}/${CLUSTER}
@@ -217,7 +217,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	PAUSED=`grep -i PAUSED ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$PAUSED '{print $2 + v}'`
 	STOPPED=`grep -i STOPPED ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$STOPPED '{print $2 + v}'`
 	IMAGES=`grep -i IMAGES ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
-	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Add Docker information from ${NODE}" 1>&2 ; fi
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Add Docker information from ${NODE}" 1>&2 ; fi
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES}"
 echo ${MESSAGE} > ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}
@@ -225,9 +225,9 @@ cp ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE} ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}
 tail -n +6 ${DATA_DIR}/${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
 
 #	Loop through hosts in ${SYSTEMS_FILE} file and update other host information
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Loop through hosts in ${SYSTEMS_FILE} file and update other host information" 1>&2 ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Loop through hosts in ${SYSTEMS_FILE} file and update other host information" 1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
-	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Copy file to host ${NODE}" 1>&2
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Copy file to host ${NODE}" 1>&2
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port
@@ -236,10 +236,10 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 			TEMP="cd ${DATA_DIR}/${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 		else
-			get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
+			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
 		fi
 	fi
 done
 ln -sf ${LOCALHOST} LOCAL-HOST	# bug fix #26
-get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Done." 1>&2
+get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Done." 1>&2
 ###
