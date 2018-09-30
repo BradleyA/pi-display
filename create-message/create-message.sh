@@ -1,30 +1,6 @@
 #!/bin/bash
-# 	create-message.sh  3.156.298  2018-09-24_19:19:51_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.155  
-# 	   changes to display_help 
-# 	create-message.sh  3.151.293  2018-09-23_14:04:29_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.150  
-# 	   done with all open incidents for create-message.sh  turn off DEBUG 
-# 	create-message.sh  3.150.292  2018-09-23_13:43:34_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.149  
-# 	   added _Usage be to disk and memory because display_lad.py requires close #34 
-# 	create-message.sh  3.149.291  2018-09-23_13:09:19_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.148  
-# 	   remove Usage in labels close #34 
-# 	create-message.sh  3.148.290  2018-09-22_22:16:58_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.147  
-# 	   first pass at understanding MEMORY remoted \n and _Usage #34 
-# 	create-message.sh  3.147.289  2018-09-22_21:32:00_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.146  
-# 	   display_help for environment variables completed eariler #29 #35 #33 close #30 
-# 	create-message.sh  3.146.288  2018-09-22_21:19:39_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.145  
-# 	   added SYSTEMS_FILE for SYSTEMS file to support environment variable completed testing close #33 
-# 	create-message.sh  3.144.286  2018-09-22_15:30:25_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.143  
-# 	   environment support for MESSAGE file close #35 
-# 	create-message.sh  3.142.284  2018-09-22_14:28:28_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.141  
-# 	   no incidnet while testing source ~/.profile in crontab close #31 
-# 	create-message.sh  3.140.282  2018-09-22_13:18:22_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.139  
-# 	   added -Txterm to tput lines, remove n to logging information, close #32 
-# 	create-message.sh  3.139.281  2018-09-21_23:02:20_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.138  
-# 	   mark #31 in code for crontab testing 
-# 	create-message.sh  3.137.279  2018-09-21_22:47:03_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.136  
-# 	   support environment variables for CLI arguments close #29 
-# 	create-message.sh  3.136.278  2018-09-21_19:18:35_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.135  
-# 	   close #26 
+# 	create-message.sh  3.176.318  2018-09-30_12:32:30_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.175  
+# 	   begin change log format #43 
 # 	create-message.sh  3.135.277  2018-09-21_18:50:16_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.134  
 # 	   crap what a bug, LOCAL-HOST link on six was overwritting four and five on the second and thrid run #26 
 ### 
@@ -83,18 +59,29 @@ echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES"
 echo -e "   Store message information for a cluster-2\n\n   ${0} cluster-2\n"
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
-        get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Your language, ${LANG}, is not supported.\tWould you like to help?" 1>&2
+        get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Your language, ${LANG}, is not supported, Would you like to help translate?" 1>&2
 #       elif [ "${LANG}" == "fr_CA.UTF-8" ] ; then
-#               get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Display help in ${LANG}" 1>&2
+#               get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Display help in ${LANG}" 1>&2
 #       else
-#               get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARNING]${NORMAL}  ${DATE_STAMP}  Your language, ${LANG}, is not supported.\tWould you like to help?\n" 1>&2
+#               get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Your language, ${LANG}, is not supported.\tWould you like to translate?" 1>&2
 fi
 }
 
-#	Date and time function
+#       Date and time function
 get_date_stamp() {
 DATE_STAMP=`date +%Y-%m-%d-%H-%M-%S-%Z`
 }
+
+#  Fully qualified domain name FQDN hostname
+LOCALHOST=`hostname -f`
+
+#  Version
+SCRIPT_NAME=`head -2 ${0} | awk {'printf$2'}`
+SCRIPT_VERSION=`head -2 ${0} | awk {'printf$3'}`
+
+#       UID and GID
+USER_ID=`id -u`
+GROUP_ID=`id -g`
 
 #	Default help and version arguments
 if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] ; then
@@ -102,9 +89,12 @@ if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" =
         exit 0
 fi
 if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] || [ "$1" == "-v" ] ; then
-        head -2 ${0} | awk {'print$2"\t"$3'}
+	echo "${SCRIPT_NAME} ${SCRIPT_VERSION}"
         exit 0
 fi
+
+#       DEBUG example
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Name_of_command >${0}< Name_of_arg1 >${1}<" 1>&2 ; fi
 
 #	order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
@@ -116,42 +106,42 @@ if [ $# -ge  3 ]  ; then DATA_DIR=${3} ; elif [ "${DATA_DIR}" == "" ] ; then DAT
 if [ $# -ge  4 ]  ; then MESSAGE_FILE=${4} ; elif [ "${MESSAGE_FILE}" == "" ] ; then MESSAGE_FILE="MESSAGE" ; fi
 #	order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  5 ]  ; then SYSTEMS_FILE=${5} ; elif [ "${SYSTEMS_FILE}" == "" ] ; then SYSTEMS_FILE="SYSTEMS" ; fi
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< MESSAGE_FILE >${MESSAGE_FILE}< SYSTEMS_FILE >${SYSTEMS_FILE}<" 1>&2 ; fi
+#
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< MESSAGE_FILE >${MESSAGE_FILE}< SYSTEMS_FILE >${SYSTEMS_FILE}< PATH >${PATH}<" 1>&2 ; fi
+
 #
 CONTAINERS=0
 RUNNING=0
 PAUSED=0
 STOPPED=0
 IMAGES=0
-LOCALHOST=`hostname -f`
-
-#
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< PATH >${PATH}<" 1>&2 ; fi
 
 #	set admin user Docker environment variables (crontab support) in ~/.profile. #31
 source ~/.profile
 TEMP=`env | grep -i docker`
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "> ${BOLD}DEBUG${NORMAL} ${LINENO}  ${DATE_STAMP}  Docker environment variables after source command >${TEMP}<" 1>&2 ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Docker environment variables after source command >${TEMP}<" 1>&2 ; fi
 
 #       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}/${CLUSTER} ] ; then
-	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
-	mkdir -p  ${DATA_DIR}/${CLUSTER} || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
+	mkdir -p  ${DATA_DIR}/${CLUSTER} || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[ERROR]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}/${CLUSTER}
 fi
 
 #	Create ${MESSAGE_FILE} file 1) create file for initial running on host, 2) check for write permission
-touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}  || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${MESSAGE_FILE} file" 1>&2 ; exit 1; }
-touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD  || { get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${DATE_STAMP}  User ${ADMUSER} does not have permission to create ${MESSAGE_FILE}HD file" 1>&2 ; exit 1; }
+touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}  || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[ERROR]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  User ${ADMUSER} does not have permission to create ${MESSAGE_FILE} file" 1>&2 ; exit 1; }
+touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD  || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[ERROR]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  User ${ADMUSER} does not have permission to create ${MESSAGE_FILE}HD file" 1>&2 ; exit 1; }
 
 #       Check if ${SYSTEMS_FILE} file is on system, one FQDN or IP address per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ] || ! [ -s ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ] ; then
-	get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${DATE_STAMP}  ${SYSTEMS_FILE} file missing or empty, creating ${SYSTEMS_FILE} file with local host.  Edit ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file and add additional hosts that are in the cluster." 1>&2
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  ${SYSTEMS_FILE} file missing or empty, creating ${SYSTEMS_FILE} file with local host.  Edit ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file and add additional hosts that are in the cluster." 1>&2
 	echo -e "###     List of hosts used by cluster-command.sh & create-message.sh"  > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
 	echo -e "#       One FQDN or IP address per line for all hosts in cluster" > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
 	echo -e "###" > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
 	hostname -f > ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE}
 fi
+
+# >>>	STOP here continue here with updates #43
 
 #	Loop through hosts in ${SYSTEMS_FILE} file
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${0} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${DATE_STAMP}  Loop through hosts in ${SYSTEMS_FILE} file" 1>&2 ; fi
