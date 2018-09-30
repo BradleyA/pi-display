@@ -1,7 +1,8 @@
 #!/bin/bash
+# 	create-message.sh  3.179.321  2018-09-30_18:31:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.178  
+# 	   typo 
 # 	create-message.sh  3.178.320  2018-09-30_18:27:26_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.177  
 # 	   Change echo or print DEBUG INFO WARNING ERROR close #43 
-# 	   continue work Change echo or print DEBUG INFO WARNING ERROR #43 
 ### 
 DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
