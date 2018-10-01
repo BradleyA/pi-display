@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.181.323  2018-09-30_20:17:07_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.180  
+# 	   add one more line to Docker info 
 # 	create-message.sh  3.180.322  2018-09-30_19:29:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.179  
 # 	   add Begin 
 # 	create-message.sh  3.179.321  2018-09-30_18:31:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.178  
@@ -156,7 +158,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  ${LOCALHOST} != ${NODE}" 1>&2 ; fi
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Make directory and gather docker info on ${NODE}" 1>&2 ; fi
-			TEMP="mkdir -p  ${DATA_DIR}/${CLUSTER} ; chmod 775 ${DATA_DIR}/${CLUSTER} ; docker system info | head -5 > ${DATA_DIR}/${CLUSTER}/${NODE}"
+			TEMP="mkdir -p  ${DATA_DIR}/${CLUSTER} ; chmod 775 ${DATA_DIR}/${CLUSTER} ; docker system info | head -6 > ${DATA_DIR}/${CLUSTER}/${NODE}"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CELSIUS, FAHRENHEIT from ${NODE}" 1>&2 ; fi
 			TEMP="/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//'"
@@ -193,7 +195,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	else
 		get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  - Cluster Server" 1>&2
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Gather docker info on ${NODE}" 1>&2 ; fi
-		docker system info | head -5 > ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+		docker system info | head -6 > ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CELSIUS, FAHRENHEIT from ${NODE}" 1>&2 ; fi
 		CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
 		echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
