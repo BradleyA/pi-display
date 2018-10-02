@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.185.327  2018-10-01_20:04:21_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.184  
+# 	   testing #44 work great until started by crontab a t boot 
 # 	display-led.py  3.184.326  2018-10-01_18:50:38_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.183  
 # 	   Change echo or print DEBUG INFO WARNING ERROR #44 
 ###
@@ -73,6 +75,7 @@ from socket import getfqdn
 #  FQDN hostname
 LOCALHOST = getfqdn()
 
+print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), LANGUAGE))
 #  Version  
 with open(__file__) as f :
    f.readline()
@@ -80,6 +83,7 @@ with open(__file__) as f :
    line2 = line2.split()
    SCRIPT_NAME = line2[1]
    SCRIPT_VERSION = line2[2]
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  SCRIPT_NAME >{}< SCRIPT_VERSION >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), SCRIPT_NAME, SCRIPT_VERSION))
 
 #  Default help and version arguments
 no_arguments =  int(len(sys.argv))
