@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message.py  3.192.334  2018-10-03_18:37:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.191  
+# 	   reread data file at the beginning of each loop close #48 
 # 	display-message.py  3.190.332  2018-10-03_16:54:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.189  
 # 	   Change echo or print DEBUG INFO WARNING ERROR close #45 
 #
@@ -168,7 +170,7 @@ def get_msg(TEMP_FILE) :
    file = open(TEMP_FILE,"r")
    CONTENT = file.read()
    file.close()
-   CONTENT = CONTENT.rstrip('\n')
+   CONTENT = CONTENT.rstrip('\n') + "    "
    return CONTENT
 
 #  timeout
@@ -184,7 +186,7 @@ ticks_per_second = 1/pause
 refresh_interval = 60
 timeout = get_timeout()
 count = 0
-scrollphat.clear()
+scrollphat.clear_buffer()
 msg = get_msg(MESSAGE)
 if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  MESSAGE >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, msg))
 scrollphat.set_rotate(True)
@@ -195,7 +197,7 @@ while True :
       scrollphat.scroll()
       time.sleep(pause)
       if (count > timeout) :
-         scrollphat.clear()
+         scrollphat.clear_buffer()
          msg = get_msg(MESSAGE)
          if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  MESSAGE >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, msg))
          scrollphat.write_string(msg)
@@ -204,7 +206,7 @@ while True :
       else :
          count = count + 1
    except KeyboardInterrupt :
-      scrollphat.clear()
+      scrollphat.clear_buffer()
       sys.exit(-1)
 
 print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
