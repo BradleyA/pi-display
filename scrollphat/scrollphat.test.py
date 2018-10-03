@@ -1,8 +1,9 @@
 #!/usr/bin/env python
-# 	scrollphat.test.py  3.131.273  2018-09-20_22:49:26_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.130  
-# 	   rename get_date_stamp 
-###
-DEBUG = 1       # 0 = debug off, 1 = debug on
+# 	scrollphat.test.py  3.191.333  2018-10-03_17:12:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.190  
+# 	   Change echo or print DEBUG INFO WARNING ERROR close #47 
+#
+###	scrollphat.test.py - ten second Scroll pHAT screen test
+DEBUG = 0       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
@@ -24,8 +25,8 @@ def display_help():
    print ("\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display")
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
-      print ("{}{} {} {}[WARNING]{}  {}  Your language, {} is not supported, Would you like to help?".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp(), LANGUAGE))
-#  elif LANGUAGE != "fr_CA.UTF-8" :
+      print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, LANGUAGE))
+#  elif LANGUAGE == "fr_CA.UTF-8" :
 #     print display_help in french
 #  else :
    return
@@ -40,26 +41,48 @@ def get_line_no() :
 def get_date_stamp() :
    return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
 
+#  Fully qualified domain name
+from socket import getfqdn
+#  FQDN hostname
+LOCALHOST = getfqdn()
+
+#  Version  
+with open(__file__) as f :
+   f.readline()
+   line2 = f.readline()
+   line2 = line2.split()
+   SCRIPT_NAME = line2[1]
+   SCRIPT_VERSION = line2[2]
+   f.close()
+
+#  Set user variables
+if "LOGNAME" in os.environ : LOGNAME = os.getenv("LOGNAME") # Added three lines because USER is not defined in crobtab jobs
+if "USER" in os.environ : USER = os.getenv("USER")
+else : USER = LOGNAME
+#
+UID = os.getuid()
+GID = os.getgid()
+if DEBUG == 1 : print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Set user variables".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
+
 #  Default help and version arguments
 no_arguments =  int(len(sys.argv))
 if no_arguments == 2 :
 #  Default help output  
-   if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' or sys.argv[1] == '?' :
+   if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?' :
       display_help()
       sys.exit()
 #  Default version output  
    if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v' :
-      with open(__file__) as f :
-         f.readline()
-         line2 = f.readline()
-         line2 = line2.split()
-         print ("{} {}".format(line2[1], line2[2]))
+      print ("{} {}".format(SCRIPT_NAME, SCRIPT_VERSION))
       sys.exit()
 
-#  DEBUG example
-import platform
-if DEBUG == 1 : print ("> {}DEBUG{} {}  {}  Name of command >{}<  Version of python >{}<".format(color.BOLD, color.END, get_line_no(), get_date_stamp(), __file__, platform.python_version()))
+#  Begin script INFO
+print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Begin".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 
+#  DEBUG example
+from platform import python_version
+#
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Version of python >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, python_version()))
 
 #
 import math
@@ -89,6 +112,8 @@ for count in range(8):
       time.sleep(PAUSE)
 #
 scrollphat.clear()
-sys.exit(-1)
+#
 print ("\n{}{} {} {}[INFO]{}  {}  Done.\n".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
+#
+sys.exit(-1)
 ###
