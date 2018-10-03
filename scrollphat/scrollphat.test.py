@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	scrollphat.test.py  3.193.335  2018-10-03_18:46:23_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.192  
+# 	   updated Done statement with new standard 
 # 	scrollphat.test.py  3.191.333  2018-10-03_17:12:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.190  
 # 	   Change echo or print DEBUG INFO WARNING ERROR close #47 
 #
@@ -113,7 +115,7 @@ for count in range(8):
 #
 scrollphat.clear()
 #
-print ("\n{}{} {} {}[INFO]{}  {}  Done.\n".format(color.END, __file__, get_line_no(), color.BOLD, color.END, get_date_stamp()))
+print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 #
 sys.exit(-1)
 ###
