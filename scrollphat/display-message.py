@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
+# 	display-message.py  3.188.330  2018-10-03_16:18:57_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.187  
+# 	   example 1 only works for display-message and example 2 only works for display-message-hd close #42 
 # 	display-message.py  3.160.302  2018-09-25_10:37:56_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.159  
 # 	   scrollphat/display-message.py correct display_help close #39 
-###
-DEBUG = 0       # 0 = debug off, 1 = debug on
+#
+###	display-message.py - display contents of MESSAGE file
+DEBUG = 1       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
@@ -144,6 +147,7 @@ def get_msg(TEMP_FILE) :
    file.close()
    CONTENT = CONTENT.rstrip('\n')
    return CONTENT
+
 ###
 
 #  timeout
