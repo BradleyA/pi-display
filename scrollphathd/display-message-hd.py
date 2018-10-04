@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+# 	display-message-hd.py  3.195.337  2018-10-03_20:56:53_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.194  
+# 	   Change echo or print DEBUG INFO WARNING ERROR close #46 
 # 	display-message-hd.py  3.194.336  2018-10-03_20:17:36_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.193  
 # 	   add support for environment variables close #40 
 # 	display-message-hd.py  3.173.315  2018-09-29_18:51:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.172  
 # 	   no more incidnet with #25 close #25 
 ###
-DEBUG = 1       # 0 = debug off, 1 = debug on
+DEBUG = 0       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
@@ -18,13 +20,13 @@ class color:
 LANGUAGE = os.getenv("LANG")
 def display_help():
    print ("\n{} - display contents of MESSAGEHD file".format(__file__))
-   print ("\nUSAGE\n  {} [<MESSAGEHD_file>]".format(__file__))
+   print ("\nUSAGE\n  {} [<MESSAGEHD_FILE>]".format(__file__))
    print ("  {} [--help | -help | help | -h | h | -?]".format(__file__))
    print ("  {} [--version | -version | -v]".format(__file__))
    print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGEHD  (default)")
    print ("file on a Pimoroni Scroll-pHAT-HD.  The Pimoroni Scroll-pHAT-HD is attatched")
    print ("to a Raspberry Pi.  The default MESSAGEHD file name and absolute path can be")
-   print ("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGE_FILE).")
+   print ("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGEHD).")
    print ("The environment variables can be overwritten by entering the MESSAGEHD file")
    print ("and absolute path as an argument to the display-message-hd.py script.")
    print ("\nThe default MESSAGEHD file is created by create-message.sh script.  The")
@@ -42,15 +44,15 @@ def display_help():
    print ("if you are using other shells.")
    print ("   DATA_DIR      (default absolute path /usr/local/data/)")
    print ("   CLUSTER       (default us-tx-cluster-1/)")
-   print ("   MESSAGE_FILE  (default MESSAGEHD)")
-   print ("\nOPTIONS\n   MESSAGEHD_file - alternate message file,")
+   print ("   MESSAGEHD     (default MESSAGEHD)")
+   print ("\nOPTIONS\n   MESSAGEHD_FILE - alternate MESSAGEHD file and absolute path,")
    print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGEHD")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphathd\n")
    print ("\nEXAMPLES\n   Display contents using default file and path")
    print ("\n   {}".format(__file__))
    print ("\n   Display contents using a different cluster name and file name (bash)\n")
    print ("   export CLUSTER='us-west1/'")
-   print ("   export MESSAGE_FILE='CONTAINER'")
+   print ("   export MESSAGEHD='CONTAINER'")
    print ("   {}".format(__file__))
    print ("\n   Display contents from a different file and absolute path\n")
    print ("   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
@@ -93,7 +95,7 @@ else : USER = LOGNAME
 #
 UID = os.getuid()
 GID = os.getgid()
-if DEBUG == 1 : print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Set user variables".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Set user variables".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 
 #  Default help and version arguments
 no_arguments =  int(len(sys.argv))
@@ -139,30 +141,29 @@ else :
    #  Set CLUSTER with default
       CLUSTER = "us-tx-cluster-1/"
       if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable CLUSTER NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, CLUSTER))
-   if "MESSAGE_FILE" in os.environ :
-   #  Check MESSAGE_FILE; set using os environment variable
-      MESSAGE_FILE = os.getenv("MESSAGE_FILE")
-      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using environment variable MESSAGE_FILE >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGE_FILE))
+   if "MESSAGEHD" in os.environ :
+   #  Check MESSAGEHD; set using os environment variable
+      MESSAGEHD = os.getenv("MESSAGEHD")
+      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using environment variable MESSAGEHD >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGEHD))
    else :
-   #  Set MESSAGE_FILE with default
-      MESSAGE_FILE = "MESSAGEHD"
-      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable MESSAGE_FILE NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGE_FILE))
+   #  Set MESSAGEHD with default
+      MESSAGEHD = "MESSAGEHD"
+      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable MESSAGEHD NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGEHD))
    #  Set MESSAGEHD with absolute path
-   MESSAGEHD = DATA_DIR + "/" + CLUSTER + "/" + MESSAGE_FILE
+   MESSAGEHD_FILE = DATA_DIR + "/" + CLUSTER + "/" + MESSAGEHD
 if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGEHD))
 ###
 
-
 #  Check argument 1 for non-default MESSAGEHD file
 if no_arguments == 2 :
-   MESSAGEHD_file = sys.argv[1]
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), MESSAGEHD_file))
+   MESSAGEHD_FILE = sys.argv[1]
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD_FILE file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGEHD_FILE))
 else :
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), MESSAGEHD_file))
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD_FILE file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGEHD_FILE))
 
 #  Read TEMP_FILE contents and return contents #41
 def get_msg(TEMP_FILE) :
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Reading MESSAGE file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), TEMP_FILE))
+   print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Reading MESSAGE file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, TEMP_FILE))
    file = open(TEMP_FILE,"r")
    CONTENT = file.read().splitlines()
    file.close()
@@ -190,8 +191,8 @@ while True:
    #  Store the left offset for each subsequent line (starts at the end of the last line)
    offset_left = 0
    #  Get message from MESSAGEHD file created by create-message.sh
-   lines = get_msg(MESSAGEHD_file)
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Show lines >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), lines))  #25
+   lines = get_msg(MESSAGEHD_FILE)
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Show lines >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lines))
    #  Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
    #  Draw each line in lines to the Scroll pHAT HD buffer
    #  scrollphathd.write_string returns the length of the written string in pixels
@@ -200,11 +201,11 @@ while True:
    lengths = [0] * len(lines)
    #  
    scrollphathd.fill(0,0,0)  #25  This is what fixed incident #25
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), lengths, offset_left, line_height))  #25
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lengths, offset_left, line_height)) #25
    for line, text in enumerate(lines):
       lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
       offset_left += lengths[line]
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  After 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), lengths, offset_left, line_height))  #25
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  After 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lengths, offset_left, line_height)) #25
    #  This adds a little bit of horizontal/vertical padding into the buffer at
    #  the very bottom right of the last line to keep things wrapping nicely.
    scrollphathd.set_pixel(offset_left - 1, (len(lines) * line_height) - 1, 0)
@@ -241,5 +242,5 @@ while True:
             time.sleep(delay)
 
 #  Done
-print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid()))
+print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 ###
