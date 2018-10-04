@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message-hd.py  3.194.336  2018-10-03_20:17:36_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.193  
+# 	   add support for environment variables close #40 
 # 	display-message-hd.py  3.173.315  2018-09-29_18:51:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.172  
 # 	   no more incidnet with #25 close #25 
 ###
@@ -19,20 +21,42 @@ def display_help():
    print ("\nUSAGE\n  {} [<MESSAGEHD_file>]".format(__file__))
    print ("  {} [--help | -help | help | -h | h | -?]".format(__file__))
    print ("  {} [--version | -version | -v]".format(__file__))
-   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGEHD file on a")
-   print ("Scroll-pHAT-HD.  The MESSAGEHD file includes the total number of containers,")
-   print ("running containers, paused containers, stopped containers, and number of")
-   print ("images in the cluster.  The MESSAGEHD file is used by a Raspberry Pi Scroll-pHAT")
-   print ("or Scroll-pHAT-HD to display the current information.  The MESSAGEHD file is")
-   print ("created by create-message.sh script.  The create-message.sh script reads the")
-   print ("/usr/local/data/<cluster-name>/SYSTEMS file for the FQDN or IP address of the")
-   print ("hosts in a cluster.")
+   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/<cluster-name>/MESSAGEHD  (default)")
+   print ("file on a Pimoroni Scroll-pHAT-HD.  The Pimoroni Scroll-pHAT-HD is attatched")
+   print ("to a Raspberry Pi.  The default MESSAGEHD file name and absolute path can be")
+   print ("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGE_FILE).")
+   print ("The environment variables can be overwritten by entering the MESSAGEHD file")
+   print ("and absolute path as an argument to the display-message-hd.py script.")
+   print ("\nThe default MESSAGEHD file is created by create-message.sh script.  The")
+   print ("create-message.sh script reads the /usr/local/data/us-tx-cluster-1/SYSTEMS file")
+   print ("for the FQDN or IP address of the hosts in a cluster.  The default MESSAGEHD")
+   print ("file contents includes the total number of containers, running containers,")
+   print ("paused containers, stopped containers, and number of images in the cluster.")
+   print ("\nEnvironment Variables")
+   print ("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
+   print ("line to set the CLUSTER environment variable.  Use the command, unset CLUSTER")
+   print ("to remove the exported information from the CLUSTER environment variable.")
+   print ("Setting an environment variable to be defined at login by adding it to")
+   print ("~/.bashrc file or you can just modify the script with your default location")
+   print ("for CLUSTER and DATA_DIR.  You are on your own defining environment variables")
+   print ("if you are using other shells.")
+   print ("   DATA_DIR      (default absolute path /usr/local/data/)")
+   print ("   CLUSTER       (default us-tx-cluster-1/)")
+   print ("   MESSAGE_FILE  (default MESSAGEHD)")
    print ("\nOPTIONS\n   MESSAGEHD_file - alternate message file,")
    print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGEHD")
    print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphathd\n")
+   print ("\nEXAMPLES\n   Display contents using default file and path")
+   print ("\n   {}".format(__file__))
+   print ("\n   Display contents using a different cluster name and file name (bash)\n")
+   print ("   export CLUSTER='us-west1/'")
+   print ("   export MESSAGE_FILE='CONTAINER'")
+   print ("   {}".format(__file__))
+   print ("\n   Display contents from a different file and absolute path\n")
+   print ("   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
-      print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), LANGUAGE))
+      print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, LANGUAGE))
 #  elif LANGUAGE == "fr_CA.UTF-8" :
 #     print display_help in french
 #  else :
@@ -48,9 +72,9 @@ def get_line_no() :
 def get_date_stamp() :
    return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
 
-#  Set fully qualified domain name
+#  Fully qualified domain name
 from socket import getfqdn
-#
+#  FQDN hostname
 LOCALHOST = getfqdn()
 
 #  Version  
@@ -60,6 +84,16 @@ with open(__file__) as f :
    line2 = line2.split()
    SCRIPT_NAME = line2[1]
    SCRIPT_VERSION = line2[2]
+   f.close()
+
+#  Set user variables
+if "LOGNAME" in os.environ : LOGNAME = os.getenv("LOGNAME") # Added three lines because USER is not defined in crobtab jobs
+if "USER" in os.environ : USER = os.getenv("USER")
+else : USER = LOGNAME
+#
+UID = os.getuid()
+GID = os.getgid()
+if DEBUG == 1 : print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Set user variables".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 
 #  Default help and version arguments
 no_arguments =  int(len(sys.argv))
@@ -74,17 +108,50 @@ if no_arguments == 2 :
       sys.exit()
 
 #  Begin script INFO
-print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Begin".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid()))
+print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Begin".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 
 #  DEBUG example
 from platform import python_version
 #
-if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Version of python >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, os.getlogin(), os.getuid(), os.getgid(), python_version()))
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Version of python >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, python_version()))
 
+#  if argument; use argument -> do not use default or environment variables for MESSAGEHD
+#  # NOTE: MESSAGEHD is absolute path and filename else use environment variables or default to build absolute path and filename
+if no_arguments == 2 :
+#  Set non-default MESSAGEHD file including path
+   MESSAGEHD = sys.argv[1]
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGEHD))
+else :
+#  if no argument; -> use default if environment variables not defined
+   #  Check DATA_DIR; set using os environment variable
+   if "DATA_DIR" in os.environ :
+      DATA_DIR = os.getenv("DATA_DIR")
+      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using environment variable DATA_DIR >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DATA_DIR))
+   else :
+   #  Set DATA_DIR with default
+      DATA_DIR = "/usr/local/data/"
+      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DATA_DIR))
+   if "CLUSTER" in os.environ :
+   #  Check CLUSTER; set using os environment variable
+      CLUSTER = os.getenv("CLUSTER")
+      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using environment variable CLUSTER >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, CLUSTER))
+   else :
+   #  Set CLUSTER with default
+      CLUSTER = "us-tx-cluster-1/"
+      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable CLUSTER NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, CLUSTER))
+   if "MESSAGE_FILE" in os.environ :
+   #  Check MESSAGE_FILE; set using os environment variable
+      MESSAGE_FILE = os.getenv("MESSAGE_FILE")
+      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using environment variable MESSAGE_FILE >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGE_FILE))
+   else :
+   #  Set MESSAGE_FILE with default
+      MESSAGE_FILE = "MESSAGEHD"
+      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable MESSAGE_FILE NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGE_FILE))
+   #  Set MESSAGEHD with absolute path
+   MESSAGEHD = DATA_DIR + "/" + CLUSTER + "/" + MESSAGE_FILE
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using MESSAGEHD file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, MESSAGEHD))
+###
 
-# >>>	#40
-#  Set default MESSAGEHD file with path
-MESSAGEHD_file = "/usr/local/data/us-tx-cluster-1/MESSAGEHD"
 
 #  Check argument 1 for non-default MESSAGEHD file
 if no_arguments == 2 :
