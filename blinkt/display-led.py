@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	../blinkt/display-led.py  3.198.340  2018-10-08T22:47:13-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.197  
+# 	   test blinkt/display-led.py with crontab 
 # 	display-led.py  3.187.329  2018-10-03_15:05:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.186  
 # 	   Change echo or print DEBUG INFO WARNING ERROR  close #44 
 #
@@ -62,9 +64,10 @@ def get_line_no() :
    cf = currentframe()
    return cf.f_back.f_lineno
 
-#  Date and time function
+#  Date and time function ISO 8601
 def get_date_stamp() :
-   return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
+   ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)")
+   return ISO8601
 
 #  Fully qualified domain name
 from socket import getfqdn
@@ -146,7 +149,7 @@ if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  FILE_NAME >{}<
 ###
 from blinkt import set_clear_on_exit, set_pixel, show, clear
 #
-set_clear_on_exit(False)
+set_clear_on_exit(True)
 clear()
 show()
 time.sleep(2) # 1 = 1 second
@@ -296,5 +299,8 @@ with open(FILE_NAME) as f :
    print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
    for line in f :
       process(line)
+#
+time.sleep(6) # 1 = 1 second
+
 print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 ###
