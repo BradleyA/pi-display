@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	../blinkt/display-led.py  3.199.341  2018-10-08T23:51:49-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.198  
+# 	   minor changes 
 # 	../blinkt/display-led.py  3.198.340  2018-10-08T22:47:13-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.197  
 # 	   test blinkt/display-led.py with crontab 
 # 	display-led.py  3.187.329  2018-10-03_15:05:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.186  
@@ -299,8 +301,9 @@ with open(FILE_NAME) as f :
    print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
    for line in f :
       process(line)
-#
+
 time.sleep(6) # 1 = 1 second
 
+#
 print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 ###
