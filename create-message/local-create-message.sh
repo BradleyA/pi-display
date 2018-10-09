@@ -1,7 +1,8 @@
 #!/bin/bash
-# 	local-create-message.sh  3.196.338  2018-10-07T20:01:40-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.195  
-# 	   first draft of : local-create-message.sh to be run locally on each systemin cluster #37 
-### 
+# 	local-create-message.sh  3.197.339  2018-10-08T22:05:07-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.196  
+# 	   local-create-message.sh to be run locally on each systemin cluster close #37 
+#
+### 	local-create-message.sh -
 DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
@@ -18,6 +19,7 @@ echo -e "\nDESCRIPTION\nXXXXXX "
 echo -e "\nOPTIONS "
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-scripts/tree/master/cpu-temperature"
 echo -e "\nEXAMPLES\n   XXXXXX \n\t${0} XXXXXX\n"
+#       After displaying help in english check for other languages
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
         get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Your language, ${LANG}, is not supported, Would you like to help translate?" 1>&2
 #       elif [ "${LANG}" == "fr_CA.UTF-8" ] ; then
@@ -27,15 +29,17 @@ if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
 fi
 }
 
-#       Date and time function
+#       Date and time function ISO 8601
 get_date_stamp() {
-DATE_STAMP=`date +%Y-%m-%d-%H-%M-%S-%Z`
+DATE_STAMP=`date +%Y-%m-%dT%H:%M:%S%:z`
+TEMP=`date +%Z`
+DATE_STAMP=`echo "${DATE_STAMP} (${TEMP})"`
 }
 
-#  Fully qualified domain name FQDN hostname
+#       Fully qualified domain name FQDN hostname
 LOCALHOST=`hostname -f`
 
-#  Version
+#       Version
 SCRIPT_NAME=`head -2 ${0} | awk {'printf$2'}`
 SCRIPT_VERSION=`head -2 ${0} | awk {'printf$3'}`
 
@@ -43,27 +47,28 @@ SCRIPT_VERSION=`head -2 ${0} | awk {'printf$3'}`
 USER_ID=`id -u`
 GROUP_ID=`id -g`
 
-#	Default help and version arguments
+#       Default help and version arguments
 if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] ; then
         display_help
         exit 0
 fi
 if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] || [ "$1" == "-v" ] ; then
-	echo "${SCRIPT_NAME} ${SCRIPT_VERSION}"
+        echo "${SCRIPT_NAME} ${SCRIPT_VERSION}"
         exit 0
 fi
 
 #       INFO
-get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Begin"  1>&2
+get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Begin" 1>&2
 
 #       DEBUG
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Name_of_command >${0}< Name_of_arg1 >${1}<" 1>&2 ; fi
 
-#	order of precedence: CLI argument, environment variable, default code
+###
+#	Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
-#	order of precedence: CLI argument, default code
+#	Order of precedence: CLI argument, default code
 ADMUSER=${2:-${USER}}
-#	order of precedence: CLI argument, environment variable, default code
+#	Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  3 ]  ; then DATA_DIR=${3} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
 #
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< PATH >${PATH}<" 1>&2 ; fi
@@ -101,6 +106,7 @@ MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1
 echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  DISK" 1>&2 ; fi
 DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Update file ${DATA_DIR}/${CLUSTER}/${LOCALHOST}" 1>&2 ; fi
 echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 
 #
