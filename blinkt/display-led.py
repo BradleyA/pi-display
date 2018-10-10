@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.200.342  2018-10-09T23:25:25-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.199  
+# 	   determine script run time to determine sleep time before exit close #50 
 # 	../blinkt/display-led.py  3.199.341  2018-10-08T23:51:49-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.198  
 # 	   minor changes 
 # 	../blinkt/display-led.py  3.198.340  2018-10-08T22:47:13-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.197  
@@ -91,7 +93,7 @@ if "USER" in os.environ : USER = os.getenv("USER")
 else : USER = LOGNAME
 UID = os.getuid()
 GID = os.getgid()
-if DEBUG == 1 : print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {} {}  Set user variables".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
+if DEBUG == 1 : print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Set user variables".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
 
 #  Default help and version arguments
 no_arguments =  int(len(sys.argv))
@@ -139,11 +141,6 @@ else :
    DATA_DIR = "/usr/local/data/"
    if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DATA_DIR))
 
-#  Example set fully qualified domain name
-from socket import getfqdn
-#
-LOCALHOST = getfqdn()
-
 #
 FILE_NAME = DATA_DIR + "/" + CLUSTER + "/" + LOCALHOST
 if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
@@ -154,20 +151,23 @@ from blinkt import set_clear_on_exit, set_pixel, show, clear
 set_clear_on_exit(True)
 clear()
 show()
-time.sleep(2) # 1 = 1 second
 
 #   Normal services and operations
 #	GREEN : no known incidents
 #   LED_number argument 0-7
 def status1(LED_number) :
+   global DISPLAY_TIME
    set_pixel(LED_number, 0, 255, 0, 0.2)
    show()
+   DISPLAY_TIME = DISPLAY_TIME - 0.01
+   if DEBUG == 2 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DISPLAY_TIME))
    return();
 
 #   Incidents causing no disruption to overall services and operations
 #	LIGHT GREEN : an incident (watch)
 #   LED_number argument 0-7
 def status2(LED_number) :
+   global DISPLAY_TIME
    for i in range(0, 5) :
       set_pixel(LED_number, 0, 0, 0, 0)
       show()
@@ -175,12 +175,14 @@ def status2(LED_number) :
       set_pixel(LED_number, 50, 205, 50, 0.1)
       show()
       time.sleep(0.15) # 1 = 1 second
+      DISPLAY_TIME = DISPLAY_TIME - 0.20
    return();
 
 #  Active incident with minimal affect to overall services and operations
 #	YELLOW : additional incidents WARNING (alert)
 #   LED_number argument 0-7
 def status3(LED_number) :
+   global DISPLAY_TIME
    for i in range(0, 5) :
       set_pixel(LED_number, 0, 255, 0, 0.8)
       show()
@@ -191,12 +193,14 @@ def status3(LED_number) :
       set_pixel(LED_number, 255, 255, 0, 0.2)
       show()
       time.sleep(0.15) # 1 = 1 second
+      DISPLAY_TIME = DISPLAY_TIME - 0.23
    return();
 
 #  Active emergency incidents causing significant impact to operations and possiable service disruptions
 #	ORANGE : CRITICAL ERROR
 #   LED_number argument 0-7
 def status4(LED_number) :
+   global DISPLAY_TIME
    for i in range(0,10) :
       set_pixel(LED_number, 255, 255, 0, 0.8)
       show()
@@ -207,12 +211,14 @@ def status4(LED_number) :
       set_pixel(LED_number, 255, 35, 0, 0.1)
       show()
       time.sleep(0.05) # 1 = 1 second
+      DISPLAY_TIME = DISPLAY_TIME - 0.13
    return();
 
 #   Active emergency incidents causing multiple impaired operations amd unavoidable severe service disruptions
 #	RED : Emergency Conditions : FATAL ERROR : 
 #   LED_number argument 0-7
 def status5(LED_number) :
+   global DISPLAY_TIME
    for i in range(0,10) :
       set_pixel(LED_number, 255, 35, 0, 0.8)
       show()
@@ -223,20 +229,24 @@ def status5(LED_number) :
       set_pixel(LED_number, 255, 0, 0, 0.2)
       show()
       time.sleep(0.05) # 1 = 1 second
+      DISPLAY_TIME = DISPLAY_TIME - 0.13
    return();
 
 #
 #       VIOLET : the statistic is  WARNING (alert)
 #   LED_number argument 0-7
 def status6(LED_number) :
+   global DISPLAY_TIME
    set_pixel(LED_number, 127, 0, 255, 0.1)
    show()
    time.sleep(2) # 1 = 1 second
+   DISPLAY_TIME = DISPLAY_TIME - 2
    return();
 
 #   process information
 def process(line) :
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Begin to process >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, line.lower().rstrip('\n')))
+   global DISPLAY_TIME
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Begin to process >{}<   DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, line.lower().rstrip('\n'), DISPLAY_TIME))
    if 'celsius:' in line.lower() :
       VALUE = float(line[line.find(':')+2:])
       LED_number = 7
@@ -296,13 +306,19 @@ def process(line) :
    return();
 
 ###
+#   display-led.py called by cron every 15 seconds
+DISPLAY_TIME = 15.00 - 5.97
+
 #   read file and process information
 with open(FILE_NAME) as f :
    print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
    for line in f :
       process(line)
+   f.close()
 
-time.sleep(6) # 1 = 1 second
+#  Leave LEDs on while time.sleep
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DISPLAY_TIME))
+time.sleep(int(DISPLAY_TIME)) # 1 = 1 second
 
 #
 print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
