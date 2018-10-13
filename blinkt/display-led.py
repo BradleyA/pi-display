@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-# 	display-led.py  3.200.342  2018-10-09T23:25:25-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.199  
-# 	   determine script run time to determine sleep time before exit close #50 
-# 	../blinkt/display-led.py  3.199.341  2018-10-08T23:51:49-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.198  
-# 	   minor changes 
-# 	../blinkt/display-led.py  3.198.340  2018-10-08T22:47:13-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.197  
-# 	   test blinkt/display-led.py with crontab 
-# 	display-led.py  3.187.329  2018-10-03_15:05:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.186  
-# 	   Change echo or print DEBUG INFO WARNING ERROR  close #44 
+# 	display-led.py  3.201.343  2018-10-12T22:30:55-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.200  
+# 	   changed DISPLAY_TIME to decrease the time LEDs are on 
 #
 ###	display-led.py - display system status on blinkt
 #
@@ -307,17 +301,17 @@ def process(line) :
 
 ###
 #   display-led.py called by cron every 15 seconds
-DISPLAY_TIME = 15.00 - 5.97
+DISPLAY_TIME = 15.00 - 11
 
 #   read file and process information
 with open(FILE_NAME) as f :
    print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
    for line in f :
       process(line)
-   f.close()
+f.close()
 
 #  Leave LEDs on while time.sleep
-if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DISPLAY_TIME))
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, int(DISPLAY_TIME)))
 time.sleep(int(DISPLAY_TIME)) # 1 = 1 second
 
 #
