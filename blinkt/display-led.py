@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# 	display-led.py  3.201.343  2018-10-12T22:30:55-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.200  
-# 	   changed DISPLAY_TIME to decrease the time LEDs are on 
+# 	display-led.py  3.202.344  2018-10-12T22:41:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.201  
+# 	   changed DISPLAY_TIME to decrease the time LEDs are on #50 
 #
 ###	display-led.py - display system status on blinkt
 #
