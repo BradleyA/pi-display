@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	local-create-message.sh  3.209.351  2018-10-14T13:14:17-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.208  
+# 	   change font to upper case so display-message is easier to read 
 # 	../create-message/local-create-message.sh  3.203.345  2018-10-13T23:08:08-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.202  
 # 	   changed Memory_Usage: calculation 
 # 	local-create-message.sh  3.197.339  2018-10-08T22:05:07-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.196  
@@ -88,26 +90,29 @@ if [ ! -d ${DATA_DIR}/${CLUSTER} ] ; then
 fi
 
 ###
+#	Docker
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Gather docker info on ${LOCALHOST}" 1>&2 ; fi
 docker system info | head -6 > ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+#	CELSIUS, FAHRENHEIT
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CELSIUS, FAHRENHEIT from ${LOCALHOST}" 1>&2 ; fi
 CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
-echo 'Celsius: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+echo 'CELSIUS: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
-echo 'Fahrenheit: '${FAHRENHEIT} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-#	
+echo 'FAHRENHEIT: '${FAHRENHEIT} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+#	CPU
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CPU" 1>&2 ; fi
 /usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-#	
+#	Memory
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY" 1>&2 ; fi
-MEMORY=$(free -m | grep -i Mem: | awk '{printf "Memory_Usage: %sM  %d", $2,($2-$7)/$2*100}')
+MEMORY=$(free -m | grep -i Mem: | awk '{printf "MEMORY_USAGE: %sM  %d", $2,($2-$7)/$2*100}')
 echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
-echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
-echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+#	MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
+#	echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+#	MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
+#	echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+#	Disk
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  DISK" 1>&2 ; fi
-DISK=$(df -h | awk '$NF=="/"{printf "Disk_Usage: %d/%dGB %d\n", $3,$2,$5}')
+DISK=$(df -h | awk '$NF=="/"{printf "DISK_USAGE: %d/%dGB %d\n", $3,$2,$5}')
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Update file ${DATA_DIR}/${CLUSTER}/${LOCALHOST}" 1>&2 ; fi
 echo ${DISK} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 

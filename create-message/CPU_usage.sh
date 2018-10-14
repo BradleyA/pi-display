@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	CPU_usage.sh  3.209.351  2018-10-14T13:14:17-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.208  
+# 	   change font to upper case so display-message is easier to read 
 # 	CPU_usage.sh  3.73.187  2018-08-12_13:53:05_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.72  
 # 	   sync to standard script design changes 
 # 	CPU_usage.sh  3.36.143  2018-07-15_13:01:07_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.35  
@@ -7,7 +9,7 @@
 # 	   add CPU_usage.sh script to solve this fucking incident with * 
 ###
 DEBUG=0                 # 0 = debug off, 1 = debug on
-       set -x
+#       set -x
 #       set -v
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
@@ -51,4 +53,4 @@ cpu_idle=$((cpu_now[4]- cpu_last[4])) ;
 cpu_used=$((cpu_delta - cpu_idle)) ;
 cpu_usage=$((100 * cpu_used / cpu_delta + 1)) ;
 
-echo "CPU_usage: "${cpu_usage} ;
+echo "CPU_USAGE: "${cpu_usage} ;
