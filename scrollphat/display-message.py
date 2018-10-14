@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	../scrollphat/display-message.py  3.208.350  2018-10-14T11:12:13-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.207  
+# 	   testing display-message-hd 
 # 	display-message.py  3.206.348  2018-10-14T10:40:37-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.205  
 # 	   Date and time function ISO 8601 
 # 	display-message.py  3.192.334  2018-10-03_18:37:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.191  
@@ -7,7 +9,7 @@
 # 	   Change echo or print DEBUG INFO WARNING ERROR close #45 
 #
 ###	display-message.py - display contents of MESSAGE file
-DEBUG = 0       # 0 = debug off, 1 = debug on
+DEBUG = 1       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
@@ -174,6 +176,7 @@ def get_msg(TEMP_FILE) :
    CONTENT = file.read()
    file.close()
    CONTENT = CONTENT.rstrip('\n') + "    "
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  CONTENT >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, CONTENT))
    return CONTENT
 
 #  timeout

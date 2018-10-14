@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message-hd.py  3.208.350  2018-10-14T11:12:14-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.207  
+# 	   testing display-message-hd 
 # 	display-message-hd.py  3.207.349  2018-10-14T10:42:48-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.206  
 # 	   Date and time function ISO 8601 
 # 	display-message-hd.py  3.195.337  2018-10-03_20:56:53_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.194  
@@ -8,7 +10,7 @@
 # 	display-message-hd.py  3.173.315  2018-09-29_18:51:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.172  
 # 	   no more incidnet with #25 close #25 
 ###
-DEBUG = 0       # 0 = debug off, 1 = debug on
+DEBUG = 1       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
@@ -170,6 +172,8 @@ def get_msg(TEMP_FILE) :
    file = open(TEMP_FILE,"r")
    CONTENT = file.read().splitlines()
    file.close()
+#	   CONTENT = CONTENT = "['   ']"
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  CONTENT >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, CONTENT))
    return CONTENT
 
 ### 
