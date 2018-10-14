@@ -1,13 +1,9 @@
 #!/bin/bash
-# 	create-message.sh  3.211.353  2018-10-14T14:29:31-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.210  
-# 	   create-message.sh first cut at moving MESSAGES to all hosts 
-# 	create-message.sh  3.183.325  2018-09-30_21:44:50_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.182  
-# 	   need to run more tests before deleting orginal code #37 
-# 	create-message.sh  3.182.324  2018-09-30_21:33:46_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.181  
-# 	   redesign to decrease the amount ot time to complete #37 
+# 	create-message.sh  3.212.354  2018-10-14T15:00:44-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.211  
+# 	   completed create-message.sh #37  need to test with different network 
 #
 ### 	create-message.sh
-DEBUG=1                 # 0 = debug off, 1 = debug on
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
@@ -153,7 +149,7 @@ fi
 #	Loop through hosts in ${SYSTEMS_FILE} file
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Loop through hosts in ${SYSTEMS_FILE} file" 1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
-	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  host >${NODE}<" 1>&2
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  host >${NODE}<" 1>&2 ; fi
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #		Check if ${NODE} is available on ssh port 
@@ -162,18 +158,15 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 #			Copy ${NODE} information to ${LOCALHOST}
  			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
 			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER}
-#			Copy ${SYSTEMS_FILE} file from ${LOCALHOST} to ${NODE}
-			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Copy ${SYSTEMS_FILE} file from ${LOCALHOST} to ${NODE}" 1>&2 ; fi
-			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}
 		else
 			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
 			touch ${DATA_DIR}/${CLUSTER}/${NODE}
 		fi
 	else
-		get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  - Cluster Server" 1>&2
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  - Cluster Server ${LOCALHOST}" 1>&2 ; fi
 		cd ${DATA_DIR}/${CLUSTER}
 		#       Check if LOCAL-HOST file is on system
-		if [ -e LOCAL-HOST ] ; then rm LOCAL-HOST ; fi	# difficult to solve bug fix #26
+		if [ -e LOCAL-HOST ] ; then rm LOCAL-HOST ; fi	# very difficult to locate and solve bug fix #26
 	fi
 	CONTAINERS=`grep -i CONTAINERS ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$CONTAINERS '{print $2 + v}'`
 	RUNNING=`grep -i RUNNING ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$RUNNING '{print $2 + v}'`
@@ -182,16 +175,16 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	IMAGES=`grep -i IMAGES ${DATA_DIR}/${CLUSTER}/${NODE} | awk -v v=$IMAGES '{print $2 + v}'`
 	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Add Docker information from ${NODE}" 1>&2 ; fi
 done
-MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES}"
+MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} . . . "
 echo ${MESSAGE} > ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}
 cp ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE} ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
 # >>>	NOT sure this is a good idea because how to you always know that 4{LOCALHOST} has scrollphathd
-tail -n +6 ${DATA_DIR}/${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
+#	tail -n +6 ${DATA_DIR}/${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
 
 #	Loop through hosts in ${SYSTEMS_FILE} file and update other host information
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Loop through hosts in ${SYSTEMS_FILE} file and update other host information" 1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
-	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Copy files to host ${NODE}" 1>&2
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Copy files to host ${NODE}" 1>&2 ; fi
 #	Check if ${NODE} is ${LOCALHOST} skip already did before the loop
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port
@@ -204,6 +197,6 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		fi
 	fi
 done
-ln -sf ${LOCALHOST} LOCAL-HOST	# difficult to solve bug fix #26
+ln -sf ${LOCALHOST} LOCAL-HOST	# very difficult to locate and  solve bug fix #26
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Done." 1>&2
 ###
