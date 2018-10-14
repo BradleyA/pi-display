@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# 	scrollphat.test.py  3.213.355  2018-10-14T15:08:37-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.212  
+# 	   updated date ISO 8601 
 # 	scrollphat.test.py  3.193.335  2018-10-03_18:46:23_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.192  
 # 	   updated Done statement with new standard 
 # 	scrollphat.test.py  3.191.333  2018-10-03_17:12:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.190  
@@ -39,9 +41,10 @@ def get_line_no() :
    cf = currentframe()
    return cf.f_back.f_lineno
 
-#  Date and time function
+#  Date and time function ISO 8601
 def get_date_stamp() :
-   return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
+   ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)")
+   return ISO8601
 
 #  Fully qualified domain name
 from socket import getfqdn
