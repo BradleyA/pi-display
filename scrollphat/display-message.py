@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# 	display-message.py  3.214.356  2018-10-14T15:11:39-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.213  
-# 	   testing 
+# 	display-message.py  3.215.357  2018-10-14T15:17:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.214  
+# 	   testing complete 
 #
 ###	display-message.py - display contents of MESSAGE file
-DEBUG = 1       # 0 = debug off, 1 = debug on
+DEBUG = 0       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
