@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message.py  3.206.348  2018-10-14T10:40:37-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.205  
+# 	   Date and time function ISO 8601 
 # 	display-message.py  3.192.334  2018-10-03_18:37:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.191  
 # 	   reread data file at the beginning of each loop close #48 
 # 	display-message.py  3.190.332  2018-10-03_16:54:09_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.189  
@@ -69,9 +71,10 @@ def get_line_no() :
    cf = currentframe()
    return cf.f_back.f_lineno
 
-#  Date and time function
+#  Date and time function ISO 8601
 def get_date_stamp() :
-   return time.strftime("%Y-%m-%d-%H-%M-%S-%Z")
+   ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)")
+   return ISO8601
 
 #  Fully qualified domain name
 from socket import getfqdn
