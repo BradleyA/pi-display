@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.205.347  2018-10-14T10:23:36-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.204  
+# 	   update disk_usage from testing settings 
 # 	display-led.py  3.204.346  2018-10-13T23:24:36-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.203  
 # 	   test different cpu_usage % 
 # 	display-led.py  3.203.345  2018-10-13T23:08:08-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.202  
@@ -295,15 +297,15 @@ def process(line) :
       VALUE = int(line.split(' ')[2])
       LED_number = 4
       if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  disk_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, VALUE, LED_number))
-      if   VALUE < 10 : # < 60 %
+      if   VALUE < 60 : # < 60 %
          status1(LED_number)
-      elif VALUE < 20 : # < 75 %
+      elif VALUE < 75 : # < 75 %
          status2(LED_number)
-      elif VALUE < 25 : # < 85 %
+      elif VALUE < 80 : # < 80 %
          status3(LED_number)
-      elif VALUE < 30 : # < 90 %
+      elif VALUE < 90 : # < 90 %
          status4(LED_number)
-      elif VALUE >= 30 : # >= 90 %
+      elif VALUE >= 90 : # >= 90 %
          status5(LED_number) 
    return();
 
