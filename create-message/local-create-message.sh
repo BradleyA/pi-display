@@ -1,10 +1,6 @@
 #!/bin/bash
-# 	local-create-message.sh  3.209.351  2018-10-14T13:14:17-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.208  
-# 	   change font to upper case so display-message is easier to read 
-# 	../create-message/local-create-message.sh  3.203.345  2018-10-13T23:08:08-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.202  
-# 	   changed Memory_Usage: calculation 
-# 	local-create-message.sh  3.197.339  2018-10-08T22:05:07-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.196  
-# 	   local-create-message.sh to be run locally on each systemin cluster close #37 
+# 	local-create-message.sh  3.210.352  2018-10-14T13:21:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.209  
+# 	   complete testing for now #37 
 #
 ### 	local-create-message.sh -
 DEBUG=0                 # 0 = debug off, 1 = debug on
