@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	local-create-message.sh  3.211.353  2018-10-14T14:29:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.210  
+# 	   create-message.sh first cut at moving MESSAGES to all hosts 
 # 	local-create-message.sh  3.210.352  2018-10-14T13:21:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.209  
 # 	   complete testing for now #37 
 #
@@ -86,7 +88,7 @@ if [ ! -d ${DATA_DIR}/${CLUSTER} ] ; then
 fi
 
 ###
-#	Docker
+#	DOCKER
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Gather docker info on ${LOCALHOST}" 1>&2 ; fi
 docker system info | head -6 > ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 #	CELSIUS, FAHRENHEIT
@@ -98,15 +100,11 @@ echo 'FAHRENHEIT: '${FAHRENHEIT} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 #	CPU
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CPU" 1>&2 ; fi
 /usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-#	Memory
+#	MEMORY
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY" 1>&2 ; fi
 MEMORY=$(free -m | grep -i Mem: | awk '{printf "MEMORY_USAGE: %sM  %d", $2,($2-$7)/$2*100}')
 echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-#	MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
-#	echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-#	MEMORY3=$(vcgencmd get_mem gpu | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
-#	echo ${MEMORY3} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
-#	Disk
+#	DISK
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  DISK" 1>&2 ; fi
 DISK=$(df -h | awk '$NF=="/"{printf "DISK_USAGE: %d/%dGB %d\n", $3,$2,$5}')
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Update file ${DATA_DIR}/${CLUSTER}/${LOCALHOST}" 1>&2 ; fi
