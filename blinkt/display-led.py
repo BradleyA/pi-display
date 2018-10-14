@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.204.346  2018-10-13T23:24:36-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.203  
+# 	   test different cpu_usage % 
 # 	display-led.py  3.203.345  2018-10-13T23:08:08-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.202  
 # 	   changed Memory_Usage: calculation 
 # 	display-led.py  3.202.344  2018-10-12T22:41:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.201  
@@ -263,15 +265,15 @@ def process(line) :
       VALUE = int(line[line.find(':')+2:])
       LED_number = 6
       if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  cpu_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, VALUE, LED_number))
-      if   VALUE < 10 : # < 70 %
+      if   VALUE < 70 : # < 70 %    tested with 10
          status1(LED_number)
-      elif VALUE < 20 : # < 80 %
+      elif VALUE < 80 : # < 80 %    tested with 20
          status2(LED_number)
-      elif VALUE < 35 : # < 85 %
+      elif VALUE < 85 : # < 85 %    tested with 35
          status3(LED_number)
-      elif VALUE < 50 : # < 90 %
+      elif VALUE < 90 : # < 90 %    tested with 50
          status4(LED_number)
-      elif VALUE >= 50 : # >= 95 %
+      elif VALUE >= 90 : # >= 95 %    tested with 50
          status5(LED_number) 
 #  memory_usage
    if 'memory_usage:' in line.lower() :
