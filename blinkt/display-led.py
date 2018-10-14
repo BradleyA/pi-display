@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-led.py  3.203.345  2018-10-13T23:08:08-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.202  
+# 	   changed Memory_Usage: calculation 
 # 	display-led.py  3.202.344  2018-10-12T22:41:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.201  
 # 	   changed DISPLAY_TIME to decrease the time LEDs are on #50 
 #
@@ -241,6 +243,7 @@ def status6(LED_number) :
 def process(line) :
    global DISPLAY_TIME
    if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Begin to process >{}<   DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, line.lower().rstrip('\n'), DISPLAY_TIME))
+#  celsius
    if 'celsius:' in line.lower() :
       VALUE = float(line[line.find(':')+2:])
       LED_number = 7
@@ -255,20 +258,22 @@ def process(line) :
          status4(LED_number)
       elif VALUE >= 80  :   # > 80 C 176    5
          status5(LED_number) 
+#  cpu_usage
    if 'cpu_usage:' in line.lower() :
       VALUE = int(line[line.find(':')+2:])
       LED_number = 6
       if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  cpu_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, VALUE, LED_number))
-      if   VALUE < 70 : # < 70 %
+      if   VALUE < 10 : # < 70 %
          status1(LED_number)
-      elif VALUE < 80 : # < 80 %
+      elif VALUE < 20 : # < 80 %
          status2(LED_number)
-      elif VALUE < 85 : # < 85 %
+      elif VALUE < 35 : # < 85 %
          status3(LED_number)
-      elif VALUE < 90 : # < 90 %
+      elif VALUE < 50 : # < 90 %
          status4(LED_number)
-      elif VALUE >= 90 : # >= 95 %
+      elif VALUE >= 50 : # >= 95 %
          status5(LED_number) 
+#  memory_usage
    if 'memory_usage:' in line.lower() :
       VALUE = int(line.split(' ')[2])
       LED_number = 5
@@ -283,25 +288,26 @@ def process(line) :
          status4(LED_number)
       elif VALUE >= 90 : # >= 95 %
          status5(LED_number) 
+#  disk_usage
    if 'disk_usage:' in line.lower() :
       VALUE = int(line.split(' ')[2])
       LED_number = 4
       if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  disk_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, VALUE, LED_number))
-      if   VALUE < 70 : # < 70 %
+      if   VALUE < 10 : # < 60 %
          status1(LED_number)
-      elif VALUE < 80 : # < 80 %
+      elif VALUE < 20 : # < 75 %
          status2(LED_number)
-      elif VALUE < 85 : # < 85 %
+      elif VALUE < 25 : # < 85 %
          status3(LED_number)
-      elif VALUE < 90 : # < 90 %
+      elif VALUE < 30 : # < 90 %
          status4(LED_number)
-      elif VALUE >= 90 : # >= 95 %
+      elif VALUE >= 30 : # >= 90 %
          status5(LED_number) 
    return();
 
 ###
 #   display-led.py called by cron every 15 seconds
-DISPLAY_TIME = 15.00 - 11
+DISPLAY_TIME = 15.00 - 8
 
 #   read file and process information
 with open(FILE_NAME) as f :

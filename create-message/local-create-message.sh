@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	../create-message/local-create-message.sh  3.203.345  2018-10-13T23:08:08-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.202  
+# 	   changed Memory_Usage: calculation 
 # 	local-create-message.sh  3.197.339  2018-10-08T22:05:07-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.196  
 # 	   local-create-message.sh to be run locally on each systemin cluster close #37 
 #
@@ -98,7 +100,7 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP}
 /usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 #	
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY" 1>&2 ; fi
-MEMORY=$(free -m | awk 'NR==2{printf "Memory_Usage: %s/%sMB %d\n", $3,$2,$3*100/$2 }')
+MEMORY=$(free -m | grep -i Mem: | awk '{printf "Memory_Usage: %sM  %d", $2,($2-$7)/$2*100}')
 echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 MEMORY2=$(vcgencmd get_mem arm | sed 's/=/: /' | awk '{printf ".Memory_%s\n", $1" "$2 }')
 echo ${MEMORY2} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
