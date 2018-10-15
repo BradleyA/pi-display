@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	display-message-hd.py  3.216.358  2018-10-14T21:56:46-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.215  
+# 	   turn off DEBUG 
 # 	display-message-hd.py  3.208.350  2018-10-14T11:12:14-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.207  
 # 	   testing display-message-hd 
 # 	display-message-hd.py  3.207.349  2018-10-14T10:42:48-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.206  
@@ -10,7 +12,7 @@
 # 	display-message-hd.py  3.173.315  2018-09-29_18:51:05_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.172  
 # 	   no more incidnet with #25 close #25 
 ###
-DEBUG = 1       # 0 = debug off, 1 = debug on
+DEBUG = 0       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
