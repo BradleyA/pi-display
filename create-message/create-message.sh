@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message.sh  3.218.360  2018-10-16T10:44:19-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.217  
+# 	   testing user running in crontab 
 # 	create-message.sh  3.217.359  2018-10-16T00:09:01-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.216  
 # 	   Added line because USER is not defined in crobtab jobs 
 # 	create-message.sh  3.212.354  2018-10-14T15:00:44-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.211  
@@ -197,9 +199,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
 			scp -q    -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}
 			TEMP="cd ${DATA_DIR}/${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
-       set -x
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
-       set +x
 		else
 			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
 		fi
