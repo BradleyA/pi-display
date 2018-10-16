@@ -1,23 +1,23 @@
 #!/bin/bash
+# 	CPU_usage.sh  3.221.363  2018-10-16T12:44:18-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.220  
+# 	   CPU_usage.sh display_help now that design is closer to being complete close #52 
 # 	CPU_usage.sh  3.220.362  2018-10-16T12:15:25-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.219  
 # 	   CPU_usage.sh Change echo or print DEBUG INFO WARNING ERROR close #53 
 #
 ###	CPU_usage.sh
-DEBUG=1                 # 0 = debug off, 1 = debug on
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
 NORMAL=$(tput -Txterm sgr0)
 ###
 display_help() {
-echo -e "\n${NORMAL}${0} - >>> NEED TO COMPLETE THIS SOON, ONCE I KNOW HOW IT IS GOING TO WORK :-) <<<"
+echo -e "\n${NORMAL}${0} - return local CPU usage"
 echo -e "\nUSAGE\n   ${0}"
-echo    "   ${0} [--help | -help | help | -h | h | -? | ?]"
+echo    "   ${0} [--help | -help | help | -h | h | -?]"te-message
 echo    "   ${0} [--version | -version | -v]"
-echo -e "\nDESCRIPTION\nXXXXXX "
-echo -e "\nOPTIONS "
-echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-scripts/tree/master/cpu-temperature"
-echo -e "\nEXAMPLES\n   XXXXXX \n\t${0} XXXXXX\n"
+echo -e "\nDESCRIPTION\nReturns the local system CPU usage. "
+echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/create-message"
 #       After displaying help in english check for other languages
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
         get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Your language, ${LANG}, is not supported, Would you like to help translate?" 1>&2
