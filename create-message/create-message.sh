@@ -1,13 +1,11 @@
 #!/bin/bash
-# 	create-message.sh  3.218.360  2018-10-16T10:44:19-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.217  
-# 	   testing user running in crontab 
-# 	create-message.sh  3.217.359  2018-10-16T00:09:01-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.216  
-# 	   Added line because USER is not defined in crobtab jobs 
+# 	create-message.sh  3.219.361  2018-10-16T11:20:18-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.218  
+# 	   Added line because USER is not defined in crobtab jobs, continue testing 
 # 	create-message.sh  3.212.354  2018-10-14T15:00:44-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.211  
 # 	   completed create-message.sh #37  need to test with different network 
 #
 ### 	create-message.sh
-DEBUG=1                 # 0 = debug off, 1 = debug on
+DEBUG=0                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
@@ -186,8 +184,10 @@ done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} . . . "
 echo ${MESSAGE} > ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}
 cp ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE} ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
-# >>>	NOT sure this is a good idea because how to you always know that 4{LOCALHOST} has scrollphathd
-#	tail -n +6 ${DATA_DIR}/${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
+# >>>	NOT sure this is a good idea because how do you always know that ${LOCALHOST} has scrollphathd
+# >>>	but does it mater .... ???
+tail -n +6 ${DATA_DIR}/${CLUSTER}/${LOCALHOST} >> ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD
+# >>>	<<< <<< <<<
 
 #	Loop through hosts in ${SYSTEMS_FILE} file and update other host information
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Loop through hosts in ${SYSTEMS_FILE} file and update other host information" 1>&2 ; fi
