@@ -1,13 +1,13 @@
 #!/bin/bash
-# 	CPU_usage.sh  3.210.352  2018-10-14T13:21:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.209  
-# 	   complete testing for now #37 
+# 	CPU_usage.sh  3.220.362  2018-10-16T12:15:25-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.219  
+# 	   CPU_usage.sh Change echo or print DEBUG INFO WARNING ERROR close #53 
 #
 ###	CPU_usage.sh
-DEBUG=0                 # 0 = debug off, 1 = debug on
+DEBUG=1                 # 0 = debug off, 1 = debug on
 #       set -x
 #       set -v
-BOLD=$(tput bold)
-NORMAL=$(tput sgr0)
+BOLD=$(tput -Txterm bold)
+NORMAL=$(tput -Txterm sgr0)
 ###
 display_help() {
 echo -e "\n${NORMAL}${0} - >>> NEED TO COMPLETE THIS SOON, ONCE I KNOW HOW IT IS GOING TO WORK :-) <<<"
@@ -18,19 +18,53 @@ echo -e "\nDESCRIPTION\nXXXXXX "
 echo -e "\nOPTIONS "
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-scripts/tree/master/cpu-temperature"
 echo -e "\nEXAMPLES\n   XXXXXX \n\t${0} XXXXXX\n"
+#       After displaying help in english check for other languages
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
-        echo -e "${NORMAL}${0} ${LINENO} [${BOLD}WARNING${NORMAL}]:     Your language, ${LANG}, is not supported.\n\tWould you like to help?\n" 1>&2
+        get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Your language, ${LANG}, is not supported, Would you like to help translate?" 1>&2
+#       elif [ "${LANG}" == "fr_CA.UTF-8" ] ; then
+#               get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Display help in ${LANG}" 1>&2
+#       else
+#               get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Your language, ${LANG}, is not supported.\tWould you like to translate?" 1>&2
 fi
 }
-if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] || [ "$1" == "?" ] ; then
+
+#       Date and time function ISO 8601
+get_date_stamp() {
+DATE_STAMP=`date +%Y-%m-%dT%H:%M:%S%:z`
+TEMP=`date +%Z`
+DATE_STAMP=`echo "${DATE_STAMP} (${TEMP})"`
+}
+
+#       Fully qualified domain name FQDN hostname
+LOCALHOST=`hostname -f`
+
+#       Version
+SCRIPT_NAME=`head -2 ${0} | awk {'printf$2'}`
+SCRIPT_VERSION=`head -2 ${0} | awk {'printf$3'}`
+
+#       Added line because USER is not defined in crobtab jobs
+if ! [ "${USER}" == "${LOGNAME}" ] ; then  USER=${LOGNAME} ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  USER  >${USER}<  LOGNAME >${LOGNAME}<" 1>&2 ; fi
+
+#       UID and GID
+USER_ID=`id -u`
+GROUP_ID=`id -g`
+
+#       Default help and version arguments
+if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] ; then
         display_help
         exit 0
 fi
 if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] || [ "$1" == "-v" ] ; then
-        head -2 ${0} | awk {'print$2"\t"$3'}
+        echo "${SCRIPT_NAME} ${SCRIPT_VERSION}"
         exit 0
 fi
-if [ "${DEBUG}" == "1" ] ; then echo -e "> DEBUG ${LINENO}  >${0}<  >${1}<" 1>&2 ; fi
+
+#       INFO
+get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Begin" 1>&2
+
+#       DEBUG
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Name_of_command >${0}< Name_of_arg1 >${1}<" 1>&2 ; fi
 
 cpu_now=($(head -n1 /proc/stat)) ;
 cpu_sum="${cpu_now[@]:1}" ;
@@ -49,3 +83,8 @@ cpu_used=$((cpu_delta - cpu_idle)) ;
 cpu_usage=$((100 * cpu_used / cpu_delta + 1)) ;
 
 echo "CPU_USAGE: "${cpu_usage} ;
+
+#
+get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Done." 1>&2
+###
+

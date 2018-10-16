@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	local-create-message.sh  3.220.362  2018-10-16T12:15:25-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.219  
+# 	   CPU_usage.sh Change echo or print DEBUG INFO WARNING ERROR close #53 
 # 	local-create-message.sh  3.217.359  2018-10-16T00:09:01-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.216  
 # 	   Added line because USER is not defined in crobtab jobs 
 # 	local-create-message.sh  3.211.353  2018-10-14T14:29:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.210  
@@ -97,19 +99,23 @@ fi
 #	DOCKER
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Gather docker info on ${LOCALHOST}" 1>&2 ; fi
 docker system info | head -6 > ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+
 #	CELSIUS, FAHRENHEIT
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CELSIUS, FAHRENHEIT from ${LOCALHOST}" 1>&2 ; fi
 CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
 echo 'CELSIUS: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
 echo 'FAHRENHEIT: '${FAHRENHEIT} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+
 #	CPU
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  CPU" 1>&2 ; fi
 /usr/local/bin/CPU_usage.sh >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+
 #	MEMORY
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  MEMORY" 1>&2 ; fi
 MEMORY=$(free -m | grep -i Mem: | awk '{printf "MEMORY_USAGE: %sM  %d", $2,($2-$7)/$2*100}')
 echo ${MEMORY} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
+
 #	DISK
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  DISK" 1>&2 ; fi
 DISK=$(df -h | awk '$NF=="/"{printf "DISK_USAGE: %d/%dGB %d\n", $3,$2,$5}')
