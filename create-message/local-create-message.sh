@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	local-create-message.sh  3.217.359  2018-10-16T00:09:01-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.216  
+# 	   Added line because USER is not defined in crobtab jobs 
 # 	local-create-message.sh  3.211.353  2018-10-14T14:29:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.210  
 # 	   create-message.sh first cut at moving MESSAGES to all hosts 
 # 	local-create-message.sh  3.210.352  2018-10-14T13:21:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.209  
@@ -44,6 +46,10 @@ LOCALHOST=`hostname -f`
 #       Version
 SCRIPT_NAME=`head -2 ${0} | awk {'printf$2'}`
 SCRIPT_VERSION=`head -2 ${0} | awk {'printf$3'}`
+
+#       Added line because USER is not defined in crobtab jobs
+if ! [ "${USER}" == "${LOGNAME}" ] ; then  USER=${LOGNAME} ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  USER  >${USER}<  LOGNAME >${LOGNAME}<" 1>&2 ; fi
 
 #       UID and GID
 USER_ID=`id -u`
