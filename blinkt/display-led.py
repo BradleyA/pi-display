@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-# 	display-led.py  3.205.347  2018-10-14T10:23:36-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.204  
-# 	   update disk_usage from testing settings 
-# 	display-led.py  3.204.346  2018-10-13T23:24:36-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.203  
-# 	   test different cpu_usage % 
-# 	display-led.py  3.203.345  2018-10-13T23:08:08-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.202  
-# 	   changed Memory_Usage: calculation 
-# 	display-led.py  3.202.344  2018-10-12T22:41:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.201  
-# 	   changed DISPLAY_TIME to decrease the time LEDs are on #50 
+# 	display-led.py  3.222.364  2018-10-17T12:46:36-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.221  
+# 	   reduce output to log 
 #
 ###	display-led.py - display system status on blinkt
 #
@@ -315,7 +309,7 @@ DISPLAY_TIME = 15.00 - 8
 
 #   read file and process information
 with open(FILE_NAME) as f :
-   print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
    for line in f :
       process(line)
 f.close()
