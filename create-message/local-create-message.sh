@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/local-create-message.sh  3.232.370  2018-10-18T17:07:22-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.231  
+# 	   create ${CLUSTER}/log directory for crontab logs 
 # 	local-create-message.sh  3.220.362  2018-10-16T12:15:25-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.219  
 # 	   CPU_usage.sh Change echo or print DEBUG INFO WARNING ERROR close #53 
 # 	local-create-message.sh  3.217.359  2018-10-16T00:09:01-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.216  
@@ -91,7 +93,7 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP}
 #       Check if cluster directory is on system if not fix it
 if [ ! -d ${DATA_DIR}/${CLUSTER} ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
-	mkdir -p  ${DATA_DIR}/${CLUSTER} || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
+	mkdir -p  ${DATA_DIR}/${CLUSTER}/log || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}/${CLUSTER}
 fi
 
