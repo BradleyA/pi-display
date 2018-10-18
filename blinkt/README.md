@@ -20,19 +20,21 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
     $ xxxx
     
 #### NOTES:
-LED 7 report CPU temperature Celsius
 
-    LED_number = 7
-    if   VALUE < 48.5 : # < 48.5 C 119.3  1
-       status1(LED_number)
-    elif VALUE < 59   : # < 59 C   138.2  2
-       status2(LED_number)
-    elif VALUE < 69.5 : # < 69.5 C 157.1  3
-       status3(LED_number)
-    elif VALUE < 80   : # < 80 C   176    4
-       status4(LED_number)
-    elif VALUE >= 80  :   # > 80 C 176    5
-       status5(LED_number):
+    crontab -l
+    @reboot   /usr/local/bin/larson-1.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * /usr/local/bin/local-create-message.sh >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 5  ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 20 ; /usr/local/bin/local-create-message.sh >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 25 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 40 ; /usr/local/bin/local-create-message.sh >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 45 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    #
+    @reboot   /usr/local/bin/plasma-1.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    */1 * * * * /usr/local/bin/create-message.sh >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    @reboot   sleep 60 && /usr/local/bin/display-message-hd.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+
+
 
 #### System OS script tested
  * Ubuntu 14.04.3 LTS
