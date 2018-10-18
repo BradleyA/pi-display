@@ -1,6 +1,6 @@
 #!/bin/bash
-# 	cpu-temperature.sh  3.72.186  2018-08-12_13:46:05_CDT  https://github.com/BradleyA/pi-display  uadmin  three-rpi3b.cptx86.com 3.71-1-g7093446  
-# 	   sync to standard script design changes 
+# 	create-message/cpu-temperature.sh  3.231.369  2018-10-18T14:58:23-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.230  
+# 	   move files from ../cpu-temperature to . 
 ###
 #	print out current temperature
 ###
