@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	scrollphathd/display-message-hd.py  3.235.377  2018-10-21T23:51:41-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.234  
+# 	   remove while TRUE loop, script displays message once and stops 
 # 	scrollphathd/display-message-hd.py  3.234.376  2018-10-21T23:09:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.233-2-gdefd327  
 # 	   added nano seconds to time 
 # 	display-message-hd.py  3.216.358  2018-10-14T21:56:46-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.215  
@@ -176,7 +178,7 @@ else :
 
 #  Read TEMP_FILE contents and return contents #41
 def get_msg(TEMP_FILE) :
-   print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Reading MESSAGE file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, TEMP_FILE))
+   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Reading MESSAGE file >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, TEMP_FILE))
    file = open(TEMP_FILE,"r")
    CONTENT = file.read().splitlines()
    file.close()
@@ -202,59 +204,60 @@ delay = 0.03
 #  Determine how far apart each line should be spaced vertically
 line_height = scrollphathd.DISPLAY_HEIGHT + 2
 #
-while True:
-   #  Store the left offset for each subsequent line (starts at the end of the last line)
-   offset_left = 0
-   #  Get message from MESSAGEHD file created by create-message.sh
-   lines = get_msg(MESSAGEHD_FILE)
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Show lines >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lines))
-   #  Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
-   #  Draw each line in lines to the Scroll pHAT HD buffer
-   #  scrollphathd.write_string returns the length of the written string in pixels
-   #  we can use this length to calculate the offset of the next line
-   #  and will also use it later for the scrolling effect.
-   lengths = [0] * len(lines)
-   #  
-   scrollphathd.fill(0,0,0)  #25  This is what fixed incident #25
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lengths, offset_left, line_height)) #25
-   for line, text in enumerate(lines):
-      lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
-      offset_left += lengths[line]
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  After 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lengths, offset_left, line_height)) #25
-   #  This adds a little bit of horizontal/vertical padding into the buffer at
-   #  the very bottom right of the last line to keep things wrapping nicely.
-   scrollphathd.set_pixel(offset_left - 1, (len(lines) * line_height) - 1, 0)
-   #  Reset the animation
-   scrollphathd.scroll_to(0, 0)
-   scrollphathd.show()
-   #  Keep track of the X and Y position for the rewind effect
-   pos_x = 0
-   pos_y = 0
-   for current_line, line_length in enumerate(lengths):
-      #  Delay a slightly longer time at the start of each line
-      #
-      # >>> org      time.sleep(delay*10)
-      time.sleep(delay*30)
-      #  Scroll to the end of the current line
-      for y in range(line_length):
-         scrollphathd.scroll(1, 0)
-         pos_x += 1
-         time.sleep(delay)
+
+###
+#  Store the left offset for each subsequent line (starts at the end of the last line)
+offset_left = 0
+#  Get message from MESSAGEHD file created by create-message.sh
+lines = get_msg(MESSAGEHD_FILE)
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Show lines >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lines))
+#  Code from Pimoroni scrollphathd/examples/advanced-scrolling.py
+#  Draw each line in lines to the Scroll pHAT HD buffer
+#  scrollphathd.write_string returns the length of the written string in pixels
+#  we can use this length to calculate the offset of the next line
+#  and will also use it later for the scrolling effect.
+lengths = [0] * len(lines)
+#  
+scrollphathd.fill(0,0,0)  #25  This is what fixed incident #25
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Before 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lengths, offset_left, line_height)) #25
+for line, text in enumerate(lines):
+   lengths[line] = scrollphathd.write_string(text, x=offset_left, y=line_height * line)
+   offset_left += lengths[line]
+if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  After 'for' loop;  lengths >{}<  offset_left >{}<  line_height >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, lengths, offset_left, line_height)) #25
+#  This adds a little bit of horizontal/vertical padding into the buffer at
+#  the very bottom right of the last line to keep things wrapping nicely.
+scrollphathd.set_pixel(offset_left - 1, (len(lines) * line_height) - 1, 0)
+#  Reset the animation
+scrollphathd.scroll_to(0, 0)
+scrollphathd.show()
+#  Keep track of the X and Y position for the rewind effect
+pos_x = 0
+pos_y = 0
+for current_line, line_length in enumerate(lengths):
+   #  Delay a slightly longer time at the start of each line
+   #
+   # >>> org      time.sleep(delay*10)
+   time.sleep(delay*30)
+   #  Scroll to the end of the current line
+   for y in range(line_length):
+      scrollphathd.scroll(1, 0)
+      pos_x += 1
+      time.sleep(delay)
+      scrollphathd.show()
+   #  If we're currently on the very last line and rewind is True
+   #  We should rapidly scroll back to the first line.
+   if current_line == len(lines) - 1 and rewind:
+      for y in range(pos_y):
+         scrollphathd.scroll(-int(pos_x/pos_y), -1)
          scrollphathd.show()
-      #  If we're currently on the very last line and rewind is True
-      #  We should rapidly scroll back to the first line.
-      if current_line == len(lines) - 1 and rewind:
-         for y in range(pos_y):
-            scrollphathd.scroll(-int(pos_x/pos_y), -1)
-            scrollphathd.show()
-            time.sleep(delay)
-      #  Otherwise, progress to the next line by scrolling upwards
-      else:
-         for x in range(line_height):
-            scrollphathd.scroll(0, 1)
-            pos_y += 1
-            scrollphathd.show()
-            time.sleep(delay)
+         time.sleep(delay)
+   #  Otherwise, progress to the next line by scrolling upwards
+   else:
+      for x in range(line_height):
+         scrollphathd.scroll(0, 1)
+         pos_y += 1
+         scrollphathd.show()
+         time.sleep(delay)
 
 #  Done
 print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
