@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	blinkt/display-led.py  3.234.376  2018-10-21T23:09:09-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.233-2-gdefd327  
+# 	   added nano seconds to time 
 # 	display-led.py  3.222.364  2018-10-17T12:46:36-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.221  
 # 	   reduce output to log 
 #
@@ -13,7 +15,7 @@ DEBUG = 0       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
-import time
+import datetime, time
 import os
 ###
 class color :
@@ -64,7 +66,12 @@ def get_line_no() :
 
 #  Date and time function ISO 8601
 def get_date_stamp() :
-   ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)")
+   # calculate the offset taking into account daylight saving time
+   utc_offset_sec = time.altzone if time.localtime().tm_isdst else time.timezone
+   utc_offset = datetime.timedelta(seconds=-utc_offset_sec)
+   ISO8601 = datetime.datetime.now().replace(tzinfo=datetime.timezone(offset=utc_offset)).isoformat()  + time.strftime(" (%Z)")
+#	   ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S.%f%z") + time.strftime("%z") + time.strftime(" (%Z)")
+#	ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)")
    return ISO8601
 
 #  Fully qualified domain name

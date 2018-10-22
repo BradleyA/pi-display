@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	scrollphathd/display-message-hd.py  3.234.376  2018-10-21T23:09:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.233-2-gdefd327  
+# 	   added nano seconds to time 
 # 	display-message-hd.py  3.216.358  2018-10-14T21:56:46-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.215  
 # 	   turn off DEBUG 
 # 	display-message-hd.py  3.208.350  2018-10-14T11:12:14-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.207  
@@ -16,7 +18,7 @@ DEBUG = 0       # 0 = debug off, 1 = debug on
 #
 import subprocess
 import sys
-import time
+import datetime, time
 import os
 ###
 class color:
@@ -78,7 +80,11 @@ def get_line_no() :
 
 #  Date and time function ISO 8601
 def get_date_stamp() :
-   ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)")
+   # calculate the offset taking into account daylight saving time
+   utc_offset_sec = time.altzone if time.localtime().tm_isdst else time.timezone
+   utc_offset = datetime.timedelta(seconds=-utc_offset_sec)
+   ISO8601 = datetime.datetime.now().replace(tzinfo=datetime.timezone(offset=utc_offset)).isoformat()  + time.strftime(" (%Z)")
+#      ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)")
    return ISO8601
 
 #  Fully qualified domain name

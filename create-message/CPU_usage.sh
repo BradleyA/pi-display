@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/CPU_usage.sh  3.234.376  2018-10-21T23:09:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.233-2-gdefd327  
+# 	   added nano seconds to time 
 # 	CPU_usage.sh  3.221.363  2018-10-16T12:44:18-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.220  
 # 	   CPU_usage.sh display_help now that design is closer to being complete close #52 
 # 	CPU_usage.sh  3.220.362  2018-10-16T12:15:25-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.219  
@@ -30,7 +32,7 @@ fi
 
 #       Date and time function ISO 8601
 get_date_stamp() {
-DATE_STAMP=`date +%Y-%m-%dT%H:%M:%S%:z`
+DATE_STAMP=`date +%Y-%m-%dT%H:%M:%S.%6N%:z`
 TEMP=`date +%Z`
 DATE_STAMP=`echo "${DATE_STAMP} (${TEMP})"`
 }
