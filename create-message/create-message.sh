@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-message.sh  3.236.378  2018-11-11T21:30:28.933324-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.235  
+# 	   move UID and GID function up a few link to allow DEBUG statement to u… 
 # 	create-message/create-message.sh  3.234.376  2018-10-21T23:09:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.233-2-gdefd327  
 # 	   added nano seconds to time 
 # 	create-message/create-message.sh  3.233.373  2018-10-19T23:46:42-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.232-2-gce1e190  
@@ -89,13 +91,13 @@ LOCALHOST=`hostname -f`
 SCRIPT_NAME=`head -2 ${0} | awk {'printf$2'}`
 SCRIPT_VERSION=`head -2 ${0} | awk {'printf$3'}`
 
-#       Added line because USER is not defined in crobtab jobs
-if ! [ "${USER}" == "${LOGNAME}" ] ; then  USER=${LOGNAME} ; fi
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  USER  >${USER}<  LOGNAME >${LOGNAME}<" 1>&2 ; fi
-
 #       UID and GID
 USER_ID=`id -u`
 GROUP_ID=`id -g`
+
+#       Added line because USER is not defined in crobtab jobs
+if ! [ "${USER}" == "${LOGNAME}" ] ; then  USER=${LOGNAME} ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[DEBUG]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  USER  >${USER}<  LOGNAME >${LOGNAME}<" 1>&2 ; fi
 
 #	Default help and version arguments
 if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] ; then
