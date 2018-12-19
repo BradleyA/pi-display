@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
-# 	blinkt/display-led.py  3.234.376  2018-10-21T23:09:09-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.233-2-gdefd327  
-# 	   added nano seconds to time 
-# 	display-led.py  3.222.364  2018-10-17T12:46:36-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.221  
-# 	   reduce output to log 
+# 	blinkt/display-led.py  3.238.380  2018-12-19T16:15:03.888024-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.237  
+# 	   blinkt/display-led.py Change echo or print DEBUG INFO WARNING ERROR #57 
 #
-###	display-led.py - display system status on blinkt
+### display-led.py - display system status on blinkt
 #
 #	The final design should control an Blinkt LED bar on Raspberry pi and
 #		display information for a second
 #	Each color level function will exit with the primary color on
 #	Color brightness controlled in each color level function
 ###
-DEBUG = 0       # 0 = debug off, 1 = debug on
-#
 import subprocess
 import sys
 import datetime, time
 import os
+#       Order of precedence: environment variable (export DEBUG=1), default code
+DEBUG = int(os.getenv("DEBUG", 0)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
 ###
 class color :
    BOLD = '\033[1m'
@@ -52,7 +50,7 @@ def display_help() :
    print ("   {} \n".format(__file__))
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
-      print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, LANGUAGE))
+      print ("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, LANGUAGE))
 #  elif LANGUAGE == "fr_CA.UTF-8" :
 #     print display_help in french
 #  else :
@@ -70,8 +68,7 @@ def get_date_stamp() :
    utc_offset_sec = time.altzone if time.localtime().tm_isdst else time.timezone
    utc_offset = datetime.timedelta(seconds=-utc_offset_sec)
    ISO8601 = datetime.datetime.now().replace(tzinfo=datetime.timezone(offset=utc_offset)).isoformat()  + time.strftime(" (%Z)")
-#	   ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S.%f%z") + time.strftime("%z") + time.strftime(" (%Z)")
-#	ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)")
+#      ISO8601 = time.strftime("%Y-%m-%dT%H:%M:%S%z") + time.strftime(" (%Z)") # previous solution
    return ISO8601
 
 #  Fully qualified domain name
@@ -92,9 +89,10 @@ with open(__file__) as f :
 if "LOGNAME" in os.environ : LOGNAME = os.getenv("LOGNAME") # Added three lines because USER is not defined in crobtab jobs
 if "USER" in os.environ : USER = os.getenv("USER")
 else : USER = LOGNAME
+#
 UID = os.getuid()
 GID = os.getgid()
-if DEBUG == 1 : print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Set user variables".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
+if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Setting USER to support crobtab...".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
 
 #  Default help and version arguments
 no_arguments =  int(len(sys.argv))
@@ -109,42 +107,42 @@ if no_arguments == 2 :
       sys.exit()
 
 #  Begin script INFO
-print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Begin".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
+print ("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  Started...".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
 
 #  DEBUG example
 from platform import python_version
 #
-if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Version of python >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, python_version()))
+if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Version of python >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, python_version()))
 
 #  if argument; use argument -> do not use environment variables or default for CLUSTER
 if no_arguments >= 2 :
    CLUSTER = sys.argv[1]
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using 1 argument CLUSTER >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, CLUSTER))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Using 1 argument CLUSTER >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, CLUSTER))
 elif "CLUSTER" in os.environ :
    #  Check CLUSTER; set using os environment variable
    CLUSTER = os.getenv("CLUSTER")
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using environment variable CLUSTER >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, CLUSTER))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Using environment variable CLUSTER >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, CLUSTER))
 else :
    #  Set CLUSTER with default
    CLUSTER = "us-tx-cluster-1/"
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable CLUSTER NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, CLUSTER))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Environment variable CLUSTER NOT set, using default >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, CLUSTER))
 
 #  if argument; use argument -> do not use environment variables or default for DATA_DIR
 if no_arguments == 3 :
    DATA_DIR = sys.argv[2]
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using 2 argument DATA_DIR >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DATA_DIR))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Using 2 argument DATA_DIR >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, DATA_DIR))
 elif "DATA_DIR" in os.environ :
    #  Check DATA_DIR; set using os environment variable
    DATA_DIR = os.getenv("DATA_DIR")
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Using environment variable DATA_DIR >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DATA_DIR))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Using environment variable DATA_DIR >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, DATA_DIR))
 else :
    #  Set DATA_DIR with default
    DATA_DIR = "/usr/local/data/"
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DATA_DIR))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Environment variable DATA_DIR NOT set, using default >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, DATA_DIR))
 
 #
 FILE_NAME = DATA_DIR + "/" + CLUSTER + "/" + LOCALHOST
-if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
+if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  FILE_NAME >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, FILE_NAME))
 
 ###
 from blinkt import set_clear_on_exit, set_pixel, show, clear
@@ -161,7 +159,7 @@ def status1(LED_number) :
    set_pixel(LED_number, 0, 255, 0, 0.2)
    show()
    DISPLAY_TIME = DISPLAY_TIME - 0.01
-   if DEBUG == 2 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, DISPLAY_TIME))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, DISPLAY_TIME))
    return();
 
 #   Incidents causing no disruption to overall services and operations
@@ -247,12 +245,12 @@ def status6(LED_number) :
 #   process information
 def process(line) :
    global DISPLAY_TIME
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  Begin to process >{}<   DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, line.lower().rstrip('\n'), DISPLAY_TIME))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Begin to process >{}<   DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, line.lower().rstrip('\n'), DISPLAY_TIME))
 #  celsius
    if 'celsius:' in line.lower() :
       VALUE = float(line[line.find(':')+2:])
       LED_number = 7
-      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  celsius: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, VALUE, LED_number))
+      if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  celsius: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, VALUE, LED_number))
       if   VALUE < 48.5 : # < 48.5 C 119.3  1
          status1(LED_number)
       elif VALUE < 59   : # < 59 C   138.2  2
@@ -267,7 +265,7 @@ def process(line) :
    if 'cpu_usage:' in line.lower() :
       VALUE = int(line[line.find(':')+2:])
       LED_number = 6
-      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  cpu_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, VALUE, LED_number))
+      if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  cpu_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, VALUE, LED_number))
       if   VALUE < 70 : # < 70 %    tested with 10
          status1(LED_number)
       elif VALUE < 80 : # < 80 %    tested with 20
@@ -282,7 +280,7 @@ def process(line) :
    if 'memory_usage:' in line.lower() :
       VALUE = int(line.split(' ')[2])
       LED_number = 5
-      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  memory_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, VALUE, LED_number))
+      if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  memory_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, VALUE, LED_number))
       if   VALUE < 70 : # < 70 %
          status1(LED_number)
       elif VALUE < 80 : # < 80 %
@@ -297,7 +295,7 @@ def process(line) :
    if 'disk_usage:' in line.lower() :
       VALUE = int(line.split(' ')[2])
       LED_number = 4
-      if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  disk_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, VALUE, LED_number))
+      if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  disk_usage: VALUE >{}< LED_number >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, VALUE, LED_number))
       if   VALUE < 60 : # < 60 %
          status1(LED_number)
       elif VALUE < 75 : # < 75 %
@@ -316,15 +314,15 @@ DISPLAY_TIME = 15.00 - 8
 
 #   read file and process information
 with open(FILE_NAME) as f :
-   if DEBUG == 1 : print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  FILE_NAME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, FILE_NAME))
+   if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  FILE_NAME >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, FILE_NAME))
    for line in f :
       process(line)
 f.close()
 
 #  Leave LEDs on while time.sleep
-if DEBUG == 1 : print ("{}{} {} {} {} {}[DEBUG]{}  {}  {}  {} {}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, int(DISPLAY_TIME)))
+if DEBUG == 1 : print ("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, int(DISPLAY_TIME)))
 time.sleep(int(DISPLAY_TIME)) # 1 = 1 second
 
-#
-print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Done.".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID))
+#  Done
+print ("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  Operation finished.".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
 ###
