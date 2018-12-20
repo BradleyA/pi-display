@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	blinkt/display-led.py  3.239.381  2018-12-20T11:17:32.051062-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.238  
+# 	   typo 
 # 	blinkt/display-led.py  3.238.380  2018-12-19T16:15:03.888024-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.237  
 # 	   blinkt/display-led.py Change echo or print DEBUG INFO WARNING ERROR #57 
 #
@@ -9,21 +11,20 @@
 #	Each color level function will exit with the primary color on
 #	Color brightness controlled in each color level function
 ###
-import subprocess
 import sys
 import datetime, time
 import os
 #       Order of precedence: environment variable (export DEBUG=1), default code
 DEBUG = int(os.getenv("DEBUG", 0)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
 ###
-class color :
+class color:
    BOLD = '\033[1m'
-   END  = '\033[0m'
+   END = '\033[0m'
 ###
 LANGUAGE = os.getenv("LANG")
-def display_help() :
+def display_help():
    LANGUAGE = os.getenv("LANG")
-   print ("\n{} - display system status on blinkt".format( __file__))
+   print ("\n{} - display system status on blinkt".format(__file__))
    print ("\nUSAGE\n   {} [<CLUSTER>] [<DATA_DIR>]".format(__file__))
    print ("   {} [--help | -help | help | -h | h | -?]".format(__file__))
    print ("   {} [--version | -version | -v]".format(__file__))
