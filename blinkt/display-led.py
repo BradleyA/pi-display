@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-# 	blinkt/display-led.py  3.239.382  2018-12-20T11:55:41.146179-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.239  
+# 	blinkt/display-led.py  3.240.383  2018-12-20T12:15:20.416431-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.239-1-g55f8fcc  
 # 	   pylint3 
-# 	blinkt/display-led.py  3.239.381  2018-12-20T11:17:32.051062-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.238
-# 	   typo
-# 	blinkt/display-led.py  3.238.380  2018-12-19T16:15:03.888024-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.237
-# 	   blinkt/display-led.py Change echo or print DEBUG INFO WARNING ERROR #57
 #
 ### display-led.py - display system status on blinkt
 #
@@ -79,7 +75,7 @@ from socket import getfqdn
 #   FQDN hostname
 LOCALHOST = getfqdn()
 
-#   Version  
+#   Version
 with open(__file__) as f:
     f.readline()
     line2 = f.readline()
@@ -98,13 +94,13 @@ GID = os.getgid()
 if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Setting USER to support crobtab...".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
 
 #   Default help and version arguments
-no_arguments =  int(len(sys.argv))
+no_arguments = int(len(sys.argv))
 if no_arguments == 2:
-#   Default help output  
+#   Default help output
     if sys.argv[1] == '--help' or sys.argv[1] == '-help' or sys.argv[1] == 'help' or sys.argv[1] == '-h' or sys.argv[1] == 'h' or sys.argv[1] == '-?':
         display_help()
         sys.exit()
-#   Default version output  
+#   Default version output
     if sys.argv[1] == '--version' or sys.argv[1] == '-version' or sys.argv[1] == 'version' or sys.argv[1] == '-v':
         print("{} {}".format(SCRIPT_NAME, SCRIPT_VERSION))
         sys.exit()
@@ -163,7 +159,7 @@ def status1(LED_number):
     show()
     DISPLAY_TIME = DISPLAY_TIME - 0.01
     if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  DISPLAY_TIME >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, DISPLAY_TIME))
-    return();
+    return()
 
 #   Incidents causing no disruption to overall services and operations
 #	LIGHT GREEN : an incident (watch)
@@ -178,7 +174,7 @@ def status2(LED_number):
         show()
         time.sleep(0.15) # 1 = 1 second
         DISPLAY_TIME = DISPLAY_TIME - 0.20
-    return();
+    return()
 
 #   Active incident with minimal affect to overall services and operations
 #	YELLOW : additional incidents WARNING (alert)
@@ -196,14 +192,14 @@ def status3(LED_number):
         show()
         time.sleep(0.15) # 1 = 1 second
         DISPLAY_TIME = DISPLAY_TIME - 0.23
-    return();
+    return()
 
 #   Active emergency incidents causing significant impact to operations and possiable service disruptions
 #	ORANGE : CRITICAL ERROR
 #   LED_number argument 0-7
 def status4(LED_number):
     global DISPLAY_TIME
-    for i in range(0,10):
+    for i in range(0, 10):
         set_pixel(LED_number, 255, 255, 0, 0.8)
         show()
         time.sleep(0.05) # 1 = 1 second
@@ -214,14 +210,14 @@ def status4(LED_number):
         show()
         time.sleep(0.05) # 1 = 1 second
         DISPLAY_TIME = DISPLAY_TIME - 0.13
-    return();
+    return()
 
 #   Active emergency incidents causing multiple impaired operations amd unavoidable severe service disruptions
-#	RED : Emergency Conditions : FATAL ERROR : 
+#	RED : Emergency Conditions : FATAL ERROR :
 #   LED_number argument 0-7
 def status5(LED_number):
     global DISPLAY_TIME
-    for i in range(0,10):
+    for i in range(0, 10):
         set_pixel(LED_number, 255, 35, 0, 0.8)
         show()
         time.sleep(0.05) # 1 = 1 second
@@ -232,7 +228,7 @@ def status5(LED_number):
         show()
         time.sleep(0.05) # 1 = 1 second
         DISPLAY_TIME = DISPLAY_TIME - 0.13
-    return();
+    return()
 
 #
 #       VIOLET : the statistic is  WARNING (alert)
@@ -243,7 +239,7 @@ def status6(LED_number):
     show()
     time.sleep(2) # 1 = 1 second
     DISPLAY_TIME = DISPLAY_TIME - 2
-    return();
+    return()
 
 #   process information
 def process(line):
@@ -263,7 +259,7 @@ def process(line):
         elif VALUE < 80:    # < 80 C   176    4
             status4(LED_number)
         elif VALUE >= 80:   # > 80 C 176    5
-            status5(LED_number) 
+            status5(LED_number)
 #   cpu_usage
     if 'cpu_usage:' in line.lower():
         VALUE = int(line[line.find(':')+2:])
@@ -278,7 +274,7 @@ def process(line):
         elif VALUE < 90:    # < 90 %    tested with 50
             status4(LED_number)
         elif VALUE >= 90:   # >= 95 %    tested with 50
-            status5(LED_number) 
+            status5(LED_number)
 #   memory_usage
     if 'memory_usage:' in line.lower():
         VALUE = int(line.split(' ')[2])
@@ -293,7 +289,7 @@ def process(line):
         elif VALUE < 90:    # < 90 %
             status4(LED_number)
         elif VALUE >= 90:   # >= 95 %
-            status5(LED_number) 
+            status5(LED_number)
 #   disk_usage
     if 'disk_usage:' in line.lower():
         VALUE = int(line.split(' ')[2])
@@ -308,8 +304,8 @@ def process(line):
         elif VALUE < 90:    # < 90 %
             status4(LED_number)
         elif VALUE >= 90:   # >= 90 %
-            status5(LED_number) 
-    return();
+            status5(LED_number)
+    return()
 
 ###
 #   display-led.py called by cron every 15 seconds
