@@ -1,6 +1,6 @@
 #!/bin/bash
-# 	create-message/local-create-message.sh  3.246.389  2018-12-29T22:05:04.616274-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.245  
-# 	   local-create-message.sh Change log format and order #60 
+# 	create-message/local-create-message.sh  3.247.390  2018-12-29T22:08:55.633438-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.246  
+# 	   local-create-message.sh Change log format and order close #60 
 #
 ### local-create-message.sh
 #       Order of precedence: environment variable, default code
