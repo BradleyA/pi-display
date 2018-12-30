@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-# 	scrollphat/scrollphat.test.py  3.253.396  2018-12-30T17:23:23.622737-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.252  
+# 	scrollphat/scrollphat.test.py  3.254.397  2018-12-30T17:43:29.493870-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.253  
 # 	   scrollphat.test.py Change log format and order close #64 
-# 	scrollphat.test.py  3.191.333  2018-10-03_17:12:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.190  
-# 	   Change echo or print DEBUG INFO WARNING ERROR close #47 
+# 	scrollphat.test.py  3.191.333  2018-10-03_17:12:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.190
+# 	   Change echo or print DEBUG INFO WARNING ERROR close #47
 #
-### scrollphat.test.py 
+### scrollphat.test.py
 import sys
 import datetime
 import time
@@ -19,7 +19,7 @@ class color:
 ###
 LANGUAGE = os.getenv("LANG")
 def display_help():
-    print("\n{} - ten second Scroll pHAT screen test".format( __file__))
+    print("\n{} - ten second Scroll pHAT screen test".format(__file__))
     print("\nUSAGE\n   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
     print("   {} [--version | -version | -v]".format(__file__))
     print("\nDESCRIPTION\nTest scrollphat pixels for ten seconds after raspberry pi boots.")
@@ -112,18 +112,18 @@ def set_checker(offset):
     n = offset
     for y in range(5):
         for x in range(11):
-            scrollphat.set_pixel(x,y,n % 2 == 0)
+            scrollphat.set_pixel(x, y, n % 2 == 0)
             n += 1
     scrollphat.update()
 
 #
-PAUSE=0.2
+PAUSE = 0.2
 for count in range(8):
     scrollphat.set_pixels(lambda x, y: 1, auto_update=True)
     time.sleep(PAUSE)
     scrollphat.set_pixels(lambda x, y: y % 2 == 0, auto_update=True)
     time.sleep(PAUSE)
-    scrollphat.set_pixels(lambda x, y: x % 2 == 0, auto_update=True) 
+    scrollphat.set_pixels(lambda x, y: x % 2 == 0, auto_update=True)
     time.sleep(PAUSE)
     set_checker(0)
     time.sleep(PAUSE)
