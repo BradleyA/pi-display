@@ -1,6 +1,6 @@
 #!/bin/bash
-# 	create-message/create-message.sh  3.242.385  2018-12-29T19:28:28.305753-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.241  
-# 	   create-message.sh  test scp to not include logrotate directory content #58 
+# 	create-message/create-message.sh  3.243.386  2018-12-29T19:55:02.986681-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.242  
+# 	   create-message.sh  create ${DATA_DIR}/${CLUSTER}/logrotate  #58 
 #
 ### create-message.sh
 #       Order of precedence: environment variable, default code
@@ -135,8 +135,10 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP}
 if [ ! -d ${DATA_DIR}/${CLUSTER} ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[WARN]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
 	mkdir -p  ${DATA_DIR}/${CLUSTER}/log || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[ERROR]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
+	mkdir -p  ${DATA_DIR}/${CLUSTER}/logrotate
 	chmod 775 ${DATA_DIR}/${CLUSTER}
 	chmod 775 ${DATA_DIR}/${CLUSTER}/log
+	chmod 775 ${DATA_DIR}/${CLUSTER}/logrotate
 fi
 
 #	Create ${MESSAGE_FILE} file 1) create file for initial running on host, 2) check for write permission
