@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# 	display-message.py  3.215.357  2018-10-14T15:17:32-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.214  
-# 	   testing complete 
+# 	scrollphat/display-message.py  3.255.398  2018-12-30T17:56:20.518480-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.254  
+# 	   display-message.py Change log format and order - lint pylint pylint3 #65 
 #
 ###	display-message.py - display contents of MESSAGE file
 DEBUG = 0       # 0 = debug off, 1 = debug on
