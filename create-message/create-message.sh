@@ -1,24 +1,10 @@
 #!/bin/bash
-# 	create-message/create-message.sh  3.241.384  2018-12-29T16:19:25.832627-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.240  
-# 	   add DEBUG environement var, update display_help <CLUSTER>, test scp to not include logrotate directory content #58 
-# 	create-message/create-message.sh  3.237.379  2018-11-16T16:53:03.931352-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.236  
-# 	   change INFO to WARN when host not responding 
-# 	create-message/create-message.sh  3.236.378  2018-11-11T21:30:28.933324-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.235  
-# 	   move UID and GID function up a few link to allow DEBUG statement to u… 
-# 	create-message/create-message.sh  3.234.376  2018-10-21T23:09:10-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.233-2-gdefd327  
-# 	   added nano seconds to time 
-# 	create-message/create-message.sh  3.233.373  2018-10-19T23:46:42-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.232-2-gce1e190  
-# 	   correct incidnet /usr/local/data//us-tx-cluster-1//log: not a regular file by adding -r to scp 
-# 	create-message/create-message.sh  3.232.370  2018-10-18T17:07:21-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.231  
-# 	   create ${CLUSTER}/log directory for crontab logs 
-# 	create-message.sh  3.219.361  2018-10-16T11:20:18-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.218  
-# 	   Added line because USER is not defined in crobtab jobs, continue testing 
-# 	create-message.sh  3.212.354  2018-10-14T15:00:44-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.211  
-# 	   completed create-message.sh #37  need to test with different network 
+# 	create-message/create-message.sh  3.242.385  2018-12-29T19:28:28.305753-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.241  
+# 	   create-message.sh  test scp to not include logrotate directory content #58 
 #
 ### create-message.sh
 #       Order of precedence: environment variable, default code
-if [ "${DEBUG}" == "" ] ; then DEBUG="1" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
+if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
@@ -211,8 +197,8 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
-			scp -q -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER} 
-			#	scp -q -r -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/* ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER} 
+			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/*$(hostname -d) ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER} 
+			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/log/$(hostname -f)\-crontab ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/log 
 			TEMP="cd ${DATA_DIR}/${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 		else
@@ -220,6 +206,6 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		fi
 	fi
 done
-ln -sf ${LOCALHOST} LOCAL-HOST	# very difficult to locate and  solve bug fix #26
+/bin/ln -sf ${LOCALHOST} LOCAL-HOST	# very difficult to locate and  solve bug fix #26
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${0} ${SCRIPT_VERSION} ${LINENO} ${BOLD}[INFO]${NORMAL}  ${LOCALHOST}  ${USER}  ${USER_ID} ${GROUP_ID}  Done." 1>&2
 ###
