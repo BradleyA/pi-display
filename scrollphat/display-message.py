@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-# 	scrollphat/display-message.py  3.257.401  2018-12-30T19:39:43.456779-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.256-1-g52845a9  
-# 	   display-message.py Change log format and order - lint pylint pylint3 #65 
-# 	scrollphat/display-message.py  3.256.400  2018-12-30T19:09:13.189707-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.256  
-# 	   add commmet #   production standard 3 
-# 	scrollphat/display-message.py  3.256.399  2018-12-30T19:05:43.966606-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.255  
-# 	   display-message.py Change log format and order - lint pylint pylint3 #65 
-# 	scrollphat/display-message.py  3.255.398  2018-12-30T17:56:20.518480-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.254  
-# 	   display-message.py Change log format and order - lint pylint pylint3 #65 
+# 	scrollphat/display-message.py  3.258.402  2018-12-30T19:50:32.484843-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.257  
+# 	   display-message.py Change log format and order - lint pylint pylint3 close #65 
 #
 ### display-message.py
 #   production standard 3
@@ -50,6 +44,7 @@ def display_help():
     print("   DATA_DIR      (default absolute path /usr/local/data/)")
     print("   CLUSTER       (default us-tx-cluster-1/)")
     print("   MESSAGE_FILE  (default MESSAGE)")
+    print("   DEBUG       (default '0')")
     print("\nOPTIONS\n   MESSAGE_FILE - alternate message file,")
     print("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
     print("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphat")
@@ -128,9 +123,9 @@ from platform import python_version
 if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Version of python >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, python_version()))
 
 ###
-#   import scrollphat and check if scrollphat installed 
+#   import scrollphat and check if scrollphat installed
 try:
-    import scrollphat 
+    import scrollphat
 except ImportError:
     if sys.version_info[0] < 3:
         sys.exit("{}{} {} {}[{}] {} {} {} {}:{} {}[ERROR]{}  Library scrollphat required. To install:\tsudo apt-get install python-scrollphat".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
