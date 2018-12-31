@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# 	scrollphat/display-message.py  3.258.402  2018-12-30T19:50:32.484843-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.257  
+# 	scrollphat/display-message.py  3.259.403  2018-12-30T19:58:17.644786-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.258  
 # 	   display-message.py Change log format and order - lint pylint pylint3 close #65 
 #
 ### display-message.py
@@ -129,7 +129,7 @@ try:
 except ImportError:
     if sys.version_info[0] < 3:
         sys.exit("{}{} {} {}[{}] {} {} {} {}:{} {}[ERROR]{}  Library scrollphat required. To install:\tsudo apt-get install python-scrollphat".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
-    elif sys.version_info[0] == 3 :
+    elif sys.version_info[0] == 3:
         sys.exit("{}{} {} {}[{}] {} {} {} {}:{} {}[ERROR]{}  Library scrollphat required. To install:\tsudo apt-get install python-scrollphat".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
 except IOError:
     sys.exit("{}{} {} {}[{}] {} {} {} {}:{} {}[ERROR]{}  No such file or directory.  Is scrollphat installed on raspberry pi?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
@@ -174,7 +174,7 @@ if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Using MESSAGE f
 #   Read TEMP_FILE contents and return contents
 def get_msg(TEMP_FILE):
     print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  Reading MESSAGE file >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, TEMP_FILE))
-    file = open(TEMP_FILE,"r")
+    file = open(TEMP_FILE, "r")
     CONTENT = file.read()
     file.close()
     CONTENT = CONTENT.rstrip('\n')
@@ -182,7 +182,7 @@ def get_msg(TEMP_FILE):
     return CONTENT
 
 #   timeout
-def get_timeout() :
+def get_timeout():
     return ticks_per_second * refresh_interval
 
 #   Set brightness
