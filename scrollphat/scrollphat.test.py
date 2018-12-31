@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
+# 	scrollphat/scrollphat.test.py  3.256.400  2018-12-30T19:09:13.272405-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.256  
+# 	   add commmet #   production standard 3 
 # 	scrollphat/scrollphat.test.py  3.254.397  2018-12-30T17:43:29.493870-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.253  
 # 	   scrollphat.test.py Change log format and order close #64 
 # 	scrollphat.test.py  3.191.333  2018-10-03_17:12:32_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.190
 # 	   Change echo or print DEBUG INFO WARNING ERROR close #47
 #
 ### scrollphat.test.py
+#   production standard 3
 import sys
 import datetime
 import time

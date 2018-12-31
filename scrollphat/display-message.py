@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	scrollphat/display-message.py  3.256.400  2018-12-30T19:09:13.189707-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.256  
+# 	   add commmet #   production standard 3 
 # 	scrollphat/display-message.py  3.256.399  2018-12-30T19:05:43.966606-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.255  
 # 	   display-message.py Change log format and order - lint pylint pylint3 #65 
 # 	scrollphat/display-message.py  3.255.398  2018-12-30T17:56:20.518480-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.254  
@@ -57,14 +59,13 @@ def display_help():
     print("   {}".format(__file__))
     print("\n   Display contents from a different file and absolute path\n")
     print("   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
-
-#  After displaying help in english check for other languages
-   if LANGUAGE != "en_US.UTF-8" :
-      print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, LANGUAGE))
-#  elif LANGUAGE == "fr_CA.UTF-8" :
-#     print display_help in french
-#  else :
-   return
+#   After displaying help in english check for other languages
+    if LANGUAGE != "en_US.UTF-8":
+        print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, LANGUAGE))
+#   elif LANGUAGE == "fr_CA.UTF-8":
+#       print display_help in french
+#   else:
+    return
 
 #  Line number function
 from inspect import currentframe
