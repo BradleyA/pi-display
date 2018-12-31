@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/local-create-message.sh  3.261.405  2018-12-30T20:59:52.879679-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.260  
+# 	   typo 
 # 	create-message/local-create-message.sh  3.247.390  2018-12-29T22:08:55.633438-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.246  
 # 	   local-create-message.sh Change log format and order close #60 
 #
@@ -14,7 +16,7 @@ NORMAL=$(tput -Txterm sgr0)
 display_help() {
 echo -e "\n${NORMAL}${0} - >>> NEED TO COMPLETE THIS SOON, ONCE I KNOW HOW IT IS GOING TO WORK :-) <<<"
 echo -e "\nUSAGE\n   ${0}"
-echo    "   ${0} [--help | -help | help | -h | h | -? | ?]"
+echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION\nXXXXXX "
 echo -e "\nEnvironment Variables"
