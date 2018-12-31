@@ -1,58 +1,63 @@
 #!/usr/bin/env python3
+# 	scrollphat/display-message.py  3.256.399  2018-12-30T19:05:43.966606-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.255  
+# 	   display-message.py Change log format and order - lint pylint pylint3 #65 
 # 	scrollphat/display-message.py  3.255.398  2018-12-30T17:56:20.518480-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.254  
 # 	   display-message.py Change log format and order - lint pylint pylint3 #65 
 #
-###	display-message.py - display contents of MESSAGE file
-DEBUG = 0       # 0 = debug off, 1 = debug on
-#
-import subprocess
+### display-message.py
+#   production standard 3
 import sys
+import datetime
 import time
 import os
+import subprocess
+#       Order of precedence: environment variable (export DEBUG=1), default code
+DEBUG = int(os.getenv("DEBUG", 0)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
 ###
-class color :
-   BOLD = '\033[1m'
-   END  = '\033[0m'
+class color:
+    BOLD = '\033[1m'
+    END = '\033[0m'
 ###
 LANGUAGE = os.getenv("LANG")
-def display_help() :
-   print ("\n{} - display contents of MESSAGE file".format( __file__))
-   print ("\nUSAGE\n   {} [<MESSAGE_FILE>]".format(__file__))
-   print ("   {} [--help | -help | help | -h | h | -?]".format(__file__))
-   print ("   {} [--version | -version | -v]".format(__file__))
-   print ("\nDESCRIPTION\nDisplay the contents of /usr/local/data/us-tx-cluster-1/MESSAGE (default)")
-   print ("file on a Pimoroni Scroll-pHAT.  The Pimoroni Scroll-pHAT is attatched to a")
-   print ("Raspberry Pi.  The default MESSAGE file name and absolute path can be")
-   print ("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGE_FILE).")
-   print ("The environment variables can be overwritten by entering the MESSAGE file and")
-   print ("absolute path as an argument to the display-message.py script.")
-   print ("\nThe default MESSAGE file is created by create-message.sh script.  The")
-   print ("create-message.sh script reads the /usr/local/data/us-tx-cluster-1/SYSTEMS file")
-   print ("for the FQDN or IP address of the hosts in a cluster.  The default MESSAGE file")
-   print ("contents includes the total number of containers, running containers, paused")
-   print ("containers, stopped containers, and number of images in the cluster.")
-   print ("\nEnvironment Variables")
-   print ("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
-   print ("line to set the CLUSTER environment variable.  Use the command, unset CLUSTER")
-   print ("to remove the exported information from the CLUSTER environment variable.")
-   print ("Setting an environment variable to be defined at login by adding it to")
-   print ("~/.bashrc file or you can just modify the script with your default location")
-   print ("for CLUSTER and DATA_DIR.  You are on your own defining environment variables")
-   print ("if you are using other shells.")
-   print ("   DATA_DIR      (default absolute path /usr/local/data/)")
-   print ("   CLUSTER       (default us-tx-cluster-1/)")
-   print ("   MESSAGE_FILE  (default MESSAGE)")
-   print ("\nOPTIONS\n   MESSAGE_FILE - alternate message file,")
-   print ("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
-   print ("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphat")
-   print ("\nEXAMPLES\n   Display contents using default file and path")
-   print ("\n   {}".format(__file__))
-   print ("\n   Display contents using a different cluster name and file name (bash)\n")
-   print ("   export CLUSTER='us-west1/'")
-   print ("   export MESSAGE_FILE='CONTAINER'")
-   print ("   {}".format(__file__))
-   print ("\n   Display contents from a different file and absolute path\n")
-   print ("   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
+def display_help():
+    print("\n{} - display contents of MESSAGE file".format(__file__))
+    print("\nUSAGE\n   {} [<MESSAGE_FILE>]".format(__file__))
+    print("   {} [--help | -help | help | -h | h | -?]".format(__file__))
+    print("   {} [--version | -version | -v]".format(__file__))
+    print("\nDESCRIPTION\nDisplay the contents of /usr/local/data/us-tx-cluster-1/MESSAGE (default)")
+    print("file on a Pimoroni Scroll-pHAT.  The Pimoroni Scroll-pHAT is attatched to a")
+    print("Raspberry Pi.  The default MESSAGE file name and absolute path can be")
+    print("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGE_FILE).")
+    print("The environment variables can be overwritten by entering the MESSAGE file and")
+    print("absolute path as an argument to the display-message.py script.")
+    print("\nThe default MESSAGE file is created by create-message.sh script.  The")
+    print("create-message.sh script reads the /usr/local/data/us-tx-cluster-1/SYSTEMS file")
+    print("for the FQDN or IP address of the hosts in a cluster.  The default MESSAGE file")
+    print("contents includes the total number of containers, running containers, paused")
+    print("containers, stopped containers, and number of images in the cluster.")
+    print("\nEnvironment Variables")
+    print("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
+    print("line to set the CLUSTER environment variable.  Use the command, unset CLUSTER")
+    print("to remove the exported information from the CLUSTER environment variable.")
+    print("Setting an environment variable to be defined at login by adding it to")
+    print("~/.bashrc file or you can just modify the script with your default location")
+    print("for CLUSTER and DATA_DIR.  You are on your own defining environment variables")
+    print("if you are using other shells.")
+    print("   DATA_DIR      (default absolute path /usr/local/data/)")
+    print("   CLUSTER       (default us-tx-cluster-1/)")
+    print("   MESSAGE_FILE  (default MESSAGE)")
+    print("\nOPTIONS\n   MESSAGE_FILE - alternate message file,")
+    print("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
+    print("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphat")
+    print("\nEXAMPLES\n   Display contents using default file and path")
+    print("\n   {}".format(__file__))
+    print("\n   Display contents using a different cluster name and file name (bash)\n")
+    print("   export CLUSTER='us-west1/'")
+    print("   export MESSAGE_FILE='CONTAINER'")
+    print("   {}".format(__file__))
+    print("\n   Display contents from a different file and absolute path\n")
+    print("   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
+
 #  After displaying help in english check for other languages
    if LANGUAGE != "en_US.UTF-8" :
       print ("{}{} {} {} {} {}[INFO]{}  {}  {}  {} {}  Your language, {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), __file__, SCRIPT_VERSION, get_line_no(), color.BOLD, color.END, LOCALHOST, USER, UID, GID, LANGUAGE))
