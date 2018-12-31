@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-# 	blinkt/display-led.py  3.240.383  2018-12-20T12:15:20.416431-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.239-1-g55f8fcc  
-# 	   pylint3 
+# 	blinkt/display-led.py  3.260.404  2018-12-30T20:06:23.081708-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.259  
+# 	   blinkt/display-led.py Change echo or print DEBUG INFO WARNING ERROR close #57 
 #
-### display-led.py - display system status on blinkt
-#
+### display-led.py
 #	The final design should control an Blinkt LED bar on Raspberry pi and
 #		display information for a second
 #	Each color level function will exit with the primary color on
 #	Color brightness controlled in each color level function
 ###
+#   production standard 3
 import sys
-import datetime, time
+import datetime
+import time
 import os
 #       Order of precedence: environment variable (export DEBUG=1), default code
 DEBUG = int(os.getenv("DEBUG", 0)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
