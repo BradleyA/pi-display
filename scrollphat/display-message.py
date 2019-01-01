@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	scrollphat/display-message.py  3.262.406  2019-01-01T14:30:20.804401-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.261  
+# 	   typo in comment 
 # 	scrollphat/display-message.py  3.259.403  2018-12-30T19:58:17.644786-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.258  
 # 	   display-message.py Change log format and order - lint pylint pylint3 close #65 
 #
@@ -44,7 +46,7 @@ def display_help():
     print("   DATA_DIR      (default absolute path /usr/local/data/)")
     print("   CLUSTER       (default us-tx-cluster-1/)")
     print("   MESSAGE_FILE  (default MESSAGE)")
-    print("   DEBUG       (default '0')")
+    print("   DEBUG         (default '0')")
     print("\nOPTIONS\n   MESSAGE_FILE - alternate message file,")
     print("                  defualt /usr/local/data/us-tx-cluster-1/MESSAGE")
     print("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/scrollphat")
