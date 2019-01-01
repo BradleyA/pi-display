@@ -1,4 +1,6 @@
 ## pi-system-stats
+#->	system-stats/README.md  3.262.407  2019-01-01T15:24:24.613865-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.262  
+#->	   move cpu-temperature.sh 
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
@@ -61,6 +63,7 @@ This is work in progress:
 To install, change to the directory, cd /usr/local/bin, to download the script.
 
     curl -L https://api.github.com/repos/BradleyA/Linux-admin-scripts/tarball | tar -xzf - --wildcards */system-stat-* ; mv BradleyA-Linux-admin-scripts-*/system-stat/system-stat-* . ; rm -rf BradleyA-Linux-admin-scripts-*
+    curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *cpu-temperature/cpu-temperature.sh ; mv BradleyA-pi-display-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-pi-display-*
 
 ### Clone
 
