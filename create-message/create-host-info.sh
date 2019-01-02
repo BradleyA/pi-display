@@ -1,10 +1,10 @@
 #!/bin/bash
-# 	create-message/local-create-message.sh  3.261.405  2018-12-30T20:59:52.879679-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.260  
-# 	   typo 
+# 	create-message/create-host-info.sh  3.264.411  2019-01-01T20:48:01.196079-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.263-1-gc4643e8  
+# 	   create-host-info.sh display_help now that design is closer to being complete #51 
 # 	create-message/local-create-message.sh  3.247.390  2018-12-29T22:08:55.633438-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.246  
 # 	   local-create-message.sh Change log format and order close #60 
 #
-### local-create-message.sh
+### create-host-info.sh
 #       Order of precedence: environment variable, default code
 if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
@@ -14,21 +14,33 @@ NORMAL=$(tput -Txterm sgr0)
 ###
 ###
 display_help() {
-echo -e "\n${NORMAL}${0} - >>> NEED TO COMPLETE THIS SOON, ONCE I KNOW HOW IT IS GOING TO WORK :-) <<<"
-echo -e "\nUSAGE\n   ${0}"
+echo -e "\n${NORMAL}${0} - Create ${LOCALHOST} Docker and system information"
+echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>]"
 echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
-echo -e "\nDESCRIPTION\nXXXXXX "
+echo -e "\nDESCRIPTION\nThis script stores Docker information and system information in a file,"
+echo    "/usr/local/data/<CLUSTER>/<hostname>.  The Docker information includes the"
+echo    "number of containers, running containers, paused containers, stopped"
+echo    "containers, and number of images.  The system information includes cpu"
+echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, and"
+echo    "disk usage.  The <hostname> file information is used by a Raspberry Pi"
+echo    "with Pimoroni Blinkt to display the system information in near real time."
 echo -e "\nEnvironment Variables"
-echo    "If using the bash shell, enter; 'export DEBUG=1' on the command line to set"
-echo    "the DEBUG environment variable to '1' (0 = debug off, 1 = debug on).  Use the"
-echo    "command, 'unset DEBUG' to remove the exported information from the DEBUG"
-echo    "environment variable.  You are on your own defining environment variables if"
-echo    "you are using other shells."
-echo    "   DEBUG       (default '0')"
-echo -e "\nOPTIONS "
-echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-scripts/tree/master/cpu-temperature"
-echo -e "\nEXAMPLES\n   XXXXXX \n\t${0} XXXXXX\n"
+echo    "If using the bash shell, enter; export DEBUG='1' on the command"
+echo    "line to set the DEBUG environment variable to '1'.  Use the command,"
+echo    "unset DEBUG to remove the exported information from the DEBUG environment"
+echo    "variable.  To set an environment variable to be defined at login, add it to"
+echo    "~/.bashrc file or you can modify this script with your default location for"
+echo    "CLUSTER, DATA_DIR, and DEBUG.  You are on your own"
+echo    "own defining environment variables if you are using other shells."
+echo    "   CLUSTER       (default us-tx-cluster-1/)"
+echo    "   DATA_DIR      (default /usr/local/data/)"
+echo    "   DEBUG         (default '0')"
+echo -e "\nOPTIONS"
+echo    "   CLUSTER       name of cluster directory, default us-tx-cluster-1"
+echo    "   ADMUSER       site SRE administrator, default is user running script"
+echo    "   DATA_DIR      path to cluster data directory, default /usr/local/data/"
+echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 #       After displaying help in english check for other languages
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
         get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  ${LANG}, is not supported, Would you like to help translate?" 1>&2
@@ -93,7 +105,7 @@ TEMP=`env | grep -i docker | sed -e 's/$/  /' | tr -d '\n'`
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Docker environment variables after source command >${TEMP}<" 1>&2 ; fi
 
 #       Check if cluster directory is on system if not fix it
-if [ ! -d ${DATA_DIR}/${CLUSTER}/log ] ; then
+if [ ! -d ${DATA_DIR}/${CLUSTER}/log ] || [ ! -d ${DATA_DIR}/${CLUSTER}/logrotate ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
 	mkdir -p  ${DATA_DIR}/${CLUSTER}/log || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}/${CLUSTER}

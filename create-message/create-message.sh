@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-message.sh  3.264.411  2019-01-01T20:48:01.326246-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.263-1-gc4643e8  
+# 	   create-host-info.sh display_help now that design is closer to being complete #51 
 # 	create-message/create-message.sh  3.246.389  2018-12-29T22:05:04.525575-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.245  
 # 	   local-create-message.sh Change log format and order #60 
 # 	create-message/create-message.sh  3.245.388  2018-12-29T21:28:47.953401-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.244  
@@ -47,7 +49,7 @@ echo    "line to set the CLUSTER environment variable to 'us-west1'.  Use the co
 echo    "unset CLUSTER to remove the exported information from the CLUSTER environment"
 echo    "variable.  To set an environment variable to be defined at login, add it to"
 echo    "~/.bashrc file or you can modify this script with your default location for"
-echo    "CLUSTER, DATA_DIR, MESSAGE_FILE, SYSTEMS_FILE, and DEBUG.  You are on yourown"
+echo    "CLUSTER, DATA_DIR, MESSAGE_FILE, SYSTEMS_FILE, and DEBUG.  You are on your own"
 echo    "own defining environment variables if you are using other shells."
 echo    "   CLUSTER       (default us-tx-cluster-1/)"
 echo    "   DATA_DIR      (default /usr/local/data/)"
