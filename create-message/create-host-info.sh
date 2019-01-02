@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-host-info.sh  3.265.418  2019-01-01T21:14:58.196728-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.264-6-g4f2a185  
+# 	   create-host-info.sh display_help now that design is closer to being complete close #51 
 # 	create-message/create-host-info.sh  3.264.411  2019-01-01T20:48:01.196079-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.263-1-gc4643e8  
 # 	   create-host-info.sh display_help now that design is closer to being complete #51 
 # 	create-message/local-create-message.sh  3.247.390  2018-12-29T22:08:55.633438-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.246  
@@ -12,10 +14,9 @@ if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, '
 BOLD=$(tput -Txterm bold)
 NORMAL=$(tput -Txterm sgr0)
 ###
-###
 display_help() {
 echo -e "\n${NORMAL}${0} - Create ${LOCALHOST} Docker and system information"
-echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>]"
+echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<DATA_DIR>] [<ADMUSER>]"
 echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION\nThis script stores Docker information and system information in a file,"
@@ -26,20 +27,20 @@ echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, a
 echo    "disk usage.  The <hostname> file information is used by a Raspberry Pi"
 echo    "with Pimoroni Blinkt to display the system information in near real time."
 echo -e "\nEnvironment Variables"
-echo    "If using the bash shell, enter; export DEBUG='1' on the command"
-echo    "line to set the DEBUG environment variable to '1'.  Use the command,"
-echo    "unset DEBUG to remove the exported information from the DEBUG environment"
-echo    "variable.  To set an environment variable to be defined at login, add it to"
-echo    "~/.bashrc file or you can modify this script with your default location for"
-echo    "CLUSTER, DATA_DIR, and DEBUG.  You are on your own"
-echo    "own defining environment variables if you are using other shells."
+echo    "If using the bash shell, enter; export DEBUG='1' on the command line to set"
+echo    "the DEBUG environment variable to '1'.  Use the command, unset DEBUG to remove"
+echo    "the exported information from the DEBUG environment variable.  To set an"
+echo    "environment variable to be defined at login, add it to ~/.bashrc file or you"
+echo    "can modify this script with your default location for CLUSTER, DATA_DIR, and"
+echo    "DEBUG.  You are on your own defining environment variables if you are using"
+echo    "other shells."
 echo    "   CLUSTER       (default us-tx-cluster-1/)"
 echo    "   DATA_DIR      (default /usr/local/data/)"
 echo    "   DEBUG         (default '0')"
 echo -e "\nOPTIONS"
 echo    "   CLUSTER       name of cluster directory, default us-tx-cluster-1"
-echo    "   ADMUSER       site SRE administrator, default is user running script"
 echo    "   DATA_DIR      path to cluster data directory, default /usr/local/data/"
+echo    "   ADMUSER       site SRE administrator, default is user running script"
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
 #       After displaying help in english check for other languages
 if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
@@ -92,10 +93,10 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP}
 ###
 #	Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
-#	Order of precedence: CLI argument, default code
-ADMUSER=${2:-${USER}}
 #	Order of precedence: CLI argument, environment variable, default code
-if [ $# -ge  3 ]  ; then DATA_DIR=${3} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
+if [ $# -ge  2 ]  ; then DATA_DIR=${2} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
+#	Order of precedence: CLI argument, default code
+ADMUSER=${3:-${USER}}
 #
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< PATH >${PATH}<" 1>&2 ; fi
 
