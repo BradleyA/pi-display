@@ -29,7 +29,7 @@ To install, change directory to the location you want to download the scripts. U
 
 #### Architecture
 
-<img id="pi-display architecture" src="images/images/architecture.png" width="450" >
+<img id="pi-display architecture" src="images/architecture.png" width="450" >
 
 ### System OS script tested
 
