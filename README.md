@@ -18,6 +18,10 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
 
 I need to get this to work and completed then some cleanup before it is shareable and documented . . .
 
+### Architecture
+
+<img id="pi-display architecture" src="images/architecture.png" width="900" >
+
 ### Install
 
 ### Clone
@@ -26,11 +30,7 @@ To install, change directory to the location you want to download the scripts. U
 
     git clone https://github.com/BradleyA/pi-display
     cd pi-display
-
-### Architecture
-
-<img id="pi-display architecture" src="images/architecture.png" width="900" >
-
+   
 ### System OS script tested
 
  * Ubuntu 16.04.3-5 LTS (armv7l)
