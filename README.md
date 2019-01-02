@@ -27,7 +27,7 @@ To install, change directory to the location you want to download the scripts. U
     git clone https://github.com/BradleyA/pi-display
     cd pi-display
 
-#### Architecture
+### Architecture
 
 <img id="pi-display architecture" src="images/architecture.png" width="800" >
 
