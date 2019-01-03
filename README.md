@@ -14,13 +14,14 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
  * [scrollphathd](https://github.com/BradleyA/pi-display/tree/master/scrollphathd)
  * [blinkt](https://github.com/BradleyA/pi-display-board/tree/master/blinkt)
  
+### Architecture
+
+<img id="pi-display architecture" src="images/pi-display-architecture.png" width="900" >
+ 
 <img id="image_respberry_setup" src="images/IMG_2803.JPG" width="450" >
 
 I need to get this to work and completed then some cleanup before it is shareable and documented . . .
 
-### Architecture
-
-<img id="pi-display architecture" src="images/pi-display-architecture.png" width="900" >
 
 ### Install
 
