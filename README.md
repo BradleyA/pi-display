@@ -4,7 +4,7 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
 
  <img id="image_respberry_scroll-phat" src="images/IMG_3247.JPG" width="450" >
 
-----> ![Click this link, then click 'view raw' to see board test](images/IMG_3246.MOV)
+----> ![Click this link, then click 'view raw' to see board running](images/IMG_3246.MOV)
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
