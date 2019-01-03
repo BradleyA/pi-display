@@ -20,7 +20,7 @@ I need to get this to work and completed then some cleanup before it is shareabl
 
 ### Architecture
 
-<img id="pi-display architecture" src="images/architecture.png" width="900" >
+<img id="pi-display architecture" src="images/pi-display-architecture.png" width="900" >
 
 ### Install
 
