@@ -1,0 +1,23 @@
+#
+#	pi-display  3.269.428  2019-01-03T14:42:35.356699-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
+#	   start creating setup for pi-display 
+#
+### pi-display - logrotate conf file
+#	/usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab {
+/usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab {
+    daily
+    su uadmin uadmin
+    rotate 60
+    create 644 uadmin uadmin
+    compress
+    olddir ../logrotate
+    size 100k
+    notifempty
+    mail allen.bradley@ymail.com
+    prerotate
+        /bin/ls -l /usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab >> /usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab 
+        /bin/grep -nv '\[INFO\]' /usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab | grep -iv 'info' > incident.tmp
+        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' /usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab >> incident.tmp
+        /usr/bin/sort -n -u incident.tmp | grep -v '\-\-$' > incident
+    endscript
+}
