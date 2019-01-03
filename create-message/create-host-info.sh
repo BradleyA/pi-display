@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-host-info.sh  3.268.427  2019-01-02T20:31:03.424006-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.267-5-g41f1e0f  
+# 	   correct WARN message during testing of use case 
 # 	create-message/create-host-info.sh  3.266.419  2019-01-01T21:26:54.273739-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.265  
 # 	   set ${DATA_DIR}/${CLUSTER}/log permission 
 # 	create-message/create-host-info.sh  3.265.418  2019-01-01T21:14:58.196728-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.264-6-g4f2a185  
@@ -109,7 +111,7 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP}
 
 #       Check if cluster directory is on system if not fix it
 if [ ! -d ${DATA_DIR}/${CLUSTER}/log ] || [ ! -d ${DATA_DIR}/${CLUSTER}/logrotate ] ; then
-	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Creating missing directories: ${DATA_DIR}/${CLUSTER}..." 1>&2
 	mkdir -p  ${DATA_DIR}/${CLUSTER}/log || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}/${CLUSTER}
 	chmod 775 ${DATA_DIR}/${CLUSTER}/log
