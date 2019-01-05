@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	scrollphat/display-message.py  3.277.451  2019-01-05T08:52:02.879865-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.276  
+# 	   update display_help 
 # 	scrollphat/display-message.py  3.262.406  2019-01-01T14:30:20.804401-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.261  
 # 	   typo in comment 
 # 	scrollphat/display-message.py  3.259.403  2018-12-30T19:58:17.644786-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.258  
@@ -30,8 +32,8 @@ def display_help():
     print("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGE_FILE).")
     print("The environment variables can be overwritten by entering the MESSAGE file and")
     print("absolute path as an argument to the display-message.py script.")
-    print("\nThe default MESSAGE file is created by create-message.sh script.  The")
-    print("create-message.sh script reads the /usr/local/data/us-tx-cluster-1/SYSTEMS file")
+    print("\nThe default MESSAGE file is created by create-display-message.sh script.  The")
+    print("create-display-message.sh script reads /usr/local/data/<CLUSTER>/SYSTEMS file")
     print("for the FQDN or IP address of the hosts in a cluster.  The default MESSAGE file")
     print("contents includes the total number of containers, running containers, paused")
     print("containers, stopped containers, and number of images in the cluster.")
