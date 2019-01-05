@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.278.452  2019-01-05T11:51:43.569303-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.277  
+# 	   second draft 
 # 	setup-display.sh  3.276.450  2019-01-05T08:48:46.134134-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.275  
 # 	   updated display_help 
 # 	setup-display.sh  3.274.448  2019-01-04T13:34:08.562046-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.273-11-gf99f687  
@@ -111,11 +113,63 @@ get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Name_of_command >${0}< Name_of_arg1 >${1}< Name_of_arg2 >${2}< Name_of_arg3 >${3}<  Version of bash ${BASH_VERSION}" 1>&2 ; fi
 
 ###
+#       Must be root to run this script
+#	if ! [ $(id -u) = 0 ] ; then
+        #	display_help | more
+        #	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  Use sudo ${0}" 1>&2
+        #	echo -e "\n>>   ${BOLD}SCRIPT MUST BE RUN AS ROOT${NORMAL} <<"  1>&2
+        #	exit 1
+#	fi
 
+#       Order of precedence: CLI argument, environment variable, default code
+if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
+#       Order of precedence: CLI argument, environment variable, default code
+if [ $# -ge  2 ]  ; then DATA_DIR=${3} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
+#       Order of precedence: CLI argument, default code
+ADMUSER=${3:-$(id -u)}
+#       Order of precedence: CLI argument, default code
+ADMGRP=${4:-$(id -g)}
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Variable... CLUSTER >${CLUSTER}< DATA_DIR >${DATA_DIR}< ADMUSER >${ADMUSER}< ADMGRP >${ADMGRP}<" 1>&2 ; fi
 
+#
+mkdir -p /usr/local/bin
+mkdir -p /usr/local/data/$(CLUSTER)/log
+mkdir -p /usr/local/data/$(CLUSTER)/logrotate
+#
+chmod 0775 /usr/local/bin
+chmod 0775 /usr/local/data
+chmod 0775 /usr/local/data/$(CLUSTER)
+chmod 0775 /usr/local/data/$(CLUSTER)/log
+chmod 0775 /usr/local/data/$(CLUSTER)/logrotate
+#
+chown    ${ADMUSER}:${ADMGRP} /usr/local/bin
+chown -R ${ADMUSER}:${ADMGRP} /usr/local/data
+#
+mv pi-display                                 /usr/local/data/$(CLUSTER)/logrotate
+mv blinkt/display-led.py                      /usr/local/bin
+mv blinkt/display-led-test.py                 /usr/local/bin
+mv create-message/CPU_usage.sh                /usr/local/bin
+mv create-message/create-display-message.sh   /usr/local/bin
+mv create-message/create-host-info.sh         /usr/local/bin
+mv scrollphat/display-message.py              /usr/local/bin
+mv scrollphat/display-scrollphat-test.py      /usr/local/bin
+mv scrollphathd/display-message-hd.py         /usr/local/bin
+mv scrollphathd/display-scrollphathd-test.py  /usr/local/bin
 
-###
-#	mkdir -p /usr/local/data/<CLUSTER>
-#	mkdir -p /usr/local/data/<CLUSTER>/log
-#	mkdir -p /usr/local/data/<CLUSTER>/logrotate
+#       Check if SYSTEMS file on system
+if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
+        echo -e "\t${DATA_DIR}/${CLUSTER}/SYSTEMS file not found."
+	echo -e "\tCreating ${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS file with local host."
+        echo -e "\tEdit ${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS to additional hosts."
+	echo "###     List of hosts used by cluster-command.sh, create-display-message.sh, etc." > ${DATA_DIR}/${CLUSTER}/SYSTEMS
+        echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+        echo "#       One FQDN host on each line" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+        echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+        $(hostname -f) >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+fi
+
+crontab
+
+#
+get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
 ###
