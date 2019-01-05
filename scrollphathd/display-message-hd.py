@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	scrollphathd/display-message-hd.py  3.276.450  2019-01-05T08:48:45.985093-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.275  
+# 	   updated display_help 
 # 	scrollphathd/display-message-hd.py  3.256.400  2018-12-30T19:09:13.357370-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.256  
 # 	   add commmet #   production standard 3 
 # 	scrollphathd/display-message-hd.py  3.251.394  2018-12-29T23:56:46.245914-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.250  
@@ -35,11 +37,12 @@ def display_help():
     print("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGEHD).")
     print("The environment variables can be overwritten by entering the MESSAGEHD file")
     print("and absolute path as an argument to the display-message-hd.py script.")
-    print("\nThe default MESSAGEHD file is created by create-message.sh script.  The")
-    print("create-message.sh script reads the /usr/local/data/us-tx-cluster-1/SYSTEMS file")
-    print("for the FQDN or IP address of the hosts in a cluster.  The default MESSAGEHD")
-    print("file contents includes the total number of containers, running containers,")
-    print("paused containers, stopped containers, and number of images in the cluster.")
+    print("\nThe default MESSAGEHD file is created by create-display-message.sh script.")
+    print("The create-display-message.sh script reads the")
+    print("/usr/local/data/us-tx-cluster-1/SYSTEMS file for the FQDN or IP address of")
+    print("the hosts in a cluster.  The default MESSAGEHD file contents includes the")
+    print("total number of containers, running containers, paused containers, stopped")
+    print("containers, and number of images in the cluster.")
     print("\nEnvironment Variables")
     print("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
     print("line to set the CLUSTER environment variable.  Use the command, unset CLUSTER")
