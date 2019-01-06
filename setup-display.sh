@@ -20,7 +20,7 @@ BOLD=$(tput -Txterm bold)
 NORMAL=$(tput -Txterm sgr0)
 ###
 display_help() {
-echo -e "\n${NORMAL}${0} - setup system to gathering and display Docker & System info"
+echo -e "\n${NORMAL}${0} - setup system to gather and display Docker & System info"
 echo -e "\nUSAGE\n   sudo ${0} "
 echo    "   sudo ${0} [<CLUSTER>] [<DATA_DIR>] [<ADMUSER>] [ADMGRP]"
 echo    "   ${0} [--help | -help | help | -h | h | -?]"
@@ -32,7 +32,7 @@ echo    "information includes the number of containers, running containers, paus
 echo    "containers, stopped containers, and number of images.  The system information"
 echo    "includes cpu temperature in Celsius and Fahrenheit, the system load, memory"
 echo    "usage, and disk usage."
-echo -e "The information in /usr/local/data/<CLUSTER>/<hostname> file is created by"
+echo -e "\nThe information in /usr/local/data/<CLUSTER>/<hostname> file is created by"
 echo    "create-host-info.sh and can be used by display-led.py for Raspberry Pi with"
 echo    "Pimoroni Blinkt to display the system information in near real time.  It is"
 echo    "also used by create-display-message.sh.  The <hostname> files are copied to"
@@ -116,12 +116,12 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP}
 
 ###
 #       Must be root to run this script
-#	if ! [ $(id -u) = 0 ] ; then
-        #	display_help | more
-        #	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  Use sudo ${0}" 1>&2
-        #	echo -e "\n>>   ${BOLD}SCRIPT MUST BE RUN AS ROOT${NORMAL} <<"  1>&2
-        #	exit 1
-#	fi
+if ! [ $(id -u) = 0 ] ; then
+	display_help | more
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  Use sudo ${0}" 1>&2
+	echo -e "\n>>   ${BOLD}SCRIPT MUST BE RUN AS ROOT${NORMAL} <<"  1>&2
+        exit 1
+fi
 
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
