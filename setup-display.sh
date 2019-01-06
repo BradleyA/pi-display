@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.286.462  2019-01-06T14:14:22.313029-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.285  
+# 	   begin testing setup-display.sh 
 # 	setup-display.sh  3.285.461  2019-01-06T13:56:20.399204-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.284  
 # 	   switch back to the orginal solution for 20 seconds 
 # 	setup-display.sh  3.284.460  2019-01-06T12:01:14.848651-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.283-1-g9ac80d2  
@@ -25,7 +27,7 @@
 ### setup-display.sh
 #   production standard 3
 #       Order of precedence: environment variable, default code
-if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
+if [ "${DEBUG}" == "" ] ; then DEBUG="1" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
