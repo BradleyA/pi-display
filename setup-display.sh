@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.284.460  2019-01-06T12:01:14.848651-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.283-1-g9ac80d2  
+# 	   more changes to crontab section 
 # 	setup-display.sh  3.283.458  2019-01-06T11:12:29.776872-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.282  
 # 	   change time for scroll phat 
 # 	setup-display.sh  3.282.457  2019-01-06T09:57:46.264989-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.281  
@@ -226,14 +228,14 @@ echo    "# */20 * * * * sleep 5  ; /usr/local/bin/display-led.py >> /usr/local/d
 echo    "#\n#   scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "#   Uncomment the following 3 lines and the line above which includes create-host-info.sh on Raspberry Pi with scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# @reboot   /usr/local/bin/display-scrollphat-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
-echo    "# */2 * * * *               /usr/local/bin/create-display-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
-echo    "# */2 * * * *  sleep 60 ; /usr/local/bin/display-message.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# */2 * * * *      /usr/local/bin/create-display-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# 1-59/2 * * * *   /usr/local/bin/display-message.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
 ###	Raspberry Pi with scroll-pHAT-HD for pi-display
 echo    "#\n#   scroll-pHAT-HD for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "#   Uncomment the following 3 lines and the line above which includes create-host-info.sh on Raspberry Pi with scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# @reboot   /usr/local/bin/display-scrollphathd-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
-echo    "# */2 * * * *               /usr/local/bin/create-display-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
-echo    "# */2 * * * *  sleep 60 ; /usr/local/bin/display-message-hd.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# */2 * * * *      /usr/local/bin/create-display-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# 1-59/2 * * * *   /usr/local/bin/display-message-hd.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
 ###     All Raspberry Pi's that include any above section to rotate logs for pi-display
 echo    "#\n#   All Raspberry Pi's that include any above section to rotate logs for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "#   Uncomment the following line to rotate logs for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
