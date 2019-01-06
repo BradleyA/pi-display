@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.295.471  2019-01-06T16:45:59.594305-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.294  
+# 	   testing crontab 
 # 	setup-display.sh  3.294.470  2019-01-06T16:37:48.341704-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.293  
 # 	   crap still trying to find one bug creating crontab 
 # 	setup-display.sh  3.269.428  2019-01-03T14:42:35.499629-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
@@ -206,7 +208,8 @@ touch /var/spool/cron/crontabs/${ADMUSER}
 #
 echo -e "\n\tUpdating /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 ###	Raspberry Pi with blinkt for pi-display
-echo -e "#\n#   Raspberry Pi with blinkt for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# Edit this file to introduce tasks to be run by cron."  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "#   Raspberry Pi with blinkt for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "#   Uncomment the following 7 lines on Raspberry Pi with blinkt installed for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# @reboot   /usr/local/bin/display-led-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# * * * * *            /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
