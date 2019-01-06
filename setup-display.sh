@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.279.453  2019-01-05T21:45:10.407873-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.278  
+# 	   thrid draft 
 # 	setup-display.sh  3.278.452  2019-01-05T11:51:43.569303-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.277  
 # 	   second draft 
 # 	setup-display.sh  3.276.450  2019-01-05T08:48:46.134134-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.275  
@@ -133,19 +135,22 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP}
 
 #
 mkdir -p /usr/local/bin
-mkdir -p /usr/local/data/$(CLUSTER)/log
-mkdir -p /usr/local/data/$(CLUSTER)/logrotate
-#
-chmod 0775 /usr/local/bin
-chmod 0775 /usr/local/data
-chmod 0775 /usr/local/data/$(CLUSTER)
-chmod 0775 /usr/local/data/$(CLUSTER)/log
-chmod 0775 /usr/local/data/$(CLUSTER)/logrotate
-#
+mkdir -p ${DATA_DIR}/${CLUSTER}/log
+mkdir -p ${DATA_DIR}/${CLUSTER}/logrotate
+
+#   Change directory owner and group
 chown    ${ADMUSER}:${ADMGRP} /usr/local/bin
-chown -R ${ADMUSER}:${ADMGRP} /usr/local/data
-#
-mv pi-display                                 /usr/local/data/$(CLUSTER)/logrotate
+chown -R ${ADMUSER}:${ADMGRP} ${DATA_DIR}
+
+#   Change file mode bits
+chmod 0775 /usr/local/bin
+chmod 0775 ${DATA_DIR}
+chmod 0775 ${DATA_DIR}/${CLUSTER}
+chmod 0775 ${DATA_DIR}/${CLUSTER}/log
+chmod 0775 ${DATA_DIR}/${CLUSTER}/logrotate
+
+#   Move files
+mv pi-display                                 ${DATA_DIR}/${CLUSTER}/logrotate
 mv blinkt/display-led.py                      /usr/local/bin
 mv blinkt/display-led-test.py                 /usr/local/bin
 mv create-message/CPU_usage.sh                /usr/local/bin
@@ -156,19 +161,79 @@ mv scrollphat/display-scrollphat-test.py      /usr/local/bin
 mv scrollphathd/display-message-hd.py         /usr/local/bin
 mv scrollphathd/display-scrollphathd-test.py  /usr/local/bin
 
+#   Change file owner and group
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-led.py
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-led-test.py
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/CPU_usage.sh
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/create-display-message.sh
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/create-host-info.sh
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-message.py
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-scrollphat-test.py
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-message-hd.py
+chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-scrollphathd-test.py
+
+#   Change file mode bits
+chmod 0664 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display
+chmod 0770 /usr/local/bin/display-led.py
+chmod 0770 /usr/local/bin/display-led-test.py
+chmod 0770 /usr/local/bin/CPU_usage.sh
+chmod 0770 /usr/local/bin/create-display-message.sh
+chmod 0770 /usr/local/bin/create-host-info.sh
+chmod 0770 /usr/local/bin/display-message.py
+chmod 0770 /usr/local/bin/display-scrollphat-test.py
+chmod 0770 /usr/local/bin/display-message-hd.py
+chmod 0770 /usr/local/bin/display-scrollphathd-test.py
+
 #       Check if SYSTEMS file on system
 if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
-        echo -e "\t${DATA_DIR}/${CLUSTER}/SYSTEMS file not found."
-	echo -e "\tCreating ${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS file with local host."
-        echo -e "\tEdit ${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS to additional hosts."
-	echo "###     List of hosts used by cluster-command.sh, create-display-message.sh, etc." > ${DATA_DIR}/${CLUSTER}/SYSTEMS
-        echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
-        echo "#       One FQDN host on each line" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
-        echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
-        $(hostname -f) >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo -e "\t${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS file not found..."
+	echo -e "\tCreating {DATA_DIR}/${CLUSTER}/SYSTEMS file with local host."
+	echo -e "\tEdit ${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS to add additional hosts."
+	echo "###     List of hosts is used by markit/find-code.sh," >    ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo "#       Linux-admin/cluster-command/cluster-command.sh," >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo "#       pi-display/create-message/create-display-message.sh, and other scripts." >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo "#       One FQDN host on each line" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	$(hostname -f) >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	chown ${ADMUSER}:${ADMGRP} ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	chmod 0664 ${DATA_DIR}/${CLUSTER}/SYSTEMS
 fi
 
-crontab
+#	crontab
+if [ -e /var/spool/cron/crontabs/${ADMUSER} ] ; then
+	echo -e "\tCreating a copy of /var/spool/cron/crontabs/${ADMUSER}" 1>&2
+	DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)
+	cp /var/spool/cron/crontabs/${ADMUSER} /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}
+fi
+
+echo -e "\tUpdating /var/spool/cron/crontabs/${ADMUSER}" 1>&2
+###	Raspberry Pi with blinkt for pi-display
+echo    "#   blinkt for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# @reboot   /usr/local/bin/display-led-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# */20 * * * *            /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# */20 * * * * sleep 5  ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+###     Raspberry Pi with scroll-pHAT for pi-display
+echo    "#   scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# @reboot   /usr/local/bin/display-scrollphat-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# * * * * *               /usr/local/bin/create-display-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# */2 * * * *  sleep 60 ; /usr/local/bin/display-message-hd.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+###	Raspberry Pi with scroll-pHAT-HD for pi-display
+echo    "#   scroll-pHAT-HD for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# @reboot   /usr/local/bin/display-scrollphathd-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# * * * * *               /usr/local/bin/create-display-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# */2 * * * *  sleep 60 ; /usr/local/bin/display-message-hd.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+###     All Raspberry Pi's that include any above section to rotate logs for pi-display
+echo    "#   All Raspberry Pi's that include any above section to rotate logs for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# 6 */2 * * * /usr/sbin/logrotate -s /usr/local/data/us-tx-cluster-1/logrotate/status /usr/local/data/us-tx-cluster-1/logrotate/pi-display >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+###     Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
+echo    "#   Prometheus exporter for hardware and OS metrics exposed by *NIX kernels"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# @reboot /usr/local/bin/node_exporter >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+#
+chown ${ADMUSER}:crontab /var/spool/cron/crontabs/${ADMUSER}
+chmod 0600 /var/spool/cron/crontabs/${ADMUSER}
+echo -e "\tEdit /var/spool/cron/crontabs/${ADMUSER}" 1>&2
+echo -e "\tUncomment the section that is needed for your Raspberry Pi\n" 1>&2
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
