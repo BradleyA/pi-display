@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.280.455  2019-01-05T22:02:48.595020-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.279-1-g5f6f3eb  
+# 	   change mv to cp 
 # 	setup-display.sh  3.279.453  2019-01-05T21:45:10.407873-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.278  
 # 	   thrid draft 
 # 	setup-display.sh  3.278.452  2019-01-05T11:51:43.569303-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.277  
@@ -150,16 +152,16 @@ chmod 0775 ${DATA_DIR}/${CLUSTER}/log
 chmod 0775 ${DATA_DIR}/${CLUSTER}/logrotate
 
 #   Move files
-mv pi-display                                 ${DATA_DIR}/${CLUSTER}/logrotate
-mv blinkt/display-led.py                      /usr/local/bin
-mv blinkt/display-led-test.py                 /usr/local/bin
-mv create-message/CPU_usage.sh                /usr/local/bin
-mv create-message/create-display-message.sh   /usr/local/bin
-mv create-message/create-host-info.sh         /usr/local/bin
-mv scrollphat/display-message.py              /usr/local/bin
-mv scrollphat/display-scrollphat-test.py      /usr/local/bin
-mv scrollphathd/display-message-hd.py         /usr/local/bin
-mv scrollphathd/display-scrollphathd-test.py  /usr/local/bin
+cp pi-display                                 ${DATA_DIR}/${CLUSTER}/logrotate
+cp blinkt/display-led.py                      /usr/local/bin
+cp blinkt/display-led-test.py                 /usr/local/bin
+cp create-message/CPU_usage.sh                /usr/local/bin
+cp create-message/create-display-message.sh   /usr/local/bin
+cp create-message/create-host-info.sh         /usr/local/bin
+cp scrollphat/display-message.py              /usr/local/bin
+cp scrollphat/display-scrollphat-test.py      /usr/local/bin
+cp scrollphathd/display-message-hd.py         /usr/local/bin
+cp scrollphathd/display-scrollphathd-test.py  /usr/local/bin
 
 #   Change file owner and group
 chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-led.py
