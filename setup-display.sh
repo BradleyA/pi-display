@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.289.465  2019-01-06T14:58:37.839430-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.288  
+# 	   more testing 
 # 	setup-display.sh  3.288.464  2019-01-06T14:34:23.216328-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.287  
 # 	   more testing 
 # 	setup-display.sh  3.287.463  2019-01-06T14:22:37.013627-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.286  
@@ -207,11 +209,11 @@ if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
 	echo -e "\n\t${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS file not found ..."
 	echo -e "\tCreating ${DATA_DIR}/${CLUSTER}/SYSTEMS file adding local host."
 	echo -e "\n\t${BOLD}Edit ${DATA_DIR}/${CLUSTER}/SYSTEMS to add additional hosts.${NORMAL}"
-	echo "###     List of hosts is used by markit/find-code.sh," >    ${DATA_DIR}/${CLUSTER}/SYSTEMS
-	echo "#       Linux-admin/cluster-command/cluster-command.sh," >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo "###     List of hosts in cluster" >    ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo "#       Used by markit/find-code.sh, Linux-admin/cluster-command/cluster-command.sh," >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo "#       pi-display/create-message/create-display-message.sh, and other scripts." >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
-	echo "#       One FQDN host on each line" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo "#       One FQDN or IP address on each line" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo $(hostname -f) >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	chown ${ADMUSER}:${ADMGRP} ${DATA_DIR}/${CLUSTER}/SYSTEMS
@@ -223,6 +225,8 @@ if [ -e /var/spool/cron/crontabs/${ADMUSER} ] ; then
 	echo -e "\n\tCreating a copy of /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 	DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)
 	cp /var/spool/cron/crontabs/${ADMUSER} /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}
+	chown ${ADMUSER}:${ADMGRP} /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}
+	chmod 0660 /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}
 fi
 
 echo -e "\n\tUpdating /var/spool/cron/crontabs/${ADMUSER}" 1>&2
@@ -258,7 +262,7 @@ echo    "# @reboot /usr/local/bin/node_exporter >> /usr/local/data/us-tx-cluster
 #
 chown ${ADMUSER}:crontab /var/spool/cron/crontabs/${ADMUSER}
 chmod 0600 /var/spool/cron/crontabs/${ADMUSER}
-echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER}" 1>&2
+echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e or sudo vi /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 echo -e "\tUncomment the section that is needed for your Raspberry Pi\n${NORMAL}" 1>&2
 
 #
