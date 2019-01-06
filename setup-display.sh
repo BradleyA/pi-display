@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.285.461  2019-01-06T13:56:20.399204-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.284  
+# 	   switch back to the orginal solution for 20 seconds 
 # 	setup-display.sh  3.284.460  2019-01-06T12:01:14.848651-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.283-1-g9ac80d2  
 # 	   more changes to crontab section 
 # 	setup-display.sh  3.283.458  2019-01-06T11:12:29.776872-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.282  
@@ -222,8 +224,12 @@ echo -e "\tUpdating /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 echo -e "#\n#   Raspberry Pi with blinkt for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "#   Uncomment the following 3 lines on Raspberry Pi with blinkt installed for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# @reboot   /usr/local/bin/display-led-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
-echo    "# */20 * * * *            /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
-echo    "# */20 * * * * sleep 5  ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# * * * * *            /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# * * * * * sleep 5  ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# * * * * * sleep 20 ; /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# * * * * * sleep 25 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# * * * * * sleep 40 ; /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# * * * * * sleep 45 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
 ###     Raspberry Pi with scroll-pHAT for pi-display
 echo    "#\n#   scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "#   Uncomment the following 3 lines and the line above which includes create-host-info.sh on Raspberry Pi with scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
