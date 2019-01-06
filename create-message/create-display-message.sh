@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.290.466  2019-01-06T15:21:26.846425-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.289  
+# 	   add code to create $DATA_DIR 
 # 	create-message/create-display-message.sh  3.283.459  2019-01-06T11:52:41.744756-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.283  
 # 	   back ground some lines to inprove performance by half 
 # 	create-message/create-message.sh  3.264.411  2019-01-01T20:48:01.326246-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.263-1-gc4643e8  
@@ -139,6 +141,13 @@ IMAGES=0
 source ~/.profile
 TEMP=`env | grep -i docker`
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Docker environment variables after source command >${TEMP}<" 1>&2 ; fi
+
+#       Check if data directory is on system
+if [ ! -d ${DATA_DIR}/${CLUSTER}/log ] ; then
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Creating missing directory: ${DATA_DIR}" 1>&2
+	mkdir -p  ${DATA_DIR} || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADMUSER} does not have permission to create ${DATA_DIR} directory" 1>&2 ; exit 1; }
+	chmod 775 ${DATA_DIR}
+fi
 
 #       Check if cluster directory is on system
 if [ ! -d ${DATA_DIR}/${CLUSTER}/log ] ; then
