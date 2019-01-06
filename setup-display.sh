@@ -1,41 +1,13 @@
 #!/bin/bash
-# 	setup-display.sh  3.291.467  2019-01-06T15:49:45.422234-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.290  
-# 	   testing 
-# 	setup-display.sh  3.289.465  2019-01-06T14:58:37.839430-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.288  
+# 	setup-display.sh  3.292.468  2019-01-06T16:14:26.158051-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.291  
 # 	   more testing 
-# 	setup-display.sh  3.288.464  2019-01-06T14:34:23.216328-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.287  
-# 	   more testing 
-# 	setup-display.sh  3.287.463  2019-01-06T14:22:37.013627-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.286  
-# 	   testing 
-# 	setup-display.sh  3.286.462  2019-01-06T14:14:22.313029-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.285  
-# 	   begin testing setup-display.sh 
-# 	setup-display.sh  3.285.461  2019-01-06T13:56:20.399204-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.284  
-# 	   switch back to the orginal solution for 20 seconds 
-# 	setup-display.sh  3.284.460  2019-01-06T12:01:14.848651-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.283-1-g9ac80d2  
-# 	   more changes to crontab section 
-# 	setup-display.sh  3.283.458  2019-01-06T11:12:29.776872-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.282  
-# 	   change time for scroll phat 
-# 	setup-display.sh  3.282.457  2019-01-06T09:57:46.264989-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.281  
-# 	   four draft 
-# 	setup-display.sh  3.281.456  2019-01-06T09:08:51.757080-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.280  
-# 	   update crontab comments 
-# 	setup-display.sh  3.280.455  2019-01-05T22:02:48.595020-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.279-1-g5f6f3eb  
-# 	   change mv to cp 
-# 	setup-display.sh  3.279.453  2019-01-05T21:45:10.407873-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.278  
-# 	   thrid draft 
-# 	setup-display.sh  3.278.452  2019-01-05T11:51:43.569303-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.277  
-# 	   second draft 
-# 	setup-display.sh  3.276.450  2019-01-05T08:48:46.134134-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.275  
-# 	   updated display_help 
-# 	setup-display.sh  3.274.448  2019-01-04T13:34:08.562046-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.273-11-gf99f687  
-# 	   update display_help 
 # 	setup-display.sh  3.269.428  2019-01-03T14:42:35.499629-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
 # 	   start creating setup for pi-display 
 #
 ### setup-display.sh
 #   production standard 3
 #       Order of precedence: environment variable, default code
-if [ "${DEBUG}" == "" ] ; then DEBUG="1" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
+if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
@@ -230,7 +202,8 @@ if [ -e /var/spool/cron/crontabs/${ADMUSER} ] ; then
 	chown ${ADMUSER}:${ADMGRP} /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}
 	chmod 0660 /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}
 fi
-
+touch /var/spool/cron/crontabs/${ADMUSER}
+#
 echo -e "\n\tUpdating /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 ###	Raspberry Pi with blinkt for pi-display
 echo -e "#\n#   Raspberry Pi with blinkt for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
@@ -244,7 +217,7 @@ echo    "# * * * * * sleep 40 ; /usr/local/bin/create-host-info.sh >> /usr/local
 echo    "# * * * * * sleep 45 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
 ###     Raspberry Pi with scroll-pHAT for pi-display
 echo -e "#\n#   scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
-echo    "#   Uncomment the following 3 lines and the line above which includes create-host-info.sh on Raspberry Pi with scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "#   Uncomment the following 3 lines and the line above which includes sleep 40 ; ... create-host-info.sh ... on Raspberry Pi with scroll-pHAT for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# @reboot   /usr/local/bin/display-scrollphat-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# */2 * * * *      /usr/local/bin/create-display-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# 1-59/2 * * * *   /usr/local/bin/display-message.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
