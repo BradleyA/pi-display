@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.287.463  2019-01-06T14:22:37.013627-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.286  
+# 	   testing 
 # 	setup-display.sh  3.286.462  2019-01-06T14:14:22.313029-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.285  
 # 	   begin testing setup-display.sh 
 # 	setup-display.sh  3.285.461  2019-01-06T13:56:20.399204-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.284  
@@ -140,7 +142,7 @@ fi
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
 #       Order of precedence: CLI argument, environment variable, default code
-if [ $# -ge  2 ]  ; then DATA_DIR=${3} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
+if [ $# -ge  2 ]  ; then DATA_DIR=${2} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
 #       Order of precedence: CLI argument, default code
 ADMUSER=${3:-$(id -u)}
 #       Order of precedence: CLI argument, default code
