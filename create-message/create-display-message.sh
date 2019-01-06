@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.283.459  2019-01-06T11:52:41.744756-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.283  
+# 	   back ground some lines to inprove performance by half 
 # 	create-message/create-message.sh  3.264.411  2019-01-01T20:48:01.326246-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.263-1-gc4643e8  
 # 	   create-host-info.sh display_help now that design is closer to being complete #51 
 # 	create-message/create-message.sh  3.246.389  2018-12-29T22:05:04.525575-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.245  
@@ -164,7 +166,7 @@ fi
 #	Loop through hosts in ${SYSTEMS_FILE} file
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Loop through hosts in ${SYSTEMS_FILE} file" 1>&2 ; fi
 for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
-	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  host >${NODE}<" 1>&2 ; fi
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}   host >${NODE}<" 1>&2 ; fi
 #	Check if ${NODE} is ${LOCALHOST} don't use ssh and scp
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #		Check if ${NODE} is available on ssh port 
@@ -172,7 +174,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
 #			Copy ${NODE} information to ${LOCALHOST}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
-			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER}
+			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER} &
 		else
 			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
 			touch ${DATA_DIR}/${CLUSTER}/${NODE}
@@ -206,8 +208,8 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
-			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/*$(hostname -d) ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER} 
-			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/log/$(hostname -f)\-crontab ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/log 
+			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/*$(hostname -d) ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER} &
+			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/log/$(hostname -f)\-crontab ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/log &
 			TEMP="cd ${DATA_DIR}/${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 		else
@@ -215,7 +217,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		fi
 	fi
 done
-/bin/ln -sf ${LOCALHOST} LOCAL-HOST	# very difficult to locate and  solve bug fix #26
+/bin/ln -sf ${LOCALHOST} LOCAL-HOST	# very difficult to locate and solve bug fix #26
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
