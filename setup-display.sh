@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.288.464  2019-01-06T14:34:23.216328-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.287  
+# 	   more testing 
 # 	setup-display.sh  3.287.463  2019-01-06T14:22:37.013627-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.286  
 # 	   testing 
 # 	setup-display.sh  3.286.462  2019-01-06T14:14:22.313029-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.285  
@@ -202,28 +204,28 @@ chmod 0770 /usr/local/bin/display-scrollphathd-test.py
 
 #       Check if SYSTEMS file on system
 if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
-	echo -e "\t${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS file not found..."
-	echo -e "\tCreating {DATA_DIR}/${CLUSTER}/SYSTEMS file with local host."
-	echo -e "\tEdit ${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS to add additional hosts."
+	echo -e "\n\t${NORMAL}${DATA_DIR}/${CLUSTER}/SYSTEMS file not found ..."
+	echo -e "\tCreating ${DATA_DIR}/${CLUSTER}/SYSTEMS file adding local host."
+	echo -e "\n\t${BOLD}Edit ${DATA_DIR}/${CLUSTER}/SYSTEMS to add additional hosts.${NORMAL}"
 	echo "###     List of hosts is used by markit/find-code.sh," >    ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo "#       Linux-admin/cluster-command/cluster-command.sh," >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo "#       pi-display/create-message/create-display-message.sh, and other scripts." >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo "#       One FQDN host on each line" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	echo "###" >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
-	$(hostname -f) >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
+	echo $(hostname -f) >> ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	chown ${ADMUSER}:${ADMGRP} ${DATA_DIR}/${CLUSTER}/SYSTEMS
 	chmod 0664 ${DATA_DIR}/${CLUSTER}/SYSTEMS
 fi
 
 #	crontab
 if [ -e /var/spool/cron/crontabs/${ADMUSER} ] ; then
-	echo -e "\tCreating a copy of /var/spool/cron/crontabs/${ADMUSER}" 1>&2
+	echo -e "\n\tCreating a copy of /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 	DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)
 	cp /var/spool/cron/crontabs/${ADMUSER} /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}
 fi
 
-echo -e "\tUpdating /var/spool/cron/crontabs/${ADMUSER}" 1>&2
+echo -e "\n\tUpdating /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 ###	Raspberry Pi with blinkt for pi-display
 echo -e "#\n#   Raspberry Pi with blinkt for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "#   Uncomment the following 3 lines on Raspberry Pi with blinkt installed for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
@@ -256,8 +258,8 @@ echo    "# @reboot /usr/local/bin/node_exporter >> /usr/local/data/us-tx-cluster
 #
 chown ${ADMUSER}:crontab /var/spool/cron/crontabs/${ADMUSER}
 chmod 0600 /var/spool/cron/crontabs/${ADMUSER}
-echo -e "\tEdit /var/spool/cron/crontabs/${ADMUSER}" 1>&2
-echo -e "\tUncomment the section that is needed for your Raspberry Pi\n" 1>&2
+echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER}" 1>&2
+echo -e "\tUncomment the section that is needed for your Raspberry Pi\n${NORMAL}" 1>&2
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
