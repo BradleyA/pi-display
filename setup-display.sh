@@ -1,8 +1,6 @@
 #!/bin/bash
-# 	setup-display.sh  3.293.469  2019-01-06T16:27:08.354079-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.292  
-# 	   more testing 
-# 	setup-display.sh  3.292.468  2019-01-06T16:14:26.158051-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.291  
-# 	   more testing 
+# 	setup-display.sh  3.294.470  2019-01-06T16:37:48.341704-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.293  
+# 	   crap still trying to find one bug creating crontab 
 # 	setup-display.sh  3.269.428  2019-01-03T14:42:35.499629-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
 # 	   start creating setup for pi-display 
 #
