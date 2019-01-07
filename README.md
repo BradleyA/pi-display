@@ -8,7 +8,8 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
-#### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching. 
+#### If you like this repository, select in the upper-right corner, star, thank you.
+#### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching.
 
  * [scrollphat](https://github.com/BradleyA/pi-display/tree/master/scrollphat) 
  * [scrollphathd](https://github.com/BradleyA/pi-display/tree/master/scrollphathd)
