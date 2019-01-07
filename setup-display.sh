@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.303.488  2019-01-07T17:21:49.734134-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.302-7-gbccf6ca  
+# 	   testing pi-display-logrotate 
 # 	setup-display.sh  3.302.480  2019-01-07T17:09:24.210585-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.301-2-gf312ca1  
 # 	   setup pi-display-logrotate file creation 
 # 	setup-display.sh  3.301.477  2019-01-06T21:28:37.100154-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.300  
@@ -271,8 +273,8 @@ echo    "        /bin/ls -l ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> $
 echo    "        /bin/grep -nv '\[INFO\]' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab | grep -iv 'info' > incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /usr/bin/sort -n -u incident.tmp | grep -v '\-\-$' > incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        cp incident incident-$DATE_STAMP  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        DATE_STAMP='$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)'"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        cp incident incident-$DATE_STAMP"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /bin/rm incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /usr/bin/mail -s 'incident report ${LOCALHOST}-crontab' ${EMAIL_ADDRESS} < incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
