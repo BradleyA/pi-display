@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.302.480  2019-01-07T17:09:24.210585-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.301-2-gf312ca1  
+# 	   setup pi-display-logrotate file creation 
 # 	setup-display.sh  3.301.477  2019-01-06T21:28:37.100154-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.300  
 # 	   complete testing on one-rpi3b 
 # 	setup-display.sh  3.300.476  2019-01-06T21:11:50.940286-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.299  
@@ -18,7 +20,7 @@ NORMAL=$(tput -Txterm sgr0)
 display_help() {
 echo -e "\n${NORMAL}${0} - setup system to gather and display Docker & System info"
 echo -e "\nUSAGE\n   sudo ${0} "
-echo    "   sudo ${0} [<CLUSTER>] [<DATA_DIR>] [<ADMUSER>] [ADMGRP]"
+echo    "   sudo ${0} [<CLUSTER>] [<DATA_DIR>] [<ADMUSER>] [ADMGRP] [EMAIL_ADDRESS]"
 echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION\nThis script has to be run as root to create /usr/local/data/<CLUSTER>.  The"
@@ -51,14 +53,15 @@ echo    "environment variable.  To set an environment variable to be defined at 
 echo    "add it to ~/.bashrc file or you can modify this script with your default"
 echo    "location.  You are on your own defining environment variables if you are"
 echo    "using other shells."
-echo    "   CLUSTER       (default us-tx-cluster-1/)"
-echo    "   DATA_DIR      (default /usr/local/data/)"
-echo    "   DEBUG         (default '0')"
+echo    "   CLUSTER         (default us-tx-cluster-1/)"
+echo    "   DATA_DIR        (default /usr/local/data/)"
+echo    "   DEBUG           (default '0')"
 echo -e "\nOPTIONS"
-echo    "   CLUSTER       name of cluster directory, default us-tx-cluster-1"
-echo    "   DATA_DIR      path to cluster data directory, default /usr/local/data/"
-echo    "   ADMUSER       site SRE administrator, default is user running script"
-echo    "   ADMGRP        site SRE group, default is group running script"
+echo    "   CLUSTER         name of cluster directory, default us-tx-cluster-1"
+echo    "   DATA_DIR        path to cluster data directory, default /usr/local/data/"
+echo    "   ADMUSER         site SRE administrator, default is user running script"
+echo    "   ADMGRP          site SRE group, default is group running script"
+echo    "   EMAIL_ADDRESS   SRE email address"
 echo -e "\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES\n   sudo ${0}\n"
 echo -e "   sudo ${0} us-tx-cluster-1 /usr/local/data uadmin uadmin\n"
@@ -127,7 +130,9 @@ if [ $# -ge  2 ]  ; then DATA_DIR=${2} ; elif [ "${DATA_DIR}" == "" ] ; then DAT
 ADMUSER=${3:-$(id -u)}
 #       Order of precedence: CLI argument, default code
 ADMGRP=${4:-$(id -g)}
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Variable... CLUSTER >${CLUSTER}< DATA_DIR >${DATA_DIR}< ADMUSER >${ADMUSER}< ADMGRP >${ADMGRP}<" 1>&2 ; fi
+#       Order of precedence: CLI argument, environment variable, default code
+if [ $# -ge  5 ]  ; then EMAIL_ADDRESS=${5} ; elif [ "${EMAIL_ADDRESS}" == "" ] ; then EMAIL_ADDRESS="root@${LOCALHOST}" ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Variable... CLUSTER >${CLUSTER}< DATA_DIR >${DATA_DIR}< ADMUSER >${ADMUSER}< ADMGRP >${ADMGRP}< EMAIL_ADDRESS >${EMAIL_ADDRESS}<" 1>&2 ; fi
 
 #
 mkdir -p /usr/local/bin
@@ -236,7 +241,7 @@ echo    "# 1-59/2 * * * *   /usr/local/bin/display-message-hd.py >> /usr/local/d
 ###     All Raspberry Pi's that include any above section to rotate logs for pi-display
 echo -e "#\n#   All Raspberry Pi's that include any above section to rotate logs for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "#   Uncomment the following line to rotate logs for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
-echo    "# 6 */2 * * * /usr/sbin/logrotate -s /usr/local/data/us-tx-cluster-1/logrotate/status /usr/local/data/us-tx-cluster-1/logrotate/pi-display >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
+echo    "# 6 */2 * * * /usr/sbin/logrotate -s /usr/local/data/us-tx-cluster-1/logrotate/status /usr/local/data/us-tx-cluster-1/logrotate/pi-display-logrotate >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
 ###     Prometheus exporter for hardware and OS metrics exposed by *NIX kernels
 echo -e "#\n#   Prometheus exporter for hardware and OS metrics exposed by *NIX kernels"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# @reboot /usr/local/bin/node_exporter >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
@@ -245,6 +250,34 @@ chown ${ADMUSER}:crontab /var/spool/cron/crontabs/${ADMUSER}
 chmod 0600 /var/spool/cron/crontabs/${ADMUSER}
 echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e" 1>&2
 echo -e "\tUncomment the section that is needed for your Raspberry Pi\n${NORMAL}" 1>&2
+
+#	logrotate
+#
+#
+### pi-display-logrotate - logrotate conf file
+echo -e "#\n#\n#" > ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab {"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    daily"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    su ${ADMUSER} ${ADMGRP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    rotate 60"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    create 0644 ${ADMUSER} ${ADMGRP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    compress"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    size 25"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    olddir ../logrotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    notifempty"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    mail ${EMAIL_ADDRESS}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    prerotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/ls -l ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/grep -nv '\[INFO\]' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab | grep -iv 'info' > incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /usr/bin/sort -n -u incident.tmp | grep -v '\-\-$' > incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        cp incident incident-$DATE_STAMP  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/rm incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /usr/bin/mail -s 'incident report ${LOCALHOST}-crontab' ${EMAIL_ADDRESS} < incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
