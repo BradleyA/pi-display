@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.297.473  2019-01-06T20:15:27.826010-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.296  
+# 	   testing crontab section, added 4 blank lines at top of file 
 # 	setup-display.sh  3.296.472  2019-01-06T16:53:54.600077-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.295  
 # 	   testing crontab comments # xxx vers #   xxx 
 # 	setup-display.sh  3.295.471  2019-01-06T16:45:59.594305-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.294  
@@ -210,7 +212,7 @@ touch /var/spool/cron/crontabs/${ADMUSER}
 #
 echo -e "\n\tUpdating /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 ###	Raspberry Pi with blinkt for pi-display
-echo    "# Edit this file to introduce tasks to be run by cron."  >> /var/spool/cron/crontabs/${ADMUSER}
+echo -e "\n\n\n\n# Edit this file to introduce tasks to be run by cron."  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# Raspberry Pi with blinkt for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# Uncomment the following 7 lines on Raspberry Pi with blinkt installed for pi-display"  >> /var/spool/cron/crontabs/${ADMUSER}
 echo    "# @reboot   /usr/local/bin/display-led-test.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1"  >> /var/spool/cron/crontabs/${ADMUSER}
