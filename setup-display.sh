@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-display.sh  3.301.477  2019-01-06T21:28:37.100154-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.300  
+# 	   complete testing on one-rpi3b 
 # 	setup-display.sh  3.300.476  2019-01-06T21:11:50.940286-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.299  
 # 	   testing new heading 
 # 	setup-display.sh  3.269.428  2019-01-03T14:42:35.499629-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
@@ -241,7 +243,7 @@ echo    "# @reboot /usr/local/bin/node_exporter >> /usr/local/data/us-tx-cluster
 #
 chown ${ADMUSER}:crontab /var/spool/cron/crontabs/${ADMUSER}
 chmod 0600 /var/spool/cron/crontabs/${ADMUSER}
-echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e or sudo vi /var/spool/cron/crontabs/${ADMUSER}" 1>&2
+echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e" 1>&2
 echo -e "\tUncomment the section that is needed for your Raspberry Pi\n${NORMAL}" 1>&2
 
 #
