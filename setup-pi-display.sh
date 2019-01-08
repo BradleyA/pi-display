@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.309.495  2019-01-07T22:39:30.792045-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.308  
+# 	   testing 
 # 	setup-pi-display.sh  3.308.494  2019-01-07T22:34:24.879549-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.307  
 # 	   testing 
 # 	setup-pi-display.sh  3.307.493  2019-01-07T22:24:09.816932-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.306  
@@ -289,7 +291,9 @@ echo    "        /bin/rm incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-
 echo    "        /usr/bin/mail -s 'incident report ${LOCALHOST}-crontab' ${EMAIL_ADDRESS} < incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-
+#
+chown ${ADMUSER}:${ADMGRP} ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
