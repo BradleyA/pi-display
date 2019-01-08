@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.304.490  2019-01-07T22:00:41.378445-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.303-1-g698fde4  
+# 	   rename setup-display.sh -> setup-pi-display.sh 
 # 	setup-display.sh  3.303.488  2019-01-07T17:21:49.734134-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.302-7-gbccf6ca  
 # 	   testing pi-display-logrotate 
 # 	setup-display.sh  3.302.480  2019-01-07T17:09:24.210585-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.301-2-gf312ca1  
@@ -10,7 +12,7 @@
 # 	setup-display.sh  3.269.428  2019-01-03T14:42:35.499629-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
 # 	   start creating setup for pi-display 
 #
-### setup-display.sh
+### setup-pi-display.sh
 #   production standard 3
 #       Order of precedence: environment variable, default code
 if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
