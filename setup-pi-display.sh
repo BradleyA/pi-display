@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.308.494  2019-01-07T22:34:24.879549-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.307  
+# 	   testing 
 # 	setup-pi-display.sh  3.307.493  2019-01-07T22:24:09.816932-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.306  
 # 	   testing 
 # 	setup-pi-display.sh  3.306.492  2019-01-07T22:15:31.619818-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.305  
@@ -281,7 +283,7 @@ echo    "        /bin/ls -l ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> $
 echo    "        /bin/grep -nv '\[INFO\]' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab | grep -iv 'info' > incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /usr/bin/sort -n -u incident.tmp | grep -v '\-\-$' > incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        DATE_TMP=\$(date +%Y-%m-%dT%H.%M.%S\)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        DATE_TMP=\$(date +%Y-%m-%dT%H.%M.%S)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        cp incident incident-\$DATE_TMP"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /bin/rm incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /usr/bin/mail -s 'incident report ${LOCALHOST}-crontab' ${EMAIL_ADDRESS} < incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
