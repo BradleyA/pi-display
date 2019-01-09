@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
+# 	scrollphat/display-message.py  3.310.496  2019-01-08T21:02:55.797457-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.309  
+# 	   debug why loop never stops 
 # 	scrollphat/display-message.py  3.277.451  2019-01-05T08:52:02.879865-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.276  
 # 	   update display_help 
-# 	scrollphat/display-message.py  3.262.406  2019-01-01T14:30:20.804401-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.261  
-# 	   typo in comment 
 # 	scrollphat/display-message.py  3.259.403  2018-12-30T19:58:17.644786-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.258  
 # 	   display-message.py Change log format and order - lint pylint pylint3 close #65 
 #
@@ -14,7 +14,7 @@ import time
 import os
 import subprocess
 #       Order of precedence: environment variable (export DEBUG=1), default code
-DEBUG = int(os.getenv("DEBUG", 0)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
+DEBUG = int(os.getenv("DEBUG", 1)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
 ###
 class color:
     BOLD = '\033[1m'
@@ -209,15 +209,18 @@ while True:
     try:
         scrollphat.scroll()
         time.sleep(pause)
+        if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  count >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, count))
         if (count > timeout):
             scrollphat.clear_buffer()
             msg = get_msg(MESSAGE)
             if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  MESSAGE >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, msg))
             scrollphat.write_string(msg)
             timeout = get_timeout()
+            if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  count >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, count))
             count = 0
         else:
             count = count + 1
+            if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  count >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, count))
     except KeyboardInterrupt:
         scrollphat.clear_buffer()
         sys.exit(-1)
