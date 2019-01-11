@@ -1,6 +1,6 @@
 #
-#	pi-display  3.275.449  2019-01-05T08:02:58.314066-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.274  
-#	   updated pre processing from code tests 
+#	pi-display-logrotate  3.316.502  2019-01-11T11:42:24.606405-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.315  
+#	   change permissions of file to 0660 
 #	pi-display  3.269.428  2019-01-03T14:42:35.356699-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
 #	   start creating setup for pi-display 
 #
