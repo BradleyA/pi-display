@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-# 	scrollphathd/display-message-hd.py  3.276.450  2019-01-05T08:48:45.985093-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.275  
-# 	   updated display_help 
-# 	scrollphathd/display-message-hd.py  3.256.400  2018-12-30T19:09:13.357370-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.256  
-# 	   add commmet #   production standard 3 
+# 	scrollphathd/display-message-hd.py  3.317.503  2019-01-11T14:44:23.314829-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
+# 	   security: check log & script file and directory permissions close #55 
 # 	scrollphathd/display-message-hd.py  3.251.394  2018-12-29T23:56:46.245914-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.250  
 # 	   Change log format and order close #63 
 # 	display-message-hd.py  3.195.337  2018-10-03_20:56:53_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.194  

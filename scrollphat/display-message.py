@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-# 	scrollphat/display-message.py  3.313.499  2019-01-09T13:23:45.241389-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.312  
-# 	   DEBUG 
-# 	scrollphat/display-message.py  3.312.498  2019-01-09T12:23:21.538299-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.311  
-# 	   DEBUG while loop 
-# 	scrollphat/display-message.py  3.277.451  2019-01-05T08:52:02.879865-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.276  
-# 	   update display_help 
+# 	scrollphat/display-message.py  3.317.503  2019-01-11T14:44:23.232005-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
+# 	   security: check log & script file and directory permissions close #55 
 # 	scrollphat/display-message.py  3.259.403  2018-12-30T19:58:17.644786-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.258  
 # 	   display-message.py Change log format and order - lint pylint pylint3 close #65 
 #

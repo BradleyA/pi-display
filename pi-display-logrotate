@@ -1,6 +1,6 @@
 #
-#	pi-display-logrotate  3.316.502  2019-01-11T11:42:24.606405-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.315  
-#	   change permissions of file to 0660 
+#	pi-display-logrotate  3.317.503  2019-01-11T14:44:23.150073-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
+#	   security: check log & script file and directory permissions close #55 
 #	pi-display  3.269.428  2019-01-03T14:42:35.356699-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
 #	   start creating setup for pi-display 
 #
@@ -10,7 +10,7 @@
     daily
     su uadmin uadmin
     rotate 60
-    create 644 uadmin uadmin
+    create 660 uadmin uadmin
     compress
     olddir ../logrotate
     size 250

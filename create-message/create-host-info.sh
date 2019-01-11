@@ -1,18 +1,11 @@
 #!/bin/bash
-# 	create-message/create-host-info.sh  3.315.501  2019-01-11T11:14:30.046354-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.314  
-# 	   security: check log & script file and directory permissions #55 
-# 	create-message/create-host-info.sh  3.268.427  2019-01-02T20:31:03.424006-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.267-5-g41f1e0f  
-# 	   correct WARN message during testing of use case 
-# 	create-message/create-host-info.sh  3.266.419  2019-01-01T21:26:54.273739-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.265  
-# 	   set ${DATA_DIR}/${CLUSTER}/log permission 
-# 	create-message/create-host-info.sh  3.265.418  2019-01-01T21:14:58.196728-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.264-6-g4f2a185  
-# 	   create-host-info.sh display_help now that design is closer to being complete close #51 
-# 	create-message/create-host-info.sh  3.264.411  2019-01-01T20:48:01.196079-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.263-1-gc4643e8  
-# 	   create-host-info.sh display_help now that design is closer to being complete #51 
+# 	create-message/create-host-info.sh  3.317.503  2019-01-11T14:44:05.863831-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
+# 	   security: check log & script file and directory permissions close #55 
 # 	create-message/local-create-message.sh  3.247.390  2018-12-29T22:08:55.633438-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.246  
 # 	   local-create-message.sh Change log format and order close #60 
 #
 ### create-host-info.sh
+#   production standard 3
 #       Order of precedence: environment variable, default code
 if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x

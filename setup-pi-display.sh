@@ -1,8 +1,6 @@
 #!/bin/bash
-# 	setup-pi-display.sh  3.314.500  2019-01-11T10:56:41.448549-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.313  
-# 	   security: check log & script file and directory permissions #55 
-# 	setup-display.sh  3.269.428  2019-01-03T14:42:35.499629-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
-# 	   start creating setup for pi-display 
+# 	setup-pi-display.sh  3.317.503  2019-01-11T14:44:23.411002-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
+# 	   security: check log & script file and directory permissions close #55 
 #
 ### setup-pi-display.sh
 #   production standard 3
@@ -147,7 +145,7 @@ chmod 0770 ${DATA_DIR}/${CLUSTER}/log
 chmod 0770 ${DATA_DIR}/${CLUSTER}/logrotate
 
 #   Move files
-cp pi-display                                 ${DATA_DIR}/${CLUSTER}/logrotate
+cp pi-display-logrotate                       ${DATA_DIR}/${CLUSTER}/logrotate
 cp blinkt/display-led.py                      /usr/local/bin
 cp blinkt/display-led-test.py                 /usr/local/bin
 cp create-message/CPU_usage.sh                /usr/local/bin
@@ -170,7 +168,7 @@ chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-message-hd.py
 chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-scrollphathd-test.py
 
 #   Change file mode bits
-chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display
+chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 chmod 0770 /usr/local/bin/display-led.py
 chmod 0770 /usr/local/bin/display-led-test.py
 chmod 0775 /usr/local/bin/CPU_usage.sh

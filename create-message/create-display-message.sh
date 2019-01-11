@@ -1,20 +1,15 @@
 #!/bin/bash
-# 	create-message/create-display-message.sh  3.315.501  2019-01-11T11:14:29.955854-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.314  
-# 	   security: check log & script file and directory permissions #55 
+# 	create-message/create-display-message.sh  3.317.503  2019-01-11T14:44:05.777731-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
+# 	   security: check log & script file and directory permissions close #55 
 # 	create-message/create-display-message.sh  3.290.466  2019-01-06T15:21:26.846425-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.289  
 # 	   add code to create $DATA_DIR 
 # 	create-message/create-display-message.sh  3.283.459  2019-01-06T11:52:41.744756-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.283  
 # 	   back ground some lines to inprove performance by half 
-# 	create-message/create-message.sh  3.264.411  2019-01-01T20:48:01.326246-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.263-1-gc4643e8  
-# 	   create-host-info.sh display_help now that design is closer to being complete #51 
-# 	create-message/create-message.sh  3.246.389  2018-12-29T22:05:04.525575-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.245  
-# 	   local-create-message.sh Change log format and order #60 
 # 	create-message/create-message.sh  3.245.388  2018-12-29T21:28:47.953401-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.244  
 # 	   Change log format and order close #59 
-# 	create-message/create-message.sh  3.243.386  2018-12-29T19:55:02.986681-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.242  
-# 	   create-message.sh  create ${DATA_DIR}/${CLUSTER}/logrotate  #58 
 #
 ### create-message.sh
+#   production standard 3
 #       Order of precedence: environment variable, default code
 if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
