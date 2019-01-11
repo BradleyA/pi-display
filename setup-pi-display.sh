@@ -1,24 +1,6 @@
 #!/bin/bash
-# 	setup-pi-display.sh  3.309.495  2019-01-07T22:39:30.792045-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.308  
-# 	   testing 
-# 	setup-pi-display.sh  3.308.494  2019-01-07T22:34:24.879549-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.307  
-# 	   testing 
-# 	setup-pi-display.sh  3.307.493  2019-01-07T22:24:09.816932-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.306  
-# 	   testing 
-# 	setup-pi-display.sh  3.306.492  2019-01-07T22:15:31.619818-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.305  
-# 	   testing pi-display-logrotate 
-# 	setup-pi-display.sh  3.305.491  2019-01-07T22:09:51.154978-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.304  
-# 	   testing pi-display-logroute 
-# 	setup-pi-display.sh  3.304.490  2019-01-07T22:00:41.378445-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.303-1-g698fde4  
-# 	   rename setup-display.sh -> setup-pi-display.sh 
-# 	setup-display.sh  3.303.488  2019-01-07T17:21:49.734134-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.302-7-gbccf6ca  
-# 	   testing pi-display-logrotate 
-# 	setup-display.sh  3.302.480  2019-01-07T17:09:24.210585-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.301-2-gf312ca1  
-# 	   setup pi-display-logrotate file creation 
-# 	setup-display.sh  3.301.477  2019-01-06T21:28:37.100154-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.300  
-# 	   complete testing on one-rpi3b 
-# 	setup-display.sh  3.300.476  2019-01-06T21:11:50.940286-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.299  
-# 	   testing new heading 
+# 	setup-pi-display.sh  3.314.500  2019-01-11T10:56:41.448549-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.313  
+# 	   security: check log & script file and directory permissions #55 
 # 	setup-display.sh  3.269.428  2019-01-03T14:42:35.499629-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
 # 	   start creating setup for pi-display 
 #
@@ -161,8 +143,8 @@ chown -R ${ADMUSER}:${ADMGRP} ${DATA_DIR}
 chmod 0775 /usr/local/bin
 chmod 0775 ${DATA_DIR}
 chmod 0775 ${DATA_DIR}/${CLUSTER}
-chmod 0775 ${DATA_DIR}/${CLUSTER}/log
-chmod 0775 ${DATA_DIR}/${CLUSTER}/logrotate
+chmod 0770 ${DATA_DIR}/${CLUSTER}/log
+chmod 0770 ${DATA_DIR}/${CLUSTER}/logrotate
 
 #   Move files
 cp pi-display                                 ${DATA_DIR}/${CLUSTER}/logrotate
@@ -188,7 +170,7 @@ chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-message-hd.py
 chown ${ADMUSER}:${ADMGRP} /usr/local/bin/display-scrollphathd-test.py
 
 #   Change file mode bits
-chmod 0664 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display
+chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display
 chmod 0770 /usr/local/bin/display-led.py
 chmod 0770 /usr/local/bin/display-led-test.py
 chmod 0775 /usr/local/bin/CPU_usage.sh
