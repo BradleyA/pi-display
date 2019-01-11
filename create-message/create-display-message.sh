@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.315.501  2019-01-11T11:14:29.955854-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.314  
+# 	   security: check log & script file and directory permissions #55 
 # 	create-message/create-display-message.sh  3.290.466  2019-01-06T15:21:26.846425-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.289  
 # 	   add code to create $DATA_DIR 
 # 	create-message/create-display-message.sh  3.283.459  2019-01-06T11:52:41.744756-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.283  
@@ -154,9 +156,9 @@ if [ ! -d ${DATA_DIR}/${CLUSTER}/log ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
 	mkdir -p  ${DATA_DIR}/${CLUSTER}/log || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}/${CLUSTER}
-	chmod 775 ${DATA_DIR}/${CLUSTER}/log
+	chmod 770 ${DATA_DIR}/${CLUSTER}/log
 	mkdir -p  ${DATA_DIR}/${CLUSTER}/logrotate
-	chmod 775 ${DATA_DIR}/${CLUSTER}/logrotate
+	chmod 770 ${DATA_DIR}/${CLUSTER}/logrotate
 fi
 
 #	Create ${MESSAGE_FILE} file 1) create file for initial running on host, 2) check for write permission
