@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	blinkt/display-led.py  3.318.504  2019-01-12T15:24:43.562357-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.317  
+# 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	blinkt/display-led.py  3.260.404  2018-12-30T20:06:23.081708-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.259  
 # 	   blinkt/display-led.py Change echo or print DEBUG INFO WARNING ERROR close #57 
 #
@@ -8,7 +10,7 @@
 #	Each color level function will exit with the primary color on
 #	Color brightness controlled in each color level function
 ###
-#   production standard 3
+#   production standard 4
 import sys
 import datetime
 import time
@@ -27,11 +29,20 @@ def display_help():
     print("\nUSAGE\n   {} [<CLUSTER>] [<DATA_DIR>]".format(__file__))
     print("   {} [--help | -help | help | -h | h | -?]".format(__file__))
     print("   {} [--version | -version | -v]".format(__file__))
-    print("\nDESCRIPTION\nThis script displays the system information stored in a file,")
+    print("\nDESCRIPTION")
+#   Displaying help DESCRIPTION in English en_US.UTF-8
+    print("This script displays the system information stored in a file,")
     print("/usr/local/data/us-tx-cluster-1/<hostname>, on each system.  The system")
     print("information is displayed using a Raspberry Pi with Pimoroni Blinkt.  The system")
     print("information includes cpu temperature in Celsius and Fahrenheit, the system")
     print("load, memory usage, and disk usage.")
+#       Displaying help DESCRIPTION in French
+    if (LANGUAGE == "fr_CA.UTF-8") or (LANGUAGE == "fr_FR.UTF-8") or (LANGUAGE == "fr_CH.UTF-8"):
+        print("\n--> {}".format(LANGUAGE))
+        print("<votre aide va ici>")
+        print("Souhaitez-vous traduire la section description?")
+    elif (LANGUAGE != "en_US.UTF-8"):
+        print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  {} is not supported, Would you like to help translate the description section?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, LANGUAGE))
     print("\nEnvironment Variables")
     print("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
     print("line to set the CLUSTER environment variable.  Use the command, unset CLUSTER")
@@ -48,12 +59,6 @@ def display_help():
     print("\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display/tree/master/blinkt")
     print("\nEXAMPLES\n   Display contents using default file and path\n")
     print("   {} \n".format(__file__))
-#   After displaying help in english check for other languages
-    if LANGUAGE != "en_US.UTF-8":
-        print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, LANGUAGE))
-#   elif LANGUAGE == "fr_CA.UTF-8":
-#       print display_help in french
-#   else:
     return
 
 #   Line number function

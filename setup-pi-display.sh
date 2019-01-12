@@ -1,9 +1,11 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.318.504  2019-01-12T15:24:43.647544-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.317  
+# 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	setup-pi-display.sh  3.317.503  2019-01-11T14:44:23.411002-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
 # 	   security: check log & script file and directory permissions close #55 
 #
 ### setup-pi-display.sh
-#   production standard 3
+#   production standard 4
 #       Order of precedence: environment variable, default code
 if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
@@ -17,7 +19,9 @@ echo -e "\nUSAGE\n   sudo ${0} "
 echo    "   sudo ${0} [<CLUSTER>] [<DATA_DIR>] [<ADMUSER>] [ADMGRP] [EMAIL_ADDRESS]"
 echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
-echo -e "\nDESCRIPTION\nThis script has to be run as root to create /usr/local/data/<CLUSTER>.  The"
+echo -e "\nDESCRIPTION"
+#       Displaying help DESCRIPTION in English en_US.UTF-8
+echo    "This script has to be run as root to create /usr/local/data/<CLUSTER>.  The"
 echo    "commands are installed in /usr/local/bin and will store logs, Docker and"
 echo    "system information into /usr/local/data/<CLUSTER> directory.  The Docker"
 echo    "information includes the number of containers, running containers, paused"
@@ -39,6 +43,37 @@ echo    "The hosts are one FQDN or IP address per line for all hosts in a cluste
 echo    "Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file is"
 echo    "used by Linux-admin/cluster-command/cluster-command.sh, markit/find-code.sh,"
 echo    "pi-display/create-message/create-display-message.sh, and other scripts."
+#       Displaying help DESCRIPTION in French
+if [ "${LANG}" == "fr_CA.UTF-8" ] || [ "${LANG}" == "fr_FR.UTF-8" ] || [ "${LANG}" == "fr_CH.UTF-8" ] ; then
+	echo    "Ce script doit être exécuté en tant que root pour cr"
+	echo    "/usr/local/data/<CLUSTER>. le Les commandes sont installées dan"
+	echo    "/usr/local/bin et stockent les journaux, Docker et informations système dan"
+	echo    "le répertoire /usr/local/data/<CLUSTER>. Le docker l'information comprend l"
+	echo    "nombre de conteneurs, les conteneurs en cours d'exécution, en paus"
+	echo    "conteneurs, conteneurs arrêtés et nombre d'images. Les informations systè"
+	echo    "comprend la température du processeur en Celsius et Fahrenheit, la charge d"
+	echo    "système, la mémoire utilisation et utilisation du disqu"
+	echo -e "\nLes informations contenues dans le fichier"
+	echo    "/usr/local/data/<CLUSTER>/<nomhôte> sont créées par create-host-info.sh"
+	echo    "peut être utilisé par display-led.py pour Raspberry Pi avec Pimoroni Blin"
+	echo    "pour afficher les informations système en temps quasi réel. Il est"
+	echo    "également utilisé par create-display-message.sh. Les fichiers <nom d'hô"
+	echo    "sont copiés dans chaque hôte trouvé dans /usr/local/data/<CLUSTER>/SYST"
+	echo    "et totalisé dans un fichier, /usr/local/data/<CLUSTER>/ MESSAGE et MESSAGEHD"
+	echo    "Les fichiers MESSAGE incluent le nombre total de conteneurs, de conteneurs"
+	echo    "en cours d'exécution, de conteneurs en pause, conteneurs arrêtés et nom"
+	echo    "d'images. Les fichiers MESSAGE sont utilisés par un Raspberry Pi ave"
+	echo    "Pimoroni Scroll-pHAT ou Pimoroni Scroll-pHAT-HD afficher les informations."
+	echo -e "\nCe script lit le fichier /usr/local/data/<CLUSTER>/ SYSTEMS pour les"
+	echo    "hôtes.  Les hôtes correspondenun nom de domaine complet ou une adresse"
+	echo    "IP par ligne pour tous les hôtes d'un cluster.  Les lignes du fichier"
+	echo    "SYSTEMS commençant par un # sont des commentaires. Le fichier SYSTEMS est"
+	echo    "utilisé par Linux-admin/commande-cluster/commande-cluster.sh"
+	echo    "markit/find-code.sh, pi-display/create-message/create-display-message.sh"
+	echo    "et d’autres scripts"
+elif ! [ "${LANG}" == "en_US.UTF-8" ] ; then
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Your language, ${LANG}, is not supported.  Would you like to translate the description section?" 1>&2
+fi
 echo -e "\nEnvironment Variables"
 echo    "If using the bash shell, enter; 'export DEBUG=1' on the command line to set"
 echo    "the DEBUG environment variable to '1' (0 = debug off, 1 = debug on).  Use the"
@@ -59,14 +94,6 @@ echo    "   EMAIL_ADDRESS   SRE email address"
 echo -e "\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES\n   sudo ${0}\n"
 echo -e "   sudo ${0} us-tx-cluster-1 /usr/local/data uadmin uadmin\n"
-#       After displaying help in english check for other languages
-if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
-        get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  ${LANG}, is not supported, Would you like to help translate?" 1>&2
-#       elif [ "${LANG}" == "fr_CA.UTF-8" ] ; then
-#               get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Display help in ${LANG}" 1>&2
-#       else
-#               get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Your language, ${LANG}, is not supported.  Would you like to translate?" 1>&2
-fi
 }
 
 #       Date and time function ISO 8601
