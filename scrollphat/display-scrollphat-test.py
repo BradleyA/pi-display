@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	scrollphat/display-scrollphat-test.py  3.320.506  2019-01-12T15:52:46.654020-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.319  
+# 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	scrollphat/scrollphat.test.py  3.256.400  2018-12-30T19:09:13.272405-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.256  
 # 	   add commmet #   production standard 3 
 # 	scrollphat/scrollphat.test.py  3.254.397  2018-12-30T17:43:29.493870-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.253  
@@ -7,7 +9,7 @@
 # 	   Change echo or print DEBUG INFO WARNING ERROR close #47
 #
 ### scrollphat.test.py
-#   production standard 3
+#   production standard 4
 import sys
 import datetime
 import time
@@ -25,9 +27,18 @@ def display_help():
     print("\n{} - ten second Scroll pHAT screen test".format(__file__))
     print("\nUSAGE\n   {} [--help | -help | help | -h | h | -? | ?]".format(__file__))
     print("   {} [--version | -version | -v]".format(__file__))
-    print("\nDESCRIPTION\nTest scrollphat pixels for ten seconds after raspberry pi boots.")
+    print("\nDESCRIPTION")
+#   Displaying help DESCRIPTION in English en_US.UTF-8
+    print("Test scrollphat pixels for ten seconds after raspberry pi boots.")
     print("\nModified Pimoroni scroll-phat/examples/test-all.py and renamed it to")
     print("scrollphat.test.py for Raspberry Pi.")
+#       Displaying help DESCRIPTION in French
+    if (LANGUAGE == "fr_CA.UTF-8") or (LANGUAGE == "fr_FR.UTF-8") or (LANGUAGE == "fr_CH.UTF-8"):
+        print("\n--> {}".format(LANGUAGE))
+        print("<votre aide va ici>")
+        print("Souhaitez-vous traduire la section description?")
+    elif (LANGUAGE != "en_US.UTF-8"):
+        print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  {} is not supported, Would you like to help translate the description section?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, LANGUAGE))
     print("\nEnvironment Variables")
     print("If using the bash shell, enter; 'export DEBUG=1' on the command line to set")
     print("the DEBUG environment variable to '1' (0 = debug off, 1 = debug on).  Use the")
@@ -36,12 +47,6 @@ def display_help():
     print("you are using other shells.")
     print("   DEBUG       (default '0')")
     print("\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display")
-#   After displaying help in english check for other languages
-    if LANGUAGE != "en_US.UTF-8":
-        print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, LANGUAGE))
-#   elif LANGUAGE == "fr_CA.UTF-8":
-#       print display_help in french
-#   else:
     return
 
 #   Line number function

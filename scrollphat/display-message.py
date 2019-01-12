@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
+# 	scrollphat/display-message.py  3.320.506  2019-01-12T15:52:46.570574-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.319  
+# 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	scrollphat/display-message.py  3.317.503  2019-01-11T14:44:23.232005-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
 # 	   security: check log & script file and directory permissions close #55 
 # 	scrollphat/display-message.py  3.259.403  2018-12-30T19:58:17.644786-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.258  
 # 	   display-message.py Change log format and order - lint pylint pylint3 close #65 
 #
 ### display-message.py
-#   production standard 3
+#   production standard 4
 import sys
 import datetime
 import time
@@ -24,7 +26,9 @@ def display_help():
     print("\nUSAGE\n   {} [<MESSAGE_FILE>]".format(__file__))
     print("   {} [--help | -help | help | -h | h | -?]".format(__file__))
     print("   {} [--version | -version | -v]".format(__file__))
-    print("\nDESCRIPTION\nDisplay the contents of /usr/local/data/us-tx-cluster-1/MESSAGE (default)")
+    print("\nDESCRIPTION")
+#   Displaying help DESCRIPTION in English en_US.UTF-8
+    print("Display the contents of /usr/local/data/us-tx-cluster-1/MESSAGE (default)")
     print("file on a Pimoroni Scroll-pHAT.  The Pimoroni Scroll-pHAT is attatched to a")
     print("Raspberry Pi.  The default MESSAGE file name and absolute path can be")
     print("overwritten by using environment variables (DATA_DIR, CLUSTER, MESSAGE_FILE).")
@@ -35,6 +39,13 @@ def display_help():
     print("for the FQDN or IP address of the hosts in a cluster.  The default MESSAGE file")
     print("contents includes the total number of containers, running containers, paused")
     print("containers, stopped containers, and number of images in the cluster.")
+#       Displaying help DESCRIPTION in French
+    if (LANGUAGE == "fr_CA.UTF-8") or (LANGUAGE == "fr_FR.UTF-8") or (LANGUAGE == "fr_CH.UTF-8"):
+        print("\n--> {}".format(LANGUAGE))
+        print("<votre aide va ici>")
+        print("Souhaitez-vous traduire la section description?")
+    elif (LANGUAGE != "en_US.UTF-8"):
+        print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  {} is not supported, Would you like to help translate the description section?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, LANGUAGE))
     print("\nEnvironment Variables")
     print("If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command")
     print("line to set the CLUSTER environment variable.  Use the command, unset CLUSTER")
@@ -58,12 +69,6 @@ def display_help():
     print("   {}".format(__file__))
     print("\n   Display contents from a different file and absolute path\n")
     print("   {} /tmp/DIFFERENT_MESSAGE\n".format(__file__))
-#   After displaying help in english check for other languages
-    if LANGUAGE != "en_US.UTF-8":
-        print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  {} is not supported, Would you like to help translate?".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, LANGUAGE))
-#   elif LANGUAGE == "fr_CA.UTF-8":
-#       print display_help in french
-#   else:
     return
 
 #   Line number function
