@@ -1,11 +1,13 @@
 #!/bin/bash
+# 	create-message/create-host-info.sh  3.319.505  2019-01-12T15:45:20.194322-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.318  
+# 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	create-message/create-host-info.sh  3.317.503  2019-01-11T14:44:05.863831-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
 # 	   security: check log & script file and directory permissions close #55 
 # 	create-message/local-create-message.sh  3.247.390  2018-12-29T22:08:55.633438-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.246  
 # 	   local-create-message.sh Change log format and order close #60 
 #
 ### create-host-info.sh
-#   production standard 3
+#   production standard 4
 #       Order of precedence: environment variable, default code
 if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
@@ -18,13 +20,23 @@ echo -e "\n${NORMAL}${0} - Create ${LOCALHOST} Docker and system information"
 echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<DATA_DIR>] [<ADMUSER>]"
 echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
-echo -e "\nDESCRIPTION\nThis script stores Docker information and system information in a file,"
+echo -e "\nDESCRIPTION"
+#       Displaying help DESCRIPTION in English en_US.UTF-8
+echo   "This script stores Docker information and system information in a file,"
 echo    "/usr/local/data/<CLUSTER>/<hostname>.  The Docker information includes the"
 echo    "number of containers, running containers, paused containers, stopped"
 echo    "containers, and number of images.  The system information includes cpu"
 echo    "temperature in Celsius and Fahrenheit, the system load, memory usage, and"
 echo    "disk usage.  The <hostname> file information is used by a Raspberry Pi"
 echo    "with Pimoroni Blinkt to display the system information in near real time."
+#       Displaying help DESCRIPTION in French
+if [ "${LANG}" == "fr_CA.UTF-8" ] || [ "${LANG}" == "fr_FR.UTF-8" ] || [ "${LANG}" == "fr_CH.UTF-8" ] ; then
+        echo -e "\n--> ${LANG}"
+        echo    "<votre aide va ici>"
+        echo    "Souhaitez-vous traduire la section description?"
+elif ! [ "${LANG}" == "en_US.UTF-8" ] ; then
+        get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Your language, ${LANG}, is not supported.  Would you like to translate the description section?" 1>&2
+fi
 echo -e "\nEnvironment Variables"
 echo    "If using the bash shell, enter; export DEBUG='1' on the command line to set"
 echo    "the DEBUG environment variable to '1'.  Use the command, unset DEBUG to remove"
@@ -41,14 +53,6 @@ echo    "   CLUSTER       name of cluster directory, default us-tx-cluster-1"
 echo    "   DATA_DIR      path to cluster data directory, default /usr/local/data/"
 echo    "   ADMUSER       site SRE administrator, default is user running script"
 echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
-#       After displaying help in english check for other languages
-if ! [ "${LANG}" == "en_US.UTF-8" ] ; then
-        get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  ${LANG}, is not supported, Would you like to help translate?" 1>&2
-#       elif [ "${LANG}" == "fr_CA.UTF-8" ] ; then
-#               get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Display help in ${LANG}" 1>&2
-#       else
-#               get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Your language, ${LANG}, is not supported.  Would you like to translate?" 1>&2
-fi
 }
 
 #       Date and time function ISO 8601
