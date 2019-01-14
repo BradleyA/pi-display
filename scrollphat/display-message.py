@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	scrollphat/display-message.py  3.322.508  2019-01-14T17:10:56.862500-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.321  
+# 	   rotate log files #58 and updates to scrollphat/display-message.py message display time 
 # 	scrollphat/display-message.py  3.320.506  2019-01-12T15:52:46.570574-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.319  
 # 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	scrollphat/display-message.py  3.317.503  2019-01-11T14:44:23.232005-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
@@ -14,7 +16,7 @@ import time
 import os
 import subprocess
 #       Order of precedence: environment variable (export DEBUG=1), default code
-DEBUG = int(os.getenv("DEBUG", 1)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
+DEBUG = int(os.getenv("DEBUG", 0)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
 ###
 class color:
     BOLD = '\033[1m'
@@ -215,19 +217,17 @@ while True:
         if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{} ->  count >{}< timeout >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, count, timeout))
         if (count > timeout):
             scrollphat.clear_buffer()
-            msg = get_msg(MESSAGE)
-            if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  MESSAGE >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, msg))
-            scrollphat.write_string(msg)
-            timeout = get_timeout()
-            if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{} -->  count >{}< timeout >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, count, timeout))
-            count = 0
-            if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{} -->  count >{}< timeout >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, count, timeout))
-            scrollphat.clear_buffer()
+#            msg = get_msg(MESSAGE)
+#            if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  MESSAGE >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, msg))
+#            scrollphat.write_string(msg)
+#            timeout = get_timeout()
+#            count = 0
+#            if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{} -->  count >{}< timeout >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, count, timeout))
+#            scrollphat.clear_buffer()
             scrollphat.clear()
             sys.exit(-1)
         else:
             count = count + 1
-            if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{} --->  count >{}< timeout >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, count, timeout))
     except KeyboardInterrupt:
         scrollphat.clear()
         sys.exit(-1)

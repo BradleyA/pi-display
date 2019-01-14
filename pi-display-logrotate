@@ -1,27 +1,33 @@
 #
-#	pi-display-logrotate  3.317.503  2019-01-11T14:44:23.150073-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
-#	   security: check log & script file and directory permissions close #55 
-#	pi-display  3.269.428  2019-01-03T14:42:35.356699-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.268  
-#	   start creating setup for pi-display 
+#	pi-display-logrotate  3.322.508  2019-01-14T17:10:56.706963-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.321  
+#	   rotate log files #58 and updates to scrollphat/display-message.py message display time 
 #
-### pi-display - logrotate conf file
-#	/usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab {
-/usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab {
+#
+/usr/local/data/us-tx-cluster-1/log/three-rpi3b.cptx86.com-crontab {
     daily
     su uadmin uadmin
     rotate 60
-    create 660 uadmin uadmin
-    compress
+    create 0660 uadmin uadmin
+#    compress
+    size 25
     olddir ../logrotate
-    size 250
     notifempty
     mail allen.bradley@ymail.com
     prerotate
-        /bin/ls -l /usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab >> /usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab
-        /bin/grep -nv '\[INFO\]' /usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab | grep -iv 'info' > incident.tmp
-        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' /usr/local/data/us-tx-cluster-1/log/$(hostname -f)\-crontab >> incident.tmp
-        /usr/bin/sort -n -u incident.tmp | grep -v '\-\-$' > incident
-        /bin/rm incident.tmp
-        /usr/bin/mail -s 'incident report six-rpi3b.cptx86.com-crontab' allen.bradley@ymail.com < incident
+        TMP=$(/bin/ls -l /usr/local/data/us-tx-cluster-1/log/three-rpi3b.cptx86.com-crontab)
+        /bin/echo "INFO: "${TMP} >> /usr/local/data/us-tx-cluster-1/log/three-rpi3b.cptx86.com-crontab
+        /bin/grep -nv '\[INFO\]' /usr/local/data/us-tx-cluster-1/log/three-rpi3b.cptx86.com-crontab | grep -iv 'info' > /usr/local/data/us-tx-cluster-1/logrotate/incident.tmp
+        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' /usr/local/data/us-tx-cluster-1/log/three-rpi3b.cptx86.com-crontab >> /usr/local/data/us-tx-cluster-1/logrotate/incident.tmp
+        /usr/bin/sort -n -u /usr/local/data/us-tx-cluster-1/logrotate/incident.tmp | grep -v '\-\-$' > /usr/local/data/us-tx-cluster-1/logrotate/incident
+        DATE_TMP=$(date +%Y-%m-%dT%H.%M)
+        echo ${DATE_TMP} > /usr/local/data/us-tx-cluster-1/logrotate/EXT
+        cp /usr/local/data/us-tx-cluster-1/logrotate/incident /usr/local/data/us-tx-cluster-1/logrotate/incident-${DATE_TMP}
+        [ -s /usr/local/data/us-tx-cluster-1/logrotate/incident ] && /usr/bin/mail -s 'incident report three-rpi3b.cptx86.com-crontab' allen.bradley@ymail.com < /usr/local/data/us-tx-cluster-1/logrotate/incident
+        [ -s /usr/local/data/us-tx-cluster-1/logrotate/incident ] && rm /usr/local/data/us-tx-cluster-1/logrotate/incident
+        /bin/rm /usr/local/data/us-tx-cluster-1/logrotate/incident.tmp
+    endscript
+    postrotate
+        FILE=$(cat /usr/local/data/us-tx-cluster-1/logrotate/EXT)
+        mv /usr/local/data/us-tx-cluster-1/logrotate/three-rpi3b.cptx86.com-crontab.1 /usr/local/data/us-tx-cluster-1/logrotate/three-rpi3b.cptx86.com-crontab-${FILE}
     endscript
 }
