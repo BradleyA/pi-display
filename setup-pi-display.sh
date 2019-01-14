@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.323.509  2019-01-14T17:45:27.016223-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.322  
+# 	   rotate log files #58 
 # 	setup-pi-display.sh  3.318.504  2019-01-12T15:24:43.647544-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.317  
 # 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	setup-pi-display.sh  3.317.503  2019-01-11T14:44:23.411002-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
@@ -278,7 +280,7 @@ echo -e "\tUncomment the section that is needed for your Raspberry Pi\n${NORMAL}
 ### pi-display-logrotate - logrotate conf file
 echo -e "#\n#\n#" > ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab {"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "    daily"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    daily"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate  
 echo    "    su ${ADMUSER} ${ADMGRP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    rotate 60"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    create 0644 ${ADMUSER} ${ADMGRP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
@@ -288,14 +290,20 @@ echo    "    olddir ../logrotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-displ
 echo    "    notifempty"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    mail ${EMAIL_ADDRESS}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    prerotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        /bin/ls -l ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        /bin/grep -nv '\[INFO\]' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab | grep -iv 'info' > incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        /usr/bin/sort -n -u incident.tmp | grep -v '\-\-$' > incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        DATE_TMP=\$(date +%Y-%m-%dT%H.%M.%S)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        cp incident incident-\$DATE_TMP"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        /bin/rm incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        /usr/bin/mail -s 'incident report ${LOCALHOST}-crontab' ${EMAIL_ADDRESS} < incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        TMP=$(/bin/ls -l ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/echo "INFO: "${TMP} >> ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/grep -nv '\[INFO\]' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab | grep -iv 'info' > ${DATA_DIR}/${CLUSTER}/logrotate/incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab >> ${DATA_DIR}/${CLUSTER}/logrotate/incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /usr/bin/sort -n -u ${DATA_DIR}/${CLUSTER}/logrotate/incident.tmp | grep -v '\-\-$' > ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        DATE_TMP=$(date +%Y-%m-%dT%H.%M)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/echo ${DATE_TMP} > ${DATA_DIR}/${CLUSTER}/logrotate/EXT"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        cp  ${DATA_DIR}/${CLUSTER}/logrotate/incident ${DATA_DIR}/${CLUSTER}/logrotate/incident-${DATE_TMP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        [ -s ${DATA_DIR}/${CLUSTER}/logrotate/incident ] && /usr/bin/mail -s 'incident report ${LOCALHOST}-crontab' allen.bradley@ymail.com < ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    postrotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        FILE=$(cat ${DATA_DIR}/${CLUSTER}/logrotate/EXT)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        /bin/mv ${DATA_DIR}/${CLUSTER}/logrotate/${LOCALHOST}-crontab.1 ${DATA_DIR}/${CLUSTER}/logrotate/${LOCALHOST}-crontab-${FILE}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 #
