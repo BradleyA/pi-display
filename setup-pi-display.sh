@@ -1,23 +1,5 @@
 #!/bin/bash
-# 	setup-pi-display.sh  3.332.518  2019-01-15T15:12:10.919279-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.331  
-# 	   rotate log files #58 
-# 	setup-pi-display.sh  3.331.517  2019-01-15T14:31:21.119442-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.330  
-# 	   rotate log files #58 
-# 	setup-pi-display.sh  3.330.516  2019-01-15T14:08:10.363335-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.329  
-# 	   rotate log files #58 
-# 	setup-pi-display.sh  3.329.515  2019-01-15T13:49:45.154807-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.328  
-# 	   rotate log files #58 
-# 	setup-pi-display.sh  3.328.514  2019-01-15T13:46:28.524149-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.327  
-# 	   rotate log files #58 
-# 	setup-pi-display.sh  3.327.513  2019-01-15T13:09:24.853478-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.326  
-# 	   rotate log files #58 testing 
-# 	setup-pi-display.sh  3.326.512  2019-01-15T12:28:24.380675-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.325  
-# 	   rotate log files #58 testing create pi-display-logrotate section 
-# 	setup-pi-display.sh  3.325.511  2019-01-15T12:20:10.776490-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.324  
-# 	   rotate log files #58 testing 
-# 	setup-pi-display.sh  3.324.510  2019-01-15T12:13:46.931151-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.323  
-# 	   rotate log files #58 
-# 	setup-pi-display.sh  3.323.509  2019-01-14T17:45:27.016223-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.322  
+# 	setup-pi-display.sh  3.333.519  2019-01-15T15:50:06.727828-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.332  
 # 	   rotate log files #58 
 # 	setup-pi-display.sh  3.318.504  2019-01-12T15:24:43.647544-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.317  
 # 	   template.[sh,py] production standard 4 change display_help of other LANG 
@@ -317,7 +299,6 @@ echo    "        /bin/echo \${DATE_TMP} > ${DATA_DIR}/${CLUSTER}/logrotate/EXT" 
 echo    "        /usr/bin/sort -n -u ${DATA_DIR}/${CLUSTER}/logrotate/incident | grep -v '\-\-$' > ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        [ -s ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident ] && /usr/bin/mail -s 'incident report for '\${DATE_TMP}-${LOCALHOST}-crontab ${EMAIL_ADDRESS} < ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "#        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    postrotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        FILE=\$(cat ${DATA_DIR}/${CLUSTER}/logrotate/EXT)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
