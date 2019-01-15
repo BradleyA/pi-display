@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.324.510  2019-01-15T12:13:46.931151-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.323  
+# 	   rotate log files #58 
 # 	setup-pi-display.sh  3.323.509  2019-01-14T17:45:27.016223-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.322  
 # 	   rotate log files #58 
 # 	setup-pi-display.sh  3.318.504  2019-01-12T15:24:43.647544-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.317  
@@ -298,11 +300,11 @@ echo    "        /usr/bin/sort -n -u ${DATA_DIR}/${CLUSTER}/logrotate/incident.t
 echo    "        DATE_TMP=$(date +%Y-%m-%dT%H.%M)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /bin/echo ${DATE_TMP} > ${DATA_DIR}/${CLUSTER}/logrotate/EXT"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        cp  ${DATA_DIR}/${CLUSTER}/logrotate/incident ${DATA_DIR}/${CLUSTER}/logrotate/incident-${DATE_TMP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        [ -s ${DATA_DIR}/${CLUSTER}/logrotate/incident ] && /usr/bin/mail -s 'incident report ${LOCALHOST}-crontab' allen.bradley@ymail.com < ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        [ -s ${DATA_DIR}/${CLUSTER}/logrotate/incident ] && /usr/bin/mail -s 'incident report ${LOCALHOST}-crontab' ${EMAIL_ADDRESS} < ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/incident.tmp"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    postrotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        FILE=$(cat ${DATA_DIR}/${CLUSTER}/logrotate/EXT)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        FILE=\$(cat ${DATA_DIR}/${CLUSTER}/logrotate/EXT)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /bin/mv ${DATA_DIR}/${CLUSTER}/logrotate/${LOCALHOST}-crontab.1 ${DATA_DIR}/${CLUSTER}/logrotate/${LOCALHOST}-crontab-${FILE}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
