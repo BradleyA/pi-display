@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.328.514  2019-01-15T13:46:28.524149-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.327  
+# 	   rotate log files #58 
 # 	setup-pi-display.sh  3.327.513  2019-01-15T13:09:24.853478-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.326  
 # 	   rotate log files #58 testing 
 # 	setup-pi-display.sh  3.326.512  2019-01-15T12:28:24.380675-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.325  
@@ -291,7 +293,7 @@ echo    "${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab {"  >>  ${DATA_DIR}/${C
 echo    "    daily"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate  
 echo    "    su ${ADMUSER} ${ADMGRP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    rotate 60"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "    create 0644 ${ADMUSER} ${ADMGRP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "    create 0660 ${ADMUSER} ${ADMGRP}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    compress"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    size 25"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    olddir ../logrotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
