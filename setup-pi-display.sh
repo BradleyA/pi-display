@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.332.518  2019-01-15T15:12:10.919279-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.331  
+# 	   rotate log files #58 
 # 	setup-pi-display.sh  3.331.517  2019-01-15T14:31:21.119442-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.330  
 # 	   rotate log files #58 
 # 	setup-pi-display.sh  3.330.516  2019-01-15T14:08:10.363335-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.329  
@@ -314,7 +316,7 @@ echo    "        DATE_TMP=\$(date +%Y-%m-%dT%H.%M)"  >>  ${DATA_DIR}/${CLUSTER}/
 echo    "        /bin/echo \${DATE_TMP} > ${DATA_DIR}/${CLUSTER}/logrotate/EXT"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /usr/bin/sort -n -u ${DATA_DIR}/${CLUSTER}/logrotate/incident | grep -v '\-\-$' > ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        [ -s ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident ] && /usr/bin/mail -s 'incident report for '\${DATE_TMP}-${LOCALHOST}-crontab ${EMAIL_ADDRESS} < ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "#        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "#        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    postrotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
