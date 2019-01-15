@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.330.516  2019-01-15T14:08:10.363335-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.329  
+# 	   rotate log files #58 
 # 	setup-pi-display.sh  3.329.515  2019-01-15T13:49:45.154807-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.328  
 # 	   rotate log files #58 
 # 	setup-pi-display.sh  3.328.514  2019-01-15T13:46:28.524149-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.327  
@@ -309,9 +311,9 @@ echo    "        /bin/grep -B 1 -A 1 -ni '\[WARN\]\|ERROR' ${DATA_DIR}/${CLUSTER
 echo    "        DATE_TMP=\$(date +%Y-%m-%dT%H.%M)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /bin/echo \${DATE_TMP} > ${DATA_DIR}/${CLUSTER}/logrotate/EXT"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        /usr/bin/sort -n -u ${DATA_DIR}/${CLUSTER}/logrotate/incident | grep -v '\-\-$' > ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        [ -s ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident ] && /usr/bin/mail -s 'incident report \${DATE_TMP}-${LOCALHOST}-crontab' ${EMAIL_ADDRESS} < ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-echo    "        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "        [ -s ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident ] && /usr/bin/mail -s 'incident report for '${LOCALHOST}-crontab-\${DATE_TMP} ${EMAIL_ADDRESS} < ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "#        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
+echo    "#        [ -e ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident ] && /bin/rm ${DATA_DIR}/${CLUSTER}/logrotate/\${DATE_TMP}-incident"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    endscript"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    postrotate"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "        FILE=\$(cat ${DATA_DIR}/${CLUSTER}/logrotate/EXT)"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
