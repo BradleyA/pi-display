@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.336.522  2019-01-17T16:36:56.349888-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.335  
+# 	   add removed clone copy 
 # 	setup-pi-display.sh  3.335.521  2019-01-17T16:31:31.710873-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.334  
 # 	   testing setup script 
 # 	setup-pi-display.sh  3.334.520  2019-01-17T16:25:24.268804-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.333  
@@ -226,7 +228,7 @@ if ! [ -e ${DATA_DIR}/${CLUSTER}/SYSTEMS ] ; then
 	chmod 0664 ${DATA_DIR}/${CLUSTER}/SYSTEMS
 fi
 
-#	crontab
+###	crontab
 if [ -e /var/spool/cron/crontabs/${ADMUSER} ] ; then
 	echo -e "\n\tCreating a copy of /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 	DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)
@@ -276,10 +278,7 @@ chmod 0600 /var/spool/cron/crontabs/${ADMUSER}
 echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e" 1>&2
 echo -e "\tUncomment the section that is needed for your Raspberry Pi\n${NORMAL}" 1>&2
 
-#	logrotate
-#
-#
-### pi-display-logrotate - logrotate conf file
+###	pi-display-logrotate - logrotate conf file
 echo -e "#\n#\n#" > ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab {"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 echo    "    daily"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate  
@@ -311,9 +310,9 @@ echo    "}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 chown ${ADMUSER}:${ADMGRP} ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 
-#	remove clone copy
-#	cd ..
-#	rm -rf ./pi-display/
+###	remove clone
+cd ..
+rm -rf ./pi-display/
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
