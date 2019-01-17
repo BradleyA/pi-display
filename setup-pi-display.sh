@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.335.521  2019-01-17T16:31:31.710873-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.334  
+# 	   testing setup script 
 # 	setup-pi-display.sh  3.334.520  2019-01-17T16:25:24.268804-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.333  
 # 	   rotate log files #58 
 # 	setup-pi-display.sh  3.318.504  2019-01-12T15:24:43.647544-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.317  
@@ -310,7 +312,8 @@ chown ${ADMUSER}:${ADMGRP} ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 
 #	remove clone copy
-#	rm -rf xxYYYzzz
+#	cd ..
+#	rm -rf ./pi-display/
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
