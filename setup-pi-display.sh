@@ -1,14 +1,6 @@
 #!/bin/bash
-# 	setup-pi-display.sh  3.336.522  2019-01-17T16:36:56.349888-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.335  
-# 	   add removed clone copy 
-# 	setup-pi-display.sh  3.335.521  2019-01-17T16:31:31.710873-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.334  
-# 	   testing setup script 
-# 	setup-pi-display.sh  3.334.520  2019-01-17T16:25:24.268804-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.333  
-# 	   rotate log files #58 
-# 	setup-pi-display.sh  3.318.504  2019-01-12T15:24:43.647544-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.317  
-# 	   template.[sh,py] production standard 4 change display_help of other LANG 
-# 	setup-pi-display.sh  3.317.503  2019-01-11T14:44:23.411002-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
-# 	   security: check log & script file and directory permissions close #55 
+# 	setup-pi-display.sh  3.337.523  2019-01-17T16:39:52.765467-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.336  
+# 	   rotate log files close #58 
 #
 ### setup-pi-display.sh
 #   production standard 4
