@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.346.532  2019-01-18T13:25:12.196601-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.345  
+# 	   correct incidents from first test of UNinstall #58 #66 
 # 	uninstall-pi-display.sh  3.342.528  2019-01-17T23:26:50.235840-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.341  
 # 	   added output when directory is being removed 
 # 	uninstall-pi-display.sh  3.341.527  2019-01-17T23:23:46.247716-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.340  
@@ -124,7 +126,7 @@ if [ -e /var/spool/cron/crontabs/${ADMUSER} ] ; then
 	head -n 3 /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP} >  /var/spool/cron/crontabs/${ADMUSER}
 fi
 
-#   Remove scripts
+#   Remove scripts and files
 rm /usr/local/bin/display-led.py
 rm /usr/local/bin/display-led-test.py
 rm /usr/local/bin/CPU_usage.sh
@@ -136,21 +138,28 @@ rm /usr/local/bin/display-message-hd.py
 rm /usr/local/bin/display-scrollphathd-test.py
 #
 rm ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab
-rm ${DATA_DIR}/${CLUSTER}/logrotate/EXT
 rm ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
-rm ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab
+#
+if [ -e ${DATA_DIR}/${CLUSTER}/logrotate/EXT ] ; then
+	rm ${DATA_DIR}/${CLUSTER}/logrotate/EXT
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Remove ${DATA_DIR}/${CLUSTER}/logrotate/EXT" 1>&2 ; fi
+fi
+#
+if [ -e ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab ] ; then
+	rm ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Remove ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab" 1>&2 ; fi
+fi
 
-###	remove clone
+###	Remove git clone
 cd ..
 #       Check if directory 
 echo    ">>>> STOP    STOP   STOP    <<<  uncomment next line when DONE"
 if [ -d ./pi-display ] ; then
-	echo    "Remove directory ./pi-display"
+	echo -e "\n\t${BOLD}Remove directory ./pi-display/"
 #        rm -rf ./pi-display/
 else
         get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ not found"  1>&2
 fi
-
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
