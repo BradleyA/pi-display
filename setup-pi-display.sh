@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.344.530  2019-01-18T12:15:20.134637-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.343  
+# 	   cd 
 # 	setup-pi-display.sh  3.343.529  2019-01-18T12:13:37.469269-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.342  
 # 	   comment out rm -rf pi-display/ to test uninstall-pi-display.sh #58 #66 
 # 	setup-pi-display.sh  3.342.528  2019-01-17T23:26:50.090543-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.341  
@@ -310,7 +312,7 @@ chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 cd ..
 #       Check if directory 
 if [ -d ./pi-display ] ; then
-	echo    "\n\t${BOLD}Remove directory ./pi-display"
+	echo -e "\n\t${BOLD}Remove directory ./pi-display"
 #	rm -rf ./pi-display/
 else
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ not found"  1>&2
