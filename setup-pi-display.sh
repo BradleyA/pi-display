@@ -1,6 +1,6 @@
 #!/bin/bash
-# 	setup-pi-display.sh  3.337.523  2019-01-17T16:39:52.765467-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.336  
-# 	   rotate log files close #58 
+# 	setup-pi-display.sh  3.340.526  2019-01-17T22:50:10.476616-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.339  
+# 	   uninstall-pi-display.sh #66 
 #
 ### setup-pi-display.sh
 #   production standard 4
@@ -90,8 +90,8 @@ echo    "   ADMUSER         site SRE administrator, default is user running scri
 echo    "   ADMGRP          site SRE group, default is group running script"
 echo    "   EMAIL_ADDRESS   SRE email address"
 echo -e "\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display-board"
-echo -e "\nEXAMPLES\n   sudo ${0}\n"
-echo -e "   sudo ${0} us-tx-cluster-1 /usr/local/data uadmin uadmin\n"
+echo -e "\nEXAMPLES\n"
+echo -e "   sudo ${0} us-tx-cluster-1 /usr/local/data uadmin uadmin user@EMAIL_ADDRESS\n"
 }
 
 #       Date and time function ISO 8601
