@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.348.534  2019-01-18T13:40:55.450573-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.347  
+# 	   ADMUSER incident because sudo 
 # 	uninstall-pi-display.sh  3.347.533  2019-01-18T13:28:50.725125-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.346  
 # 	   typo 
 # 	uninstall-pi-display.sh  3.346.532  2019-01-18T13:25:12.196601-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.345  
@@ -113,12 +115,13 @@ if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUST
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  2 ]  ; then DATA_DIR=${2} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
 #       Order of precedence: CLI argument, default code
-ADMUSER=${3:-$(id -u)}
+ADMUSER=${3:-$(id -n)}
 
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Variable... CLUSTER >${CLUSTER}< DATA_DIR >${DATA_DIR}< ADMUSER >${ADMUSER}<" 1>&2 ; fi
 
 ###	Remove instructions from ${ADMUSER} crontab
 if [ -e /var/spool/cron/crontabs/${ADMUSER} ] ; then
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Remove ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab" 1>&2 ; fi
 	DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)
 	echo -e "\n\tRemoving content from /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 	echo -e "\tA backup copy of this file can be found, /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}" 1>&2
