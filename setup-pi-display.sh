@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.342.528  2019-01-17T23:26:50.090543-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.341  
+# 	   added output when directory is being removed 
 # 	setup-pi-display.sh  3.341.527  2019-01-17T23:23:46.163129-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.340  
 # 	   check for and if true remove ./pi-display/ 
 #
@@ -306,6 +308,7 @@ chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 cd ..
 #       Check if directory 
 if [ -d ./pi-display ] ; then
+	echo    "Remove directory ./pi-display"
 	rm -rf ./pi-display/
 else
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ not found"  1>&2
