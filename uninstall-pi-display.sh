@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.347.533  2019-01-18T13:28:50.725125-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.346  
+# 	   typo 
 # 	uninstall-pi-display.sh  3.346.532  2019-01-18T13:25:12.196601-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.345  
 # 	   correct incidents from first test of UNinstall #58 #66 
 # 	uninstall-pi-display.sh  3.342.528  2019-01-17T23:26:50.235840-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.341  
@@ -155,7 +157,7 @@ cd ..
 #       Check if directory 
 echo    ">>>> STOP    STOP   STOP    <<<  uncomment next line when DONE"
 if [ -d ./pi-display ] ; then
-	echo -e "\n\t${BOLD}Remove directory ./pi-display/"
+	echo -e "\t${BOLD}Remove directory ./pi-display/"
 #        rm -rf ./pi-display/
 else
         get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ not found"  1>&2
