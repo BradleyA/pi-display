@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.350.536  2019-01-18T13:51:56.083638-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.349  
+# 	   set DEBUG=1 
 # 	uninstall-pi-display.sh  3.349.535  2019-01-18T13:50:34.828192-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.348  
 # 	   incident with rm: cannot remove '/usr/local/data//us-tx-cluster-1/log/one-rpi3b.cptx86.com-crontab': No such file or directory 
 # 	uninstall-pi-display.sh  3.348.534  2019-01-18T13:40:55.450573-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.347  
@@ -17,7 +19,7 @@
 ### uninstall-pi-display.sh
 #   production standard 4
 #       Order of precedence: environment variable, default code
-if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
+if [ "${DEBUG}" == "" ] ; then DEBUG="1" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
