@@ -1,20 +1,6 @@
 #!/bin/bash
-# 	uninstall-pi-display.sh  3.350.536  2019-01-18T13:51:56.083638-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.349  
-# 	   set DEBUG=1 
-# 	uninstall-pi-display.sh  3.349.535  2019-01-18T13:50:34.828192-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.348  
-# 	   incident with rm: cannot remove '/usr/local/data//us-tx-cluster-1/log/one-rpi3b.cptx86.com-crontab': No such file or directory 
-# 	uninstall-pi-display.sh  3.348.534  2019-01-18T13:40:55.450573-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.347  
-# 	   ADMUSER incident because sudo 
-# 	uninstall-pi-display.sh  3.347.533  2019-01-18T13:28:50.725125-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.346  
-# 	   typo 
-# 	uninstall-pi-display.sh  3.346.532  2019-01-18T13:25:12.196601-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.345  
-# 	   correct incidents from first test of UNinstall #58 #66 
-# 	uninstall-pi-display.sh  3.342.528  2019-01-17T23:26:50.235840-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.341  
-# 	   added output when directory is being removed 
-# 	uninstall-pi-display.sh  3.341.527  2019-01-17T23:23:46.247716-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.340  
-# 	   check for and if true remove ./pi-display/ 
-# 	uninstall-pi-display.sh  3.340.526  2019-01-17T22:50:10.628282-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.339  
-# 	   uninstall-pi-display.sh #66 
+# 	uninstall-pi-display.sh  3.351.537  2019-01-18T13:57:35.202256-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.350  
+# 	   cleanup comments 
 #
 ### uninstall-pi-display.sh
 #   production standard 4
