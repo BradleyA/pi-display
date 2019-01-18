@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.349.535  2019-01-18T13:50:34.828192-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.348  
+# 	   incident with rm: cannot remove '/usr/local/data//us-tx-cluster-1/log/one-rpi3b.cptx86.com-crontab': No such file or directory 
 # 	uninstall-pi-display.sh  3.348.534  2019-01-18T13:40:55.450573-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.347  
 # 	   ADMUSER incident because sudo 
 # 	uninstall-pi-display.sh  3.347.533  2019-01-18T13:28:50.725125-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.346  
@@ -142,7 +144,6 @@ rm /usr/local/bin/display-scrollphat-test.py
 rm /usr/local/bin/display-message-hd.py
 rm /usr/local/bin/display-scrollphathd-test.py
 #
-rm ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab
 rm ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 #
 if [ -e ${DATA_DIR}/${CLUSTER}/logrotate/EXT ] ; then
@@ -153,6 +154,11 @@ fi
 if [ -e ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab ] ; then
 	rm ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab
 	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Remove ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab" 1>&2 ; fi
+fi
+#
+if [ -e ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab ] ; then
+	rm ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Remove ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab" 1>&2 ; fi
 fi
 
 ###	Remove git clone

@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.349.535  2019-01-18T13:50:34.742312-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.348  
+# 	   incident with rm: cannot remove '/usr/local/data//us-tx-cluster-1/log/one-rpi3b.cptx86.com-crontab': No such file or directory 
 # 	setup-pi-display.sh  3.345.531  2019-01-18T12:16:22.571497-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.344  
 # 	   comment out rm -rf pi-display/ to test uninstall-pi-display.sh #58 #66 
 # 	setup-pi-display.sh  3.342.528  2019-01-17T23:26:50.090543-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.341  
@@ -90,8 +92,8 @@ echo    "   DEBUG           (default '0')"
 echo -e "\nOPTIONS"
 echo    "   CLUSTER         name of cluster directory, default us-tx-cluster-1"
 echo    "   DATA_DIR        path to cluster data directory, default /usr/local/data/"
-echo    "   ADMUSER         site SRE administrator, default is user running script"
-echo    "   ADMGRP          site SRE group, default is group running script"
+echo    "   ADMUSER         site SRE administrator, default is root"
+echo    "   ADMGRP          site SRE group, default is root"
 echo    "   EMAIL_ADDRESS   SRE email address"
 echo -e "\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display-board"
 echo -e "\nEXAMPLES\n"
@@ -150,7 +152,7 @@ if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUST
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  2 ]  ; then DATA_DIR=${2} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
 #       Order of precedence: CLI argument, default code
-ADMUSER=${3:-$(id -u)}
+ADMUSER=${3:-$(id -n)}
 #       Order of precedence: CLI argument, default code
 ADMGRP=${4:-$(id -g)}
 #       Order of precedence: CLI argument, environment variable, default code
