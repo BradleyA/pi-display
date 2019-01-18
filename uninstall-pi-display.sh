@@ -1,10 +1,10 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.339.525  2019-01-17T21:47:02.162418-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.338  
+# 	   uninstall-pi-display.sh #66 
 # 	uninstall-pi-display.sh  3.338.524  2019-01-17T21:45:56.374214-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.337  
 # 	   cp setup-pi-display.sh uninstall-pi-display.sh 
-# 	setup-pi-display.sh  3.337.523  2019-01-17T16:39:52.765467-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.336  
-# 	   rotate log files close #58 
 #
-### setup-pi-display.sh
+### uninstall-pi-display.sh
 #   production standard 4
 #       Order of precedence: environment variable, default code
 if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
