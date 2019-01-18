@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.352.538  2019-01-18T17:08:36.462188-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.351  
+# 	   changes to default user and group when not enter on command line 
 # 	setup-pi-display.sh  3.349.535  2019-01-18T13:50:34.742312-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.348  
 # 	   incident with rm: cannot remove '/usr/local/data//us-tx-cluster-1/log/one-rpi3b.cptx86.com-crontab': No such file or directory 
 # 	setup-pi-display.sh  3.345.531  2019-01-18T12:16:22.571497-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.344  
@@ -78,17 +80,6 @@ if [ "${LANG}" == "fr_CA.UTF-8" ] || [ "${LANG}" == "fr_FR.UTF-8" ] || [ "${LANG
 elif ! [ "${LANG}" == "en_US.UTF-8" ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Your language, ${LANG}, is not supported.  Would you like to translate the description section?" 1>&2
 fi
-echo -e "\nEnvironment Variables"
-echo    "If using the bash shell, enter; 'export DEBUG=1' on the command line to set"
-echo    "the DEBUG environment variable to '1' (0 = debug off, 1 = debug on).  Use the"
-echo    "command, 'unset DEBUG' to remove the exported information from the DEBUG"
-echo    "environment variable.  To set an environment variable to be defined at login,"
-echo    "add it to ~/.bashrc file or you can modify this script with your default"
-echo    "location.  You are on your own defining environment variables if you are"
-echo    "using other shells."
-echo    "   CLUSTER         (default us-tx-cluster-1/)"
-echo    "   DATA_DIR        (default /usr/local/data/)"
-echo    "   DEBUG           (default '0')"
 echo -e "\nOPTIONS"
 echo    "   CLUSTER         name of cluster directory, default us-tx-cluster-1"
 echo    "   DATA_DIR        path to cluster data directory, default /usr/local/data/"
@@ -117,10 +108,6 @@ SCRIPT_VERSION=$(head -2 "${0}" | awk {'printf $3'})
 #       UID and GID
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
-
-#       Added line because USER is not defined in crobtab jobs
-if ! [ "${USER}" == "${LOGNAME}" ] ; then  USER=${LOGNAME} ; fi
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Setting USER to support crobtab...  USER >${USER}<  LOGNAME >${LOGNAME}<" 1>&2 ; fi
 
 #       Default help and version arguments
 if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] ; then
@@ -151,10 +138,10 @@ fi
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  2 ]  ; then DATA_DIR=${2} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
-#       Order of precedence: CLI argument, default code
-ADMUSER=${3:-$(id -n)}
-#       Order of precedence: CLI argument, default code
-ADMGRP=${4:-$(id -g)}
+#       Order of precedence: CLI argument
+if [ $# -ge  3 ]  ; then ADMUSER=${3} ; else "${ADMUSER}" == "$(whoami)" ; echo -e "\n\t${BOLD}Warning:  ${ADMUSER} will be used for crontab . . ." ; fi
+#       Order of precedence: CLI argument
+if [ $# -ge  4 ]  ; then ADMGRP=${4} ; else "${ADMGRP}" == "$(groups | cut -d' ' -f1)" ; echo -e "\n\t${BOLD}Warning:  ${ADMGRP} will be used for crontab . . ." ; fi
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  5 ]  ; then EMAIL_ADDRESS=${5} ; elif [ "${EMAIL_ADDRESS}" == "" ] ; then EMAIL_ADDRESS="root@${LOCALHOST}" ; fi
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Variable... CLUSTER >${CLUSTER}< DATA_DIR >${DATA_DIR}< ADMUSER >${ADMUSER}< ADMGRP >${ADMGRP}< EMAIL_ADDRESS >${EMAIL_ADDRESS}<" 1>&2 ; fi
