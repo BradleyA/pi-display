@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.365.551  2019-01-18T20:50:10.685605-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.364  
+# 	   testing 
 # 	uninstall-pi-display.sh  3.363.549  2019-01-18T20:33:04.051259-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.362  
 # 	   complete testing third argument missing, root, and uadmin 
 #
@@ -141,15 +143,14 @@ else
 	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  ${DATA_DIR}/${CLUSTER}/log/${LOCALHOST}-crontab not found" 1>&2 ; fi
 fi
 
-###	Remove git clone
+###     remove clone directories and files
 cd ..
 #       Check if directory 
-echo    ">>>> STOP    STOP   STOP    <<<  uncomment next line when DONE"
 if [ -d ./pi-display ] ; then
-	echo -e "\t${BOLD}Remove directory ./pi-display/"
-#        rm -rf ./pi-display/
+        echo -e "\n\t${BOLD}Remove directory ./pi-display"
+        rm -rf ./pi-display/
 else
-        get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ not found"  1>&2
+        get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ directory not found"  1>&2
 fi
 
 #

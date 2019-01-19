@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.365.551  2019-01-18T20:50:10.588910-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.364  
+# 	   testing 
 # 	setup-pi-display.sh  3.364.550  2019-01-18T20:40:12.268967-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.363  
 # 	   testing 
 # 	setup-pi-display.sh  3.352.538  2019-01-18T17:08:36.462188-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.351  
@@ -297,7 +299,7 @@ echo    "}"  >>  ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 chown ${ADMUSER}:${ADMGRP} ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 chmod 0660 ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
 
-###	remove clone
+###	remove clone directories and files
 cd ..
 #       Check if directory 
 if [ -d ./pi-display ] ; then
@@ -306,7 +308,7 @@ if [ -d ./pi-display ] ; then
 else
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ directory not found"  1>&2
 fi
-#
+
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
 ###
