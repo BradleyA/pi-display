@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.367.553  2019-01-18T21:16:13.333884-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.366  
+# 	   ./uninstall-pi-display.sh: line 134: [: too many arguments 
 # 	uninstall-pi-display.sh  3.366.552  2019-01-18T21:09:55.328505-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.365  
 # 	   update info user  output uninstall-pi-display.sh close #66 
 # 	uninstall-pi-display.sh  3.365.551  2019-01-18T20:50:10.685605-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.364  
@@ -131,7 +133,7 @@ else
 	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  ${DATA_DIR}/${CLUSTER}/logrotate/EXT not found" 1>&2 ; fi
 fi
 #
-if [ -e ${DATA_DIR}/${CLUSTER}/logrotate/*"${LOCALHOST}"-crontab ] ; then
+if [ -e "${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}"-crontab ] ; then
 	rm ${DATA_DIR}/${CLUSTER}/logrotate/*"${LOCALHOST}"-crontab
 	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Remove ${DATA_DIR}/${CLUSTER}/logrotate/*${LOCALHOST}-crontab" 1>&2 ; fi
 else
