@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.356.542  2019-01-18T20:08:08.009307-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.355  
+# 	   testing 
 # 	uninstall-pi-display.sh  3.355.541  2019-01-18T19:59:15.832984-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.354  
 # 	   command not found 98 
 # 	uninstall-pi-display.sh  3.354.540  2019-01-18T17:24:03.296278-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.353  
@@ -94,11 +96,11 @@ fi
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
 #       Order of precedence: CLI argument, environment variable, default code
-set -
 if [ $# -ge  2 ]  ; then DATA_DIR=${2} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
 #       Order of precedence: CLI argument
-if [ $# -ge  3 ]  ; then ADMUSER=${3} ; else "${ADMUSER}" == "${USER}" ; echo -e "\n\t${BOLD}Warning:  ${ADMUSER} crontab will be removed . . ." ; fi
 set +
+if [ $# -ge  3 ]  ; then ADMUSER=${3} ; else "${ADMUSER}" == "${USER}" ; echo -e "\n\t${BOLD}Warning:  ${ADMUSER} crontab will be removed . . ." ; fi
+set -
 #
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Variable... CLUSTER >${CLUSTER}< DATA_DIR >${DATA_DIR}< ADMUSER >${ADMUSER}<" 1>&2 ; fi
 
