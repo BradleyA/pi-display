@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.364.550  2019-01-18T20:40:12.268967-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.363  
+# 	   testing 
 # 	setup-pi-display.sh  3.352.538  2019-01-18T17:08:36.462188-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.351  
 # 	   changes to default user and group when not enter on command line 
 # 	setup-pi-display.sh  3.349.535  2019-01-18T13:50:34.742312-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.348  
@@ -261,7 +263,7 @@ echo    "# @reboot /usr/local/bin/node_exporter >> /usr/local/data/us-tx-cluster
 chown ${ADMUSER}:crontab /var/spool/cron/crontabs/${ADMUSER}
 chmod 0600 /var/spool/cron/crontabs/${ADMUSER}
 echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e" 1>&2
-echo -e "\tUncomment the section that is needed for your Raspberry Pi\n${NORMAL}" 1>&2
+echo -e "\tUncomment the section that is needed for your Raspberry Pi${NORMAL}" 1>&2
 
 ###	pi-display-logrotate - logrotate conf file
 echo -e "#\n#\n#" > ${DATA_DIR}/${CLUSTER}/logrotate/pi-display-logrotate
@@ -300,9 +302,9 @@ cd ..
 #       Check if directory 
 if [ -d ./pi-display ] ; then
 	echo -e "\n\t${BOLD}Remove directory ./pi-display"
-#	rm -rf ./pi-display/
+	rm -rf ./pi-display/
 else
-	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ not found"  1>&2
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  ./pi-display/ directory not found"  1>&2
 fi
 #
 #
