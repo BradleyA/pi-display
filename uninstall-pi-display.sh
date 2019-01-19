@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	uninstall-pi-display.sh  3.362.548  2019-01-18T20:27:29.260240-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.361  
+# 	   more debugging 
 # 	uninstall-pi-display.sh  3.361.547  2019-01-18T20:22:08.905252-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.360  
 # 	   more testing 
 #
@@ -104,6 +106,8 @@ if [ -e /var/spool/cron/crontabs/"${ADMUSER}" ] ; then
 	echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e" 1>&2
 	cp /var/spool/cron/crontabs/"${ADMUSER}" /var/spool/cron/crontabs/"${ADMUSER}"."${DATE_STAMP}"
 	head -n 3 /var/spool/cron/crontabs/"${ADMUSER}"."${DATE_STAMP}" >  /var/spool/cron/crontabs/"${ADMUSER}"
+else
+	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  /var/spool/cron/crontabs/${ADMUSER} not found" 1>&2
 fi
 
 #   Remove scripts and files
