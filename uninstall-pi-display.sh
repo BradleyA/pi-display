@@ -1,13 +1,11 @@
 #!/bin/bash
-# 	uninstall-pi-display.sh  3.362.548  2019-01-18T20:27:29.260240-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.361  
-# 	   more debugging 
-# 	uninstall-pi-display.sh  3.361.547  2019-01-18T20:22:08.905252-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.360  
-# 	   more testing 
+# 	uninstall-pi-display.sh  3.363.549  2019-01-18T20:33:04.051259-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.362  
+# 	   complete testing third argument missing, root, and uadmin 
 #
 ### uninstall-pi-display.sh
 #   production standard 4
 #       Order of precedence: environment variable, default code
-if [ "${DEBUG}" == "" ] ; then DEBUG="1" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
+if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
@@ -102,8 +100,7 @@ if [ -e /var/spool/cron/crontabs/"${ADMUSER}" ] ; then
 	DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)
 	echo -e "\n\tRemoving content from /var/spool/cron/crontabs/${ADMUSER}" 1>&2
 	echo -e "\tA backup copy of this file can be found, /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}" 1>&2
-	echo -e "\tCheck copy of file can be found, /var/spool/cron/crontabs/${ADMUSER}.${DATE_STAMP}" 1>&2
-	echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e" 1>&2
+	echo -e "\n\t${BOLD}Edit /var/spool/cron/crontabs/${ADMUSER} using crontab -e\n" 1>&2
 	cp /var/spool/cron/crontabs/"${ADMUSER}" /var/spool/cron/crontabs/"${ADMUSER}"."${DATE_STAMP}"
 	head -n 3 /var/spool/cron/crontabs/"${ADMUSER}"."${DATE_STAMP}" >  /var/spool/cron/crontabs/"${ADMUSER}"
 else
