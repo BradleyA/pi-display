@@ -20,8 +20,8 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
     $ xxxx
     
 #### NOTES:
-
-    crontab -l
+To view crontab changes for blinkt, crontab -l
+To edit crontab and enter the following chnages, crontab -e
     
     #   Raspberry Pi with blinkt for pi-display
     #   Uncomment the following 7 lines on Raspberry Pi with blinkt installed for pi-display
