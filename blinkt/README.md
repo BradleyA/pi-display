@@ -23,7 +23,6 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
 
     crontab -l
     
-    #   Edit this file to introduce tasks to be run by cron.
     #   Raspberry Pi with blinkt for pi-display
     #   Uncomment the following 7 lines on Raspberry Pi with blinkt installed for pi-display
     @reboot   /usr/local/bin/display-led-test.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
