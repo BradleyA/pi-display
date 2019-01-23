@@ -22,17 +22,21 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
 #### NOTES:
 
     crontab -l
-        @reboot   /usr/local/bin/larson-1.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
-    * * * * * /usr/local/bin/local-create-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
-    * * * * * sleep 5  ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
-    * * * * * sleep 20 ; /usr/local/bin/local-create-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
-    * * * * * sleep 25 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
-    * * * * * sleep 40 ; /usr/local/bin/local-create-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
-    * * * * * sleep 45 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
+    
+    #   Edit this file to introduce tasks to be run by cron.
+    #   Raspberry Pi with blinkt for pi-display
+    #   Uncomment the following 7 lines on Raspberry Pi with blinkt installed for pi-display
+    @reboot   /usr/local/bin/display-led-test.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * *            /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 5  ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 20 ; /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 25 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 40 ; /usr/local/bin/create-host-info.sh >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
+    * * * * * sleep 45 ; /usr/local/bin/display-led.py >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
     #
-    @reboot   /usr/local/bin/plasma-1.py >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
-    */1 * * * * /usr/local/bin/create-message.sh >> /usr/local/data/us-tx-cluster-1/log/`hostname -f`-crontab 2>&1
-    @reboot   sleep 60 && /usr/local/bin/display-message-hd.py Connection to six-rpi3b.cptx86.com closed by remote host.tab 2>&1
+    #   All Raspberry Pi's that include any above section to rotate logs for pi-display
+    #   Uncomment the following line to rotate logs for pi-display
+    6 */2 * * * /usr/sbin/logrotate -s /usr/local/data/us-tx-cluster-1/logrotate/status /usr/local/data/us-tx-cluster-1/logrotate/pi-display-logrotate >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
 
 #### System OS script tested
  * Ubuntu 14.04.3 LTS
