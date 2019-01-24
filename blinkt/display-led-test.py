@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	blinkt/display-led-test.py  3.371.561  2019-01-23T21:13:33.503303-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.370  
+# 	   adjust timimg 
 # 	blinkt/display-led-test.py  3.369.559  2019-01-23T20:42:21.093603-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.368  
 # 	   added led color test during start 
 # 	blinkt/display-led-test.py  3.271.430  2019-01-03T14:49:30.532723-06:00 (CST)  https://github.com/BradleyA/pi-display.git  uadmin  six-rpi3b.cptx86.com 3.270  
@@ -57,7 +59,8 @@ spacing = 360.0 / 16.0
 hue = 0
 x = 0
 j = 1
-for j in range(4000):
+
+for j in range(3500):
     hue = int(time.time() * 100) % 360
     for x in range(8):
         offset = x * spacing
