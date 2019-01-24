@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	blinkt/display-led-test.py  3.374.570  2019-01-23T22:16:37.530539-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.373  
+# 	   blinkt/display-led-test.py update with --> production standard 1-5 include Copyright notice close #67 
 # 	blinkt/display-led-test.py  3.373.569  2019-01-23T21:51:47.651894-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.372-6-g8d92fb5  
 # 	   second pass to add production standards 
 # 	blinkt/display-led-test.py  3.372.562  2019-01-23T21:36:59.212435-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.371  
@@ -18,8 +20,11 @@
 #       License is in the online DOCUMENTATION, DOCUMENTATION URL defined below.
 ###
 #   production standard 5
-import math
+import sys
+import datetime
 import time
+import os
+import math
 import colorsys
 from blinkt import set_clear_on_exit, set_pixel, show, set_brightness
 #       Order of precedence: environment variable (export DEBUG=1), default code
@@ -54,11 +59,7 @@ def display_help():
     print("environment variable.  You are on your own defining environment variables if")
     print("you are using other shells.")
     print("   DEBUG       (default '0')")
-    print("\n   <<your environment variables information goes here>>")
-    print("\nOPTIONS\n   <<your options go here>>")
-    print("\nDOCUMENTATION\n    https://github.com/BradleyA/   <<URL to online repository README>>")
-    print("\nEXAMPLES\n   <<your code examples description goes here>>")
-    print("   {} <<code example goes here>>\n".format(__file__))
+    print("\nDOCUMENTATION\n    https://github.com/BradleyA/pi-display/tree/master/blinkt")
     return
 
 #   Line number function
@@ -114,55 +115,45 @@ if no_arguments == 2:
 #   Begin script INFO
 print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  Started...".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
 
-
-
-
+#   DEBUG example
+from platform import python_version
+#
+if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Version of python >{}<".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END, python_version()))
 
 ###
 set_clear_on_exit()
-
 reds = [0, 0, 0, 0, 0, 16, 64, 255, 64, 16, 0, 0, 0, 0, 0]
-
 start_time = time.time()
 
-for count in range(93):
+#   Red
+if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Test Red led".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
+for count in range(83):
     delta = (time.time() - start_time) * 16
-
-    # Sine wave, spends a little longer at min/max
-    # offset = int(round(((math.sin(delta) + 1) / 2) * 7))
-
-    # Triangle wave, a snappy ping-pong effect
     offset = int(abs((delta % 16) - 8))
-
     for i in range(8):
         set_pixel(i , reds[offset + i], 0, 0)
     show()
-
     time.sleep(0.1)
 
-for count in range(47):
+#   Green
+if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Test Green led".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
+for count in range(37):
     delta = (time.time() - start_time) * 16
-
-    # Sine wave, spends a little longer at min/max
-    # offset = int(round(((math.sin(delta) + 1) / 2) * 7))
-
-    # Triangle wave, a snappy ping-pong effect
     offset = int(abs((delta % 16) - 8))
-
     for i in range(8):
         set_pixel(i , 0, reds[offset + i], 0)
     show()
-
     time.sleep(0.1)
 
+#   Rainbow
+if DEBUG == 1: print("{}{} {} {}[{}] {} {} {} {}:{} {}[DEBUG]{}  Test Rainbow led".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
 set_brightness(0.1)
-
 spacing = 360.0 / 16.0
 hue = 0
 x = 0
 j = 1
-
-for j in range(3500):
+#
+for j in range(2300):
     hue = int(time.time() * 100) % 360
     for x in range(8):
         offset = x * spacing
@@ -172,3 +163,6 @@ for j in range(3500):
     show()
     time.sleep(0.001)
 
+#   Done
+print("{}{} {} {}[{}] {} {} {} {}:{} {}[INFO]{}  Operation finished.".format(color.END, get_date_stamp(), LOCALHOST, __file__, os.getpid(), SCRIPT_VERSION, get_line_no(), USER, UID, GID, color.BOLD, color.END))
+###
