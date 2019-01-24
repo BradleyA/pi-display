@@ -3,60 +3,22 @@
 blinkt/display-led.py is a bash script that displays the system information stored in a file, /usr/local/data/us-tx-cluster-1/<hostname>, on each system.  The system information is displayed using a Raspberry Pi with Pimoroni Blinkt.  The system
 information includes cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.
 
+## Install
+To install the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
-
-EXAMPLES
-   Display contents using default file and path
-
-   ./display-led.py 
-nkt
-
-##/display-led.py - display system status on blinkt
-
-USAGE
-   ./display-led.py [<CLUSTER>] [<DATA_DIR>]
-   ./display-led.py [--help | -help | help | -h | h | -?]
-   ./display-led.py [--version | -version | -v]
-
-DESCRIPTION
-This script displays the system information stored in a file,
-/usr/local/data/us-tx-cluster-1/<hostname>, on each system.  The system
-information is displayed using a Raspberry Pi with Pimoroni Blinkt.  The system
-information includes cpu temperature in Celsius and Fahrenheit, the system
-load, memory usage, and disk usage.
-
-Environment Variables
-If using the bash shell, enter; export CLUSTER='<cluster-name>' on the command
-line to set the CLUSTER environment variable.  Use the command, unset CLUSTER
-to remove the exported information from the CLUSTER environment variable.
-Setting an environment variable to be defined at login by adding it to
-~/.bashrc file or you can just modify the script with your default location
-for CLUSTER and DATA_DIR.  You are on your own defining environment variables
-if you are using other shells.
-   CLUSTER       (default us-tx-cluster-1/)
-   DATA_DIR      (default absolute path /usr/local/data/)
-
-OPTIONS
-   CLUSTER       name of cluster directory, default us-tx-cluster-1/
-   DATA_DIR      absolute path to cluster data directory, default /usr/local/data/
-
+    git clone https://github.com/BradleyA/pi-display
+    cd pi-display/blinkt/
 
 EXAMPLES
    Display contents using default file and path
 
    ./display-led.py 
-
-
 
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 Need to continue to organize the research from the many systems running different test cases.   Organize it into; what works, what I want, and what I still need to make this design work:
     
-#### Clone
-To clone the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
-    git clone https://github.com/BradleyA/pi-display
-    cd pi-display/blinkt/
 
 #### Install
 To install, change to the directory, cd /usr/local/bin, to download the script.
