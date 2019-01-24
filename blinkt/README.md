@@ -1,7 +1,12 @@
 ## blinkt
 
-blinkt/display-led.py is a bash script that displays the system information stored in a file, /usr/local/data/us-tx-cluster-1/<hostname>, on each system.  The system information is displayed using a Raspberry Pi with Pimoroni Blinkt.  The system
+blinkt/display-led.py is a python script that displays the system information stored in a file, /usr/local/data/us-tx-cluster-1/<hostname>, on each system.  The system information is displayed using a Raspberry Pi with Pimoroni Blinkt.  The system
 information includes cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.
+
+blinkt/display-led-test.py is a python script that tests the leds during system boot.  They are configured using, crontab -e
+
+#### If you like this repository, select in the upper-right corner, STAR, thank you.
+#### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching.
 
 ## Install
 To install the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
