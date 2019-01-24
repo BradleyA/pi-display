@@ -44,7 +44,6 @@ To edit crontab and enter the following chnages, crontab -e
     6 */2 * * * /usr/sbin/logrotate -s /usr/local/data/us-tx-cluster-1/logrotate/status /usr/local/data/us-tx-cluster-1/logrotate/pi-display-logrotate >> /usr/local/data/us-tx-cluster-1/log/six-rpi3b.cptx86.com-crontab 2>&1
 
 #### System OS script tested
- * Ubuntu 14.04.3 LTS
  * Ubuntu 16.04.3 LTS (armv7l)
 
 #### Design Principles
