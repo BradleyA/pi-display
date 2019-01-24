@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# 	blinkt/display-led-test.py  3.372.562  2019-01-23T21:36:59.212435-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.371  
+# 	   first pass to add production standards 
 # 	blinkt/display-led-test.py  3.371.561  2019-01-23T21:13:33.503303-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.370  
 # 	   adjust timimg 
 # 	blinkt/display-led-test.py  3.369.559  2019-01-23T20:42:21.093603-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.368  
@@ -10,11 +12,24 @@
 # 	larson-1.py  3.174.316  2018-09-29_21:36:57_CDT  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.173  
 # 	   include larson-1.py 
 ### display-led-test.py - from larson.py
-
+#       Copyright (c) 2019 Bradley Allen
+#       License is in the online DOCUMENTATION, DOCUMENTATION URL defined below.
+###
+#   production standard 5
 import math
 import time
 import colorsys
 from blinkt import set_clear_on_exit, set_pixel, show, set_brightness
+#       Order of precedence: environment variable (export DEBUG=1), default code
+DEBUG = int(os.getenv("DEBUG", 0)) #  Set DEBUG,  0 = debug off, 1 = debug on, 'unset DEBUG' to unset environment variable (bash)
+###
+class color:
+    BOLD = '\033[1m'
+    END = '\033[0m'
+###
+LANGUAGE = os.getenv("LANG")
+def display_help():
+
 
 #
 set_clear_on_exit()
