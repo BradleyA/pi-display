@@ -14,27 +14,15 @@ To install the entire repository, change to the location you want to download th
     git clone https://github.com/BradleyA/pi-display
     cd pi-display/blinkt/
 
-EXAMPLES
-   Display contents using default file and path
-
-   ./display-led.py 
-
-
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 Need to continue to organize the research from the many systems running different test cases.   Organize it into; what works, what I want, and what I still need to make this design work:
     
-
-
-#### Install
-To install, change to the directory, cd /usr/local/bin, to download the script.
-
-    curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *blinkt/xxxx ; mv BradleyA-pi-display-*/blinkt/xxxx.sh . ; rm -rf BradleyA-pi-display-*
-
 #### Usage
-    xxxx 
+    $ ./display-led.py 
 
 #### Output
-    $ xxxx
+    2019-01-23T21:32:14.832928-06:00 (CST) six-rpi3b.cptx86.com ./display-led.py[10517] 3.318.504 115 uadmin 10000:10000 [INFO]  Started...
+    2019-01-23T21:32:20.898087-06:00 (CST) six-rpi3b.cptx86.com ./display-led.py[10517] 3.318.504 332 uadmin 10000:10000 [INFO]  Operation finished.
     
 #### NOTES:
 To view crontab changes for blinkt, crontab -l
