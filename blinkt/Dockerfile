@@ -1,4 +1,6 @@
 ###
+#		blinkt/Dockerfile  3.370.560  2019-01-23T20:58:14.522812-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.369  
+#		   testing led 
 #		Dockerfile  3.22.121  2018-07-03_17:30:04_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.21  
 #		   add LOCAL-HOST link to local host data in /usr/local/data/cluster 
 #		Dockerfile  3.20.119  2018-06-29_10:01:07_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.19  
@@ -7,7 +9,8 @@
 #		   add maintainer 
 #		Dockerfile  3.09.86  2018-06-24_22:25:49_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.08  
 #		   completed prototype controling blinkt from container start with docker-compose 
-FROM blinkt
+#	docker run -d --restart=always -v /sys:/sys --name blinkt brimstone/blinktd
+FROM brimstone/blinktd
 LABEL MAINTAINER Bradley Allen
 COPY display-led.py .
 CMD ["python", "display-led.py"]
