@@ -1,23 +1,28 @@
 ## blinkt
-#### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
-Need to continue to organize the research from the many systems running different test cases.   Organize it into; what works, what I want, and what I still need to make this design work:
-    
-#### Clone
-To clone the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
+
+blinkt/display-led.py is a python script that displays the system information stored in a file, /usr/local/data/us-tx-cluster-1/<hostname>, on each system.  The system information is displayed using a Raspberry Pi with Pimoroni Blinkt.  The system
+information includes cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.
+
+blinkt/display-led-test.py is a python script that tests the leds during system boot.  They are configured using, crontab -e
+
+#### If you like this repository, select in the upper-right corner, STAR, thank you.
+#### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching.
+
+## Install
+To install the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
     git clone https://github.com/BradleyA/pi-display
     cd pi-display/blinkt/
 
-#### Install
-To install, change to the directory, cd /usr/local/bin, to download the script.
-
-    curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *blinkt/xxxx ; mv BradleyA-pi-display-*/blinkt/xxxx.sh . ; rm -rf BradleyA-pi-display-*
-
+#### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
+Need to continue to organize the research from the many systems running different test cases.   Organize it into; what works, what I want, and what I still need to make this design work:
+    
 #### Usage
-    xxxx 
+    $ ./display-led.py 
 
 #### Output
-    $ xxxx
+    2019-01-23T21:32:14.832928-06:00 (CST) six-rpi3b.cptx86.com ./display-led.py[10517] 3.318.504 115 uadmin 10000:10000 [INFO]  Started...
+    2019-01-23T21:32:20.898087-06:00 (CST) six-rpi3b.cptx86.com ./display-led.py[10517] 3.318.504 332 uadmin 10000:10000 [INFO]  Operation finished.
     
 #### NOTES:
 To view crontab changes for blinkt, crontab -l
