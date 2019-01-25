@@ -9,7 +9,7 @@ create-host-info.sh is a bash script that stores Docker information and system i
 
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
--> Someday will places the information in a file for a docker container to read and display the status on the RaspBerry pi blinkt.
+-> Someday I will place the information in a file for a docker container to read and display the status on the RaspBerry pi blinkt.
 3/1/2018 scroll-phat/create-message.sh incluses cpu-temperature
 
 
