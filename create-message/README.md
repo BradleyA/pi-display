@@ -44,9 +44,9 @@ To clone the entire repository, change to the location you want to download the 
     2019-01-25T12:35:18.355122-06:00 (CST) six-rpi3b.cptx86.com ./create-host-info.sh[26206] 3.377.573 154 uadmin 10000:10000 [INFO]  Operation finished.
     
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
--> Someday I will place the information in a file for a docker container to read and display the status on the RaspBerry pi blinkt.
+-> Someday I will place the information in these file into a docker container to read and display the status on the RaspBerry pi blinkt.
 3/1/2018 scroll-phat/create-message.sh incluses cpu-temperature
-
+1/25/2019 How to move from crontab scripts to docker containers
 
 cpu-temperature is a bash script that determines the Raspberry pi  temperature (Celsius and Fahrenheit).  The Raspberry Pi stack gets very hot if not cooled.
     
