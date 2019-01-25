@@ -1,5 +1,27 @@
-## cpu-temperature
-cpu-temperature is a bash script that determines the Raspberry pi temperature (Celsius and Fahrenheit).  The Raspberry Pi stack gets very hot if not cooled. 
+## pi-display=create-message
+
+CPU_usage.sh is a bash script that returns local CPU usage
+
+/create-display-message.sh is a bash script that stores Docker information and system information in a file, /usr/local/data/<CLUSTER>/<hostname>, on each system in SYSTEMS_FILE.  These <hostname> files are copied to a host and totaled in a file,
+/usr/local/data/<CLUSTER>/MESSAGE and MESSAGEHD.  The MESSAGE files includes the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE files are used by a Raspberry Pi with Pimoroni Scroll-pHAT or Pimoroni Scroll-pHAT-HD to display the information.  The <hostname> file on each system is used by a Raspberry Pi with a Pimoroni blinkt.
+
+This script reads /usr/local/data/<CLUSTER>/SYSTEMS file for hosts.
+The hosts are one FQDN or IP address per line for all hosts in a cluster.
+Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file is
+used by Linux-admin/cluster-command/cluster-command.sh, markit/find-code.sh,
+pi-display/create-message/create-message.sh, and other scripts.  A different
+SYSTEMS file can be entered on the command line or environment variable.
+
+System inforamtion about each host is stored in
+/usr/local/data/<CLUSTER>/<hostname>.  The system information includes
+cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and
+disk usage.  The system information will be used by blinkt to display system
+information about each system in near real time.
+
+
+
+cpu-temperature is a bash script that determines the Raspberry pi  temperature (Celsius and Fahrenheit).  The Raspberry Pi stack gets very hot if not cooled. 
+
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 -> Someday will places the information in a file for a docker container to read and display the status on the RaspBerry pi blinkt.
 3/1/2018 scroll-phat/create-message.sh incluses cpu-temperature
@@ -24,13 +46,6 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
     2019-01-25T11:52:03.596771-06:00 (CST) six-rpi3b.cptx86.com ./CPU_usage.sh[1853] 3.379.575 84 uadmin 10000:10000 [INFO]          Started...
     CPU_USAGE: 11
     2019-01-25T11:52:04.623930-06:00 (CST) six-rpi3b.cptx86.com ./CPU_usage.sh[1853] 3.379.575 109 uadmin 10000:10000 [INFO]  Operation finished.
-
-
-#### Output
-    $ cpu-temperature.sh
-    Hostname =	 four-rpi3b
-    Celsius =	 43.5
-    Fahrenheit =	110.3
 
 #### System OS script tested
  * Ubuntu 16.04.3 LTS (armv7l)
