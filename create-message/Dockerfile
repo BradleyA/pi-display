@@ -1,4 +1,6 @@
 ###
+#		create-message/Dockerfile  3.381.577  2019-01-25T11:45:34.540568-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.380  
+#		   change create-message.sh to create-display-message.sh 
 #		Dockerfile  3.24.118  2018-07-03_19:35:35_CDT  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.18  
 #		   testing test1 
 #		Dockerfile  3.17.116  2018-06-26_19:50:50_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.16-2-g490b53f  
@@ -15,8 +17,8 @@ FROM resin/rpi-raspbian
 LABEL MAINTAINER Bradley Allen
 #	RUN apt-get update \
 #		&& apt-get install 
-COPY create-message.sh .
-CMD ["/bin/bash", "create-message.sh"]
+COPY create-display-message.sh .
+CMD ["/bin/bash", "create-display-message.sh"]
 
 #	FROM blinkt
 #	LABEL MAINTAINER Bradley Allen
