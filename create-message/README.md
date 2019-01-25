@@ -1,4 +1,4 @@
-## pi-display=create-message
+## pi-display/create-message
 
 CPU_usage.sh is a bash script that returns local CPU usage
 
