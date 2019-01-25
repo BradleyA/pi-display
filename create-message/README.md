@@ -15,8 +15,16 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
 
     curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *cpu-temperature/cpu-temperature.sh ; mv BradleyA-pi-display-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-pi-display-*
 
-#### Usage
-    cpu-temperature.sh 
+## Usage
+
+    CPU_usage.sh
+
+## Output
+
+    2019-01-25T11:52:03.596771-06:00 (CST) six-rpi3b.cptx86.com ./CPU_usage.sh[1853] 3.379.575 84 uadmin 10000:10000 [INFO]          Started...
+    CPU_USAGE: 11
+    2019-01-25T11:52:04.623930-06:00 (CST) six-rpi3b.cptx86.com ./CPU_usage.sh[1853] 3.379.575 109 uadmin 10000:10000 [INFO]  Operation finished.
+
 
 #### Output
     $ cpu-temperature.sh
@@ -25,7 +33,6 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
     Fahrenheit =	110.3
 
 #### System OS script tested
- * Ubuntu 14.04.3 LTS
  * Ubuntu 16.04.3 LTS (armv7l)
 
 #### Design Principles
