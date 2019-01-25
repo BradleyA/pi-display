@@ -5,15 +5,12 @@ CPU_usage.sh is a bash script that returns local CPU usage
 create-display-message.sh is a bash script that stores Docker information and system information in a file, /usr/local/data/\<CLUSTER\>/\<hostname\>, on each system in SYSTEMS_FILE.  These \<hostname\> files are copied to a host and totaled in a file,
 /usr/local/data/\<CLUSTER\>/MESSAGE and MESSAGEHD.  The MESSAGE files includes the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE files are used by a Raspberry Pi with Pimoroni Scroll-pHAT or Pimoroni Scroll-pHAT-HD to display the information.  The <hostname> file on each system is used by a Raspberry Pi with a Pimoroni blinkt.
 
-
-
-
-
-cpu-temperature is a bash script that determines the Raspberry pi  temperature (Celsius and Fahrenheit).  The Raspberry Pi stack gets very hot if not cooled. 
-
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 -> Someday will places the information in a file for a docker container to read and display the status on the RaspBerry pi blinkt.
 3/1/2018 scroll-phat/create-message.sh incluses cpu-temperature
+
+
+cpu-temperature is a bash script that determines the Raspberry pi  temperature (Celsius and Fahrenheit).  The Raspberry Pi stack gets very hot if not cooled. 
 
 ### Clone
 To clone the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
