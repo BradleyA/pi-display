@@ -34,7 +34,21 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
 
     2019-01-25T11:52:03.596771-06:00 (CST) six-rpi3b.cptx86.com ./CPU_usage.sh[1853] 3.379.575 84 uadmin 10000:10000 [INFO]          Started...
     CPU_USAGE: 11
-    2019-01-25T11:52:04.623930-06:00 (CST) six-rpi3b.cptx86.com ./CPU_usage.sh[1853] 3.379.575 109 uadmin 10000:10000 [INFO]  Operation finished.
+
+## Usage
+
+    create-display-message.sh
+
+## Output
+
+    2019-01-25T12:26:46.772467-06:00 (CST) six-rpi3b.cptx86.com ./create-display-message.sh[21143] 3.380.576 121 uadmin 10000:10000 [INFO]  Started...
+    2019-01-25T12:27:19.896585-06:00 (CST) six-rpi3b.cptx86.com ./create-display-message.sh[21143] 3.380.576 238 uadmin 10000:10000 [INFO]  Operation finished.
+
+## Usage
+
+
+## Output
+
 
 #### System OS script tested
  * Ubuntu 16.04.3 LTS (armv7l)
