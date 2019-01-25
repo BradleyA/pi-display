@@ -1,6 +1,6 @@
 #!/bin/bash
-# 	create-message/CPU_usage.sh  3.378.574  2019-01-25T11:13:24.306392-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.377  
-# 	   CPU_usage.sh --> production standard 5 include Copyright notice 
+# 	create-message/CPU_usage.sh  3.379.575  2019-01-25T11:14:05.446355-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.378  
+# 	   CPU_usage.sh --> production standard 5 include Copyright notice close #69 
 # 	create-message/CPU_usage.sh  3.319.505  2019-01-12T15:45:20.018667-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.318  
 # 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	create-message/CPU_usage.sh  3.248.391  2018-12-29T22:24:49.280459-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.247  
