@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-host-info.sh  3.377.573  2019-01-25T11:08:48.994413-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.376  
+# 	   create-message/create-host-info.sh --> production standard 5 include Copyright notice close #68 
 # 	create-message/create-host-info.sh  3.319.505  2019-01-12T15:45:20.194322-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.318  
 # 	   template.[sh,py] production standard 4 change display_help of other LANG 
 # 	create-message/create-host-info.sh  3.317.503  2019-01-11T14:44:05.863831-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.316  
@@ -7,7 +9,10 @@
 # 	   local-create-message.sh Change log format and order close #60 
 #
 ### create-host-info.sh
-#   production standard 4
+#       Copyright (c) 2019 Bradley Allen
+#       License is in the online DOCUMENTATION, DOCUMENTATION URL defined below.
+###
+#   production standard 5
 #       Order of precedence: environment variable, default code
 if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
