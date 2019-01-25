@@ -1,0 +1,9 @@
+version: '2'
+# 	blinkt/docker-compose.yml  3.376.572  2019-01-25T11:00:48.951979-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.375  
+# 	   new, not tested yet 
+
+services:
+  man:
+    build: .
+    image: blinkt/display-led-test.py
+
