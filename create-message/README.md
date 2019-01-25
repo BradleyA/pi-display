@@ -7,6 +7,7 @@ create-display-message.sh is a bash script that stores Docker information and sy
 create-host-info.sh is a bash script that stores Docker information and system information in a file, /usr/local/data/\<CLUSTER\>/\<hostname\>.  The Docker information includes the number of containers, running containers, paused containers, stopped containers, and number of images.  The system information includes cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.  The \<hostname\> file information is used by a Raspberry Pi with Pimoroni Blinkt to display the system information in near real time.  
 
 ## Clone
+
 To clone the entire repository, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
     git clone https://github.com/BradleyA/pi-display
