@@ -5,11 +5,7 @@ CPU_usage.sh is a bash script that returns local CPU usage
 create-display-message.sh is a bash script that stores Docker information and system information in a file, /usr/local/data/\<CLUSTER\>/\<hostname\>, on each system in SYSTEMS_FILE.  These \<hostname\> files are copied to a host and totaled in a file,
 /usr/local/data/\<CLUSTER\>/MESSAGE and MESSAGEHD.  The MESSAGE files includes the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE files are used by a Raspberry Pi with Pimoroni Scroll-pHAT or Pimoroni Scroll-pHAT-HD to display the information.  The <hostname> file on each system is used by a Raspberry Pi with a Pimoroni blinkt.
 
-This script reads /usr/local/data/\<CLUSTER\>/SYSTEMS file for hosts.  The hosts are one FQDN or IP address per line for all hosts in a cluster.  Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file is used by Linux-admin/cluster-command/cluster-command.sh, markit/find-code.sh, pi-display/create-message/create-message.sh, and other scripts.  A different
-SYSTEMS file can be entered on the command line or environment variable.
 
-System inforamtion about each host is stored in /usr/local/data/\<CLUSTER\>/\<hostname\>.  The system information includes
-cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.  The system information will be used by blinkt to display system information about each system in near real time.
 
 
 
