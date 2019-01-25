@@ -46,9 +46,14 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
 
 ## Usage
 
+    create-host-info.sh
 
 ## Output
 
+    2019-01-25T12:35:16.775497-06:00 (CST) six-rpi3b.cptx86.com ./create-host-info.sh[26206] 3.377.573 96 uadmin 10000:10000 [INFO]  Started...
+    2019-01-25T12:35:17.305892-06:00 (CST) six-rpi3b.cptx86.com /usr/local/bin/CPU_usage.sh[26253] 3.319.505 79 uadmin 10000:10000 [INFO]  Started...
+    2019-01-25T12:35:18.324037-06:00 (CST) six-rpi3b.cptx86.com /usr/local/bin/CPU_usage.sh[26253] 3.319.505 104 uadmin 10000:10000 [INFO]  Operation finished.
+    2019-01-25T12:35:18.355122-06:00 (CST) six-rpi3b.cptx86.com ./create-host-info.sh[26206] 3.377.573 154 uadmin 10000:10000 [INFO]  Operation finished.
 
 #### System OS script tested
  * Ubuntu 16.04.3 LTS (armv7l)
