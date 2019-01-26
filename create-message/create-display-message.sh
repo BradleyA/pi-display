@@ -1,6 +1,6 @@
 #!/bin/bash
-# 	create-message/create-display-message.sh  3.382.594  2019-01-25T20:43:28.818120-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.381-16-g9a6706c  
-# 	   /usr/local/bin/create-display-message.sh lost connection #20 
+# 	create-message/create-display-message.sh  3.383.595  2019-01-25T20:57:19.492647-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.382  
+# 	   /usr/local/bin/create-display-message.sh lost connection close #71 
 # 	create-message/create-display-message.sh  3.380.576  2019-01-25T11:38:25.191571-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.379  
 # 	   create-message.sh/create-display-message.sh --> production standard 5 include Copyright notice close #70 
 # 	create-message/create-display-message.sh  3.319.505  2019-01-12T15:45:20.107697-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.318  
@@ -20,7 +20,7 @@
 ###
 #   production standard 5
 #       Order of precedence: environment variable, default code
-if [ "${DEBUG}" == "" ] ; then DEBUG="1" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
+if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
