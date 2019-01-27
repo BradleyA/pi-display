@@ -1,15 +1,15 @@
 #	scrollphathd
 
 
-### Install
+## Install
 
-### Clone
 
-### System OS script tested
+
+#### System OS script tested
 
  * Ubuntu 16.04.3 LTS (armv7l)
 
-### Design Principles
+#### Design Principles
  * Have a simple setup process and a minimal learning curve
  * Be usable as non-root
  * Be easy to install and configure
@@ -17,7 +17,7 @@
 ## License
 MIT License
 
-Copyright (c) 2019  Bradley Allen
+Copyright (c) 2019  [Bradley Allen <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" style="max-width:100%;" >](https://www.linkedin.com/in/bradleyhallen)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
