@@ -1,4 +1,4 @@
-## pi-system-stats
+# pi-system-stats
 
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
@@ -15,7 +15,7 @@ This is work in progress:
   3) 
   
   
-### Working on:
+## Working on:
     display-led.py
     --> need one container running on each system in cluster with blinkt
     #       display-led.py  3.08.85  2018-03-14_21:59:15_CDT  https://github.com/BradleyA/pi-display  uadmin  two-rpi3b.cptx86.com 3.07-2-g5f6290c  
@@ -56,24 +56,17 @@ This is work in progress:
     scrollphat/display-message.py
     --> need one container running system with scroll board in cluster
 
-### Install
-
-To install, change to the directory, cd /usr/local/bin, to download the script.
-
-    curl -L https://api.github.com/repos/BradleyA/Linux-admin-scripts/tarball | tar -xzf - --wildcards */system-stat-* ; mv BradleyA-Linux-admin-scripts-*/system-stat/system-stat-* . ; rm -rf BradleyA-Linux-admin-scripts-*
-    curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *cpu-temperature/cpu-temperature.sh ; mv BradleyA-pi-display-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-pi-display-*
-
-### Clone
+## Install
 
 To clone, change to the directory you want to download the script, README, and host file. Use git to clone these files into your directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
     git clone https://github.com/BradleyA/Linux-admin-scripts
     cd Linux-admin-scripts/system-stat
 
-### Usage
+## Usage
     system-stats-1.sh
 
-### Output
+## Output
     $ system-stats-1.sh 
     Need to determine what I want to use in these notes to move forward with this project.  On hold until a later time.
     
@@ -186,6 +179,13 @@ To clone, change to the directory you want to download the script, README, and h
     CPU model:  ARMv7 Processor rev 4 (v7l)
     1 CPU,  physical cores per CPU, total 4 logical CPU units
 
+#### Install script
+
+To install, change to the directory, cd /usr/local/bin, to download the script.
+
+    curl -L https://api.github.com/repos/BradleyA/Linux-admin-scripts/tarball | tar -xzf - --wildcards */system-stat-* ; mv BradleyA-Linux-admin-scripts-*/system-stat/system-stat-* . ; rm -rf BradleyA-Linux-admin-scripts-*
+    curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *cpu-temperature/cpu-temperature.sh ; mv BradleyA-pi-display-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-pi-display-*
+
 #### System OS script tested
  * Ubuntu 14.04.3 LTS
  * Ubuntu 16.04.3 LTS (armv7l)
@@ -198,7 +198,7 @@ To clone, change to the directory you want to download the script, README, and h
 ## License
 MIT License
 
-Copyright (c) 2019  Bradley Allen
+Copyright (c) 2019  [Bradley Allen <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" style="max-width:100%;" >](https://www.linkedin.com/in/bradleyhallen)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
