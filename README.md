@@ -9,7 +9,6 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
 #### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
 #### If you like this repository, select in the upper-right corner, star, thank you.
-#### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching.
 
  * [scrollphat](https://github.com/BradleyA/pi-display/tree/master/scrollphat) 
  * [scrollphathd](https://github.com/BradleyA/pi-display/tree/master/scrollphathd)
@@ -23,24 +22,23 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
 
 I need to get this to work and completed then some cleanup before it is shareable and documented . . .
 
-
-### Install
-
-### Clone
+## Install
 
 To install, change directory to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
     git clone https://github.com/BradleyA/pi-display
     cd pi-display
    
-### System OS script tested
+#### System OS script tested
 
  * Ubuntu 16.04.3-5 LTS (armv7l)
 
-### Design Principles
+#### Design Principles
  * Have a simple setup process and a minimal learning curve
  * Be usable as non-root
  * Be easy to install and configure
+ 
+#### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching.
 
 ## License
 MIT License
