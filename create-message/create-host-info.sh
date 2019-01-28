@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-host-info.sh  3.384.603  2019-01-27T20:57:52.615063-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.383-7-g648e59d  
+# 	   added notes for add support for x86 #56 
 # 	create-message/create-host-info.sh  3.377.573  2019-01-25T11:08:48.994413-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.376  
 # 	   create-message/create-host-info.sh --> production standard 5 include Copyright notice close #68 
 # 	create-message/create-host-info.sh  3.319.505  2019-01-12T15:45:20.194322-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.318  
@@ -130,6 +132,11 @@ docker system info | head -6 > ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 
 #	CELSIUS, FAHRENHEIT
 if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  CELSIUS, FAHRENHEIT from ${LOCALHOST}" 1>&2 ; fi
+# >>>>	create-host-info.sh: add support for x86 #56
+# >>>	if no vcgencmd the it is x86 
+# >>>	try sensors for x86
+# >>>>	research other commands for x86 temperatures
+# >>>	$
 CELSIUS=$(/usr/bin/vcgencmd measure_temp | sed -e 's/temp=//' | sed -e 's/.C$//')
 echo 'CELSIUS: '${CELSIUS} >> ${DATA_DIR}/${CLUSTER}/${LOCALHOST}
 FAHRENHEIT=$(echo ${CELSIUS} | awk -v v=$CELSIUS '{print  1.8 * v +32}')
