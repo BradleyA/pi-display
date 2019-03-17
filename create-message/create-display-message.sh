@@ -28,13 +28,13 @@ NORMAL=$(tput -Txterm sgr0)
 ###
 display_help() {
 echo -e "\n${NORMAL}${0} - Store Docker and system information"
-echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>] [<MESSAGE_FILE>] [SYSTEMS_FILE]"
+echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>] [<MESSAGE_FILE>] [<SYSTEMS_FILE>]"
 echo    "   ${0} [--help | -help | help | -h | h | -?]"
 echo    "   ${0} [--version | -version | -v]"
 echo -e "\nDESCRIPTION"
 #       Displaying help DESCRIPTION in English en_US.UTF-8
 echo    "This script stores Docker information and system information in a file,"
-echo    "<DATA_DIR>/<CLUSTER>/<hostname>, on each system in SYSTEMS_FILE."
+echo    "<DATA_DIR>/<CLUSTER>/<hostname>, on each system in <SYSTEMS_FILE>."
 echo    "These <hostname> files are copied to a host and totaled in a file,"
 echo    "<DATA_DIR>/<CLUSTER>/MESSAGE and MESSAGEHD.  The MESSAGE files"
 echo    "includes the total number of containers, running containers, paused containers,"
