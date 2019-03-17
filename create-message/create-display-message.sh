@@ -14,7 +14,7 @@
 # 	create-message/create-message.sh  3.245.388  2018-12-29T21:28:47.953401-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.244  
 # 	   Change log format and order close #59 
 #
-### create-message.sh
+### create-message/create-display-message.sh
 #       Copyright (c) 2019 Bradley Allen
 #       License is in the online DOCUMENTATION, DOCUMENTATION URL defined below.
 ###
@@ -43,7 +43,7 @@ echo    "Raspberry Pi with Pimoroni Scroll-pHAT or Pimoroni Scroll-pHAT-HD to di
 echo    "the information.  The <hostname> file on each system is used by a Raspberry Pi"
 echo    "with a Pimoroni blinkt."
 echo -e "\nThis script reads /usr/local/data/<CLUSTER>/SYSTEMS file for hosts."
-echo    "The hosts are one FQDN or IP address per line for all hosts in a cluster."
+echo    "The hosts are FQDN or IP address per line for all hosts in a cluster."
 echo    "Lines in SYSTEMS file that begin with a # are comments.  The SYSTEMS file is"
 echo    "used by Linux-admin/cluster-command/cluster-command.sh, markit/find-code.sh,"
 echo    "pi-display/create-message/create-message.sh, and other scripts.  A different"
