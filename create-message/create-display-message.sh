@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.386.612  2019-03-22T15:09:38.938208-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.385  
+# 	   testing solve = create-display-message.sh not updating MESSAGE or MESSAGEHD #72 
 # 	create-message/create-display-message.sh  3.385.611  2019-03-22T13:15:46.799331-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.384-7-g22ad94a  
 # 	   update debig to solve = create-display-message.sh not updating MESSAGE or MESSAGEHD #72 
 # 	create-message/create-display-message.sh  3.383.595  2019-01-25T20:57:19.492647-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.382  
@@ -206,12 +208,25 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		#       Check if LOCAL-HOST file is on system
 		if [ -e LOCAL-HOST ] ; then rm LOCAL-HOST ; fi	# very difficult to locate and solve bug fix #26
 	fi
-	CONTAINERS=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$CONTAINERS '{print $2 + v}')
-	RUNNING=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$RUNNING '{print $2 + v}')
-	PAUSED=$(grep -i PAUSED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$PAUSED '{print $2 + v}')
-	STOPPED=$(grep -i STOPPED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$STOPPED '{print $2 + v}')
-	IMAGES=$(grep -i IMAGES "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$IMAGES '{print $2 + v}')
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Add Docker information from ${NODE}.  CONTAINERS >$CONTAINERS< RUNNING >$RUNNING< PAUSED >$PAUSED< STOPPED >$STOPPED< IMAGES >$IMAGES<" 1>&2 ; fi
+	#	Check if NODE file is empty #72
+	if [ ! -s "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" ] ; then
+		get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  File ${DATA_DIR}/${CLUSTER}/${NODE} is empty.  Skipping.  Incidnet why is file empty when being copied?" 1>&2
+		ls -l "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
+		echo " >>>>>>>>>>>>>>>>>>>>>>>>   FILE IS EMPTY <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" 1>&2
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
+		sleep 2
+		scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER} &
+		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Finished: Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
+		ls -l "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
+		echo " >>>>>>>>>>>>>>>>>>>>>>>>   FILE IS EMPTY <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" 1>&2
+	else
+		CONTAINERS=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$CONTAINERS '{print $2 + v}')
+		RUNNING=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$RUNNING '{print $2 + v}')
+		PAUSED=$(grep -i PAUSED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$PAUSED '{print $2 + v}')
+		STOPPED=$(grep -i STOPPED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$STOPPED '{print $2 + v}')
+		IMAGES=$(grep -i IMAGES "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$IMAGES '{print $2 + v}')
+	fi
+	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Add Docker information from ${NODE}.  CONTAINERS >$CONTAINERS< RUNNING >$RUNNING< PAUSED >$PAUSED< STOPPED >$STOPPED< IMAGES >$IMAGES<" 1>&2 ; fi
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} . . . "
 echo "${MESSAGE}" > "${DATA_DIR}"/"${CLUSTER}"/"${MESSAGE_FILE}"
@@ -229,8 +244,10 @@ for NODE in $(cat "${DATA_DIR}"/"${CLUSTER}"/"${SYSTEMS_FILE}" | grep -v "#" ); 
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #	Check if ${NODE} is available on ssh port
 		if $(ssh "${NODE}" 'exit' >/dev/null 2>&1 ) ; then
+					ls -l "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  --> For loop to  Copy ${LOCALHOST} information to ${NODE}" 1>&2 ; fi
 			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/*$(hostname -d) ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER} &
+					ls -l "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  --> For mid to  Copy ${LOCALHOST} information to ${NODE}" 1>&2 ; fi
 			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/log/$(hostname -f)\-crontab ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/log &
 			TEMP="cd ${DATA_DIR}/${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
@@ -239,9 +256,13 @@ for NODE in $(cat "${DATA_DIR}"/"${CLUSTER}"/"${SYSTEMS_FILE}" | grep -v "#" ); 
 		else
 			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
 		fi
+					ls -l "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
 	fi
+					ls -l "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
 done
+					ls -l "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
 /bin/ln -sf "${LOCALHOST}" LOCAL-HOST	# very difficult to locate and solve bug fix #26
+					ls -l "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
 
 #
 get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}  Operation finished." 1>&2
