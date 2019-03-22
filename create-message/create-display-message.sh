@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.388.614  2019-03-22T17:31:23.232453-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.387  
+# 	   turn off DEBUG #72 
 # 	create-message/create-display-message.sh  3.387.613  2019-03-22T17:30:11.328238-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.386  
 # 	   cleanup debug statements create-display-message.sh not updating MESSAGE or MESSAGEHD close #72 
 # 	create-message/create-display-message.sh  3.383.595  2019-01-25T20:57:19.492647-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.382  
@@ -22,7 +24,7 @@
 ###
 #   production standard 5
 #       Order of precedence: environment variable, default code
-if [ "${DEBUG}" == "" ] ; then DEBUG="1" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
+if [ "${DEBUG}" == "" ] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 #       set -x
 #       set -v
 BOLD=$(tput -Txterm bold)
