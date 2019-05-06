@@ -1,9 +1,7 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.400.626  2019-05-05T23:05:43.111339-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.399  
+# 	   #73 debug 
 # 	create-message/create-display-message.sh  3.399.625  2019-05-05T22:56:03.663040-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.398  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.398.624  2019-05-05T22:51:39.227265-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.397  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.397.623  2019-05-05T22:45:09.321337-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.396  
 # 	   #73 
 #
 ### create-message/create-display-message.sh
@@ -209,11 +207,12 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 # >>>	###
 	#	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}")
 	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}')
-	if [ -z "${TEMP}" ] ; then TEMP=0
+	if [ -z "${TEMP}" ] ; then TEMP=0 ; fi
 #	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print ($2 == "" ? "0" : $2)}')
-#	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v '{pri | awk -v '{print ($2 == "" ? "0" : $2)}')nt ($2 == "" ? "0" : $2)}')
+#	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v '{print ($2 == "" ? "0" : $2)}')
 	echo    "${0}  XXXXXXXXXXXXXXXXXXXXXXXXXXXXX                >>>>>>>>>>>>>>>>>>>>>>>>${TEMP}<<<<<<<<<<<<<<<<<<<<<<<<<<<<            XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" 1>&2
-	CONTAINERS=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$CONTAINERS '{print ($2 == "" ? "0" : $2) + v}')
+#	CONTAINERS=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$CONTAINERS '{print ($2 == "" ? "0" : $2) + v}')
+	CONTAINERS=${CONTAINERS} + ${TEMP}
 	RUNNING=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$RUNNING '{print $2 + v}')
 	PAUSED=$(grep -i PAUSED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$PAUSED '{print $2 + v}')
 	STOPPED=$(grep -i STOPPED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$STOPPED '{print $2 + v}')
