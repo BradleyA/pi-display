@@ -1,22 +1,8 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.398.624  2019-05-05T22:51:39.227265-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.397  
+# 	   #73 
 # 	create-message/create-display-message.sh  3.397.623  2019-05-05T22:45:09.321337-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.396  
 # 	   #73 
-# 	create-message/create-display-message.sh  3.396.622  2019-05-05T22:37:40.126186-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.395  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.395.621  2019-05-05T22:28:47.874736-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.394  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.394.620  2019-05-05T22:22:15.675870-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.393  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.393.619  2019-05-05T22:06:08.170943-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.392  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.392.618  2019-05-05T19:56:22.132405-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.391  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.391.617  2019-05-05T19:44:09.031790-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.390  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.390.616  2019-05-05T19:35:43.363023-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.389  
-# 	   #73 DEBUGGING 
-# 	create-message/create-display-message.sh  3.389.615  2019-05-05T19:27:15.636458-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.388  
-# 	   #73 DEBUGGING 
 #
 ### create-message/create-display-message.sh
 #       Copyright (c) 2019 Bradley Allen
@@ -220,7 +206,8 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 # >>>   ### 	being added below) the total is set to '' or /dev/null creating a false total value
 # >>>	###
 	#	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}")
-	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print ($2 == "" ? "0" : $2)}'
+	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}')
+#	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print ($2 == "" ? "0" : $2)}')
 #	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v '{pri | awk -v '{print ($2 == "" ? "0" : $2)}')nt ($2 == "" ? "0" : $2)}')
 	echo    "${0}  XXXXXXXXXXXXXXXXXXXXXXXXXXXXX                >>>>>>>>>>>>>>>>>>>>>>>>${TEMP}<<<<<<<<<<<<<<<<<<<<<<<<<<<<            XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" 1>&2
 	CONTAINERS=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$CONTAINERS '{print ($2 == "" ? "0" : $2) + v}')
