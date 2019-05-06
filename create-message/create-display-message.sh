@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.402.628  2019-05-05T23:44:27.278222-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.401  
+# 	   #73 debug addition with "" 
 # 	create-message/create-display-message.sh  3.401.627  2019-05-05T23:28:49.321775-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.400  
 # 	   #73 
 # 	create-message/create-display-message.sh  3.400.626  2019-05-05T23:05:43.111339-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.399  
@@ -201,23 +203,30 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER} &
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
 	fi
-# >>>	### 
+# >>>	###  #73
 # >>>	### Need to open a ticket becasue if a host does not have any CONTAINERS (or any of the other varaibles 
 # >>>   ### 	being added below) the total is set to '' or /dev/null creating a false total value
 # >>>	###
-	#	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}")
 	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}')
 	if [ -z "${TEMP}" ] ; then TEMP=0 ; fi
 #	CONTAINERS=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$CONTAINERS '{print ($2 == "" ? "0" : $2) + v}')
 	CONTAINERS=$(( ${CONTAINERS} + ${TEMP} ))
-#	TEMP=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}')
-#	if [ -z "${TEMP}" ] ; then TEMP=10000 ; fi
-	RUNNING=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print ($2 == "" ? "0" : $2) }' | awk -v v=$RUNNING '{print $1 + v}')
-echo "XXXXXXXXXXXXXXXXXXXXxx${RUNNING}XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-#	RUNNING=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$RUNNING '{print $2 + v}')
-	PAUSED=$(grep -i PAUSED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$PAUSED '{print $2 + v}')
-	STOPPED=$(grep -i STOPPED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$STOPPED '{print $2 + v}')
-	IMAGES=$(grep -i IMAGES "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$IMAGES '{print $2 + v}')
+	TEMP=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}')
+	if [ -z "${TEMP}" ] ; then TEMP=0 ; fi
+#	RUNNING=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}' | awk -v v=$RUNNING '{print $1 + v}')
+	RUNNING=$(( ${RUNNING} + ${TEMP} ))
+	TEMP=$(grep -i PAUSED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}')
+	if [ -z "${TEMP}" ] ; then TEMP=0 ; fi
+#	PAUSED=$(grep -i PAUSED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$PAUSED '{print $2 + v}')
+	PAUSED=$(( ${PAUSED} + ${TEMP} ))
+	TEMP=$(grep -i STOPPED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}')
+	if [ -z "${TEMP}" ] ; then TEMP=0 ; fi
+#	STOPPED=$(grep -i STOPPED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$STOPPED '{print $2 + v}')
+	STOPPED=$(( ${STOPPED} + ${TEMP} ))
+	TEMP=$(grep -i IMAGES "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk '{print $2}')
+	if [ -z "${TEMP}" ] ; then TEMP=0 ; fi
+#	IMAGES=$(grep -i IMAGES "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$IMAGES '{print $2 + v}')
+	IMAGES=$(( ${IMAGES} + ${TEMP} ))
 	if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}      Add Docker information from ${NODE}.  CONTAINERS >$CONTAINERS< RUNNING >$RUNNING< PAUSED >$PAUSED< STOPPED >$STOPPED< IMAGES >$IMAGES<" 1>&2 ; fi
 done
 MESSAGE=" CONTAINERS ${CONTAINERS}  RUNNING ${RUNNING}  PAUSED ${PAUSED}  STOPPED ${STOPPED}  IMAGES ${IMAGES} . . . "
