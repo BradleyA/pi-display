@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.396.622  2019-05-05T22:37:40.126186-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.395  
+# 	   #73 
 # 	create-message/create-display-message.sh  3.395.621  2019-05-05T22:28:47.874736-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.394  
 # 	   #73 
 # 	create-message/create-display-message.sh  3.394.620  2019-05-05T22:22:15.675870-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.393  
@@ -216,7 +218,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 # >>>   ### 	being added below) the total is set to '' or /dev/null creating a false total value
 # >>>	###
 	TEMP=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v '{print ($2 == "" ? "0" : $2)}')
-	echo    "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX                >>>>>>>>>>>>>>>>>>>>>>>>${TEMP}<<<<<<<<<<<<<<<<<<<<<<<<<<<<            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" 1>&2
+	echo    "${0}  XXXXXXXXXXXXXXXXXXXXXXXXXXXXX                >>>>>>>>>>>>>>>>>>>>>>>>${TEMP}<<<<<<<<<<<<<<<<<<<<<<<<<<<<            XXXXXXXXXXXXXXXXXXXXXXXXXXXXX" 1>&2
 	CONTAINERS=$(grep -i CONTAINERS "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$CONTAINERS '{print ($2 == "" ? "0" : $2) + v}')
 	RUNNING=$(grep -i RUNNING "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$RUNNING '{print $2 + v}')
 	PAUSED=$(grep -i PAUSED "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" | awk -v v=$PAUSED '{print $2 + v}')
