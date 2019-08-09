@@ -1,10 +1,8 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.403.631  2019-08-09T13:50:45.279479-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.402-2-g700767e  
+# 	   create-message/create-display-message.sh change WARN to ERROR #73 
 # 	create-message/create-display-message.sh  3.402.628  2019-05-05T23:44:27.278222-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.401  
 # 	   #73 debug addition with "" 
-# 	create-message/create-display-message.sh  3.401.627  2019-05-05T23:28:49.321775-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.400  
-# 	   #73 
-# 	create-message/create-display-message.sh  3.400.626  2019-05-05T23:05:43.111339-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.399  
-# 	   #73 debug 
 #
 ### create-message/create-display-message.sh
 #       Copyright (c) 2019 Bradley Allen
@@ -187,7 +185,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER} &
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}      Finished: Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
 		else
-			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST} on ssh port." 1>&2
+			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST}." 1>&2
 			touch "${DATA_DIR}"/"${CLUSTER}"/"${NODE}"
 		fi
 	else
@@ -252,7 +250,7 @@ for NODE in $(cat "${DATA_DIR}"/"${CLUSTER}"/"${SYSTEMS_FILE}" | grep -v "#" ); 
 			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}      Copy complete to ${NODE}" 1>&2 ; fi
 		else
-			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  --> Host ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is  NOT  responding to ${LOCALHOST}." 1>&2
+			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  --> Host ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is  NOT  responding to ${LOCALHOST}." 1>&2
 		fi
 	fi
 done
