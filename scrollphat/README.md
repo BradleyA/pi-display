@@ -21,6 +21,8 @@ To install, change to the location you want to download the scripts. Use git to 
 
     git clone https://github.com/BradleyA/pi-display
     cd pi-display/scrollphat
+    
+#### ARCHITECTURE TREE
 
 #### System OS script tested
  * Ubuntu 16.04.3 LTS (armv7l)
