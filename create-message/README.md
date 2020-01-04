@@ -1,10 +1,10 @@
 # pi-display/create-message
 
-CPU_usage.sh is a bash script that returns local CPU usage
+**CPU_usage.sh** is a bash script that returns local CPU usage
 
-create-display-message.sh is a bash script that stores Docker information and system information in a file, /usr/local/data/\<CLUSTER\>/\<hostname\>, on each system in SYSTEMS_FILE.  These \<hostname\> files are copied to a host and totaled in a file, /usr/local/data/\<CLUSTER\>/MESSAGE and MESSAGEHD.  The MESSAGE files includes the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE files are used by a Raspberry Pi with Pimoroni Scroll-pHAT or Pimoroni Scroll-pHAT-HD to display the information.  The <hostname> file on each system is used by a Raspberry Pi with a Pimoroni blinkt.
+**create-display-message.sh** is a bash script that stores Docker information and system information in a file, /usr/local/data/\<CLUSTER\>/\<hostname\>, on each system in SYSTEMS_FILE.  These \<hostname\> files are copied to a host and totaled in a file, /usr/local/data/\<CLUSTER\>/MESSAGE and MESSAGEHD.  The MESSAGE files includes the total number of containers, running containers, paused containers, stopped containers, and number of images.  The MESSAGE files are used by a Raspberry Pi with Pimoroni Scroll-pHAT or Pimoroni Scroll-pHAT-HD to display the information.  The <hostname> file on each system is used by a Raspberry Pi with a Pimoroni blinkt.
     
-create-host-info.sh is a bash script that stores Docker information and system information in a file, /usr/local/data/\<CLUSTER\>/\<hostname\>.  The Docker information includes the number of containers, running containers, paused containers, stopped containers, and number of images.  The system information includes cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.  The \<hostname\> file information is used by a Raspberry Pi with Pimoroni Blinkt to display the system information in near real time.  
+**create-host-info.sh** is a bash script that stores Docker information and system information in a file, /usr/local/data/\<CLUSTER\>/\<hostname\>.  The Docker information includes the number of containers, running containers, paused containers, stopped containers, and number of images.  The system information includes cpu temperature in Celsius and Fahrenheit, the system load, memory usage, and disk usage.  The \<hostname\> file information is used by a Raspberry Pi with Pimoroni Blinkt to display the system information in near real time.  
 
 ## Clone
 
@@ -12,7 +12,6 @@ To clone the entire repository, change to the location you want to download the 
 
     git clone https://github.com/BradleyA/pi-display
     cd pi-display/create-message/
-
 
 ## Usage
 
@@ -43,7 +42,7 @@ To clone the entire repository, change to the location you want to download the 
     2019-01-25T12:35:18.324037-06:00 (CST) six-rpi3b.cptx86.com /usr/local/bin/CPU_usage.sh[26253] 3.319.505 104 uadmin 10000:10000 [INFO]  Operation finished.
     2019-01-25T12:35:18.355122-06:00 (CST) six-rpi3b.cptx86.com ./create-host-info.sh[26206] 3.377.573 154 uadmin 10000:10000 [INFO]  Operation finished.
     
-#### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
+#### WARNING: These instructions below are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 -> Someday I will place the information in these file into a docker container to read and display the status on the RaspBerry pi blinkt.
 3/1/2018 scroll-phat/create-message.sh incluses cpu-temperature
 1/25/2019 How to move from crontab scripts to docker containers
@@ -55,6 +54,7 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
 
     curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *cpu-temperature/cpu-temperature.sh ; mv BradleyA-pi-display-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-pi-display-*
    
+#### ARCHITECTURE TREE
 
 #### System OS script tested
  * Ubuntu 16.04.3 LTS (armv7l)
@@ -64,10 +64,10 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
  * Be usable as non-root
  * Be easy to install and configure
 
-## License
+#### License
 MIT License
 
-Copyright (c) 2019  [Bradley Allen <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" style="max-width:100%;" >](https://www.linkedin.com/in/bradleyhallen)
+Copyright (c) 2020  [Bradley Allen <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" style="max-width:100%;" >](https://www.linkedin.com/in/bradleyhallen)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
