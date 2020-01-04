@@ -1,20 +1,17 @@
 # pi-system-stats
 
-#### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
-
 pi-system-stats is a bash script that runs several commands and has notes about other commands I am looking at a future use with logging and monitoring with blinkt and scroll-phat in my unicorn project.
 
 <img id="image_raspberry_cluster" src="../images/IMG_2664.JPG" width="200" >
 
+#### WARNING: These instructions below are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 
-#### WARNING: These instructions are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!
 Need to continue to organize the research from the many systems running different test cases.   Organize it into; what works, what I want, and what I still need to make this design work:
 This is work in progress:
   1) use create-message.sh to create data and store data on each system in a cluster
   2) need to move create-meaage.sh in a docker container on cluster-1, three-rpi3b, cluster-2, six-rpi3b, cluster-3
   3) 
-  
-  
+
 ## Working on:
     display-led.py
     --> need one container running on each system in cluster with blinkt
@@ -179,7 +176,7 @@ To clone, change to the directory you want to download the script, README, and h
     CPU model:  ARMv7 Processor rev 4 (v7l)
     1 CPU,  physical cores per CPU, total 4 logical CPU units
 
-#### Install script
+## Install script
 
 To install, change to the directory, cd /usr/local/bin, to download the script.
 
@@ -187,7 +184,6 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
     curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *cpu-temperature/cpu-temperature.sh ; mv BradleyA-pi-display-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-pi-display-*
 
 #### System OS script tested
- * Ubuntu 14.04.3 LTS
  * Ubuntu 16.04.3 LTS (armv7l)
 
 #### Design Principles
@@ -195,10 +191,10 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
  * Be usable as non-root
  * Be easy to install and configure
 
-## License
+#### License
 MIT License
 
-Copyright (c) 2019  [Bradley Allen <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" style="max-width:100%;" >](https://www.linkedin.com/in/bradleyhallen)
+Copyright (c) 2020  [Bradley Allen <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" style="max-width:100%;" >](https://www.linkedin.com/in/bradleyhallen)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
