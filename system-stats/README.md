@@ -183,6 +183,8 @@ To install, change to the directory, cd /usr/local/bin, to download the script.
     curl -L https://api.github.com/repos/BradleyA/Linux-admin-scripts/tarball | tar -xzf - --wildcards */system-stat-* ; mv BradleyA-Linux-admin-scripts-*/system-stat/system-stat-* . ; rm -rf BradleyA-Linux-admin-scripts-*
     curl -L https://api.github.com/repos/BradleyA/pi-display/tarball | tar -xzf - --wildcards *cpu-temperature/cpu-temperature.sh ; mv BradleyA-pi-display-*/cpu-temperature/cpu-temperature.sh . ; rm -rf BradleyA-pi-display-*
 
+#### ARCHITECTURE TREE
+
 #### System OS script tested
  * Ubuntu 16.04.3 LTS (armv7l)
 
