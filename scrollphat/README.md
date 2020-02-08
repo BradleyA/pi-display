@@ -17,7 +17,7 @@ display-message.py -> uses this information and displays it on Scroll-pHAT
 still a lot of work to include blinkt . . .but it has been working for 9 months
 
 ## Install
-To install, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git". On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
+To install, change to the location you want to download the scripts. Use git to pull or clone these scripts into the directory. If you do not have git then enter; "sudo apt-get install git" if using Ubuntu. On the github page of this script use the "HTTPS clone URL" with the 'git clone' command.
 
     git clone https://github.com/BradleyA/pi-display
     cd pi-display/scrollphat
