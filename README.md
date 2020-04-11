@@ -1,6 +1,6 @@
 # pi-display
-[![Stable Release](https://img.shields.io/badge/Release-v2.2-blue.svg)](https://github.com/BradleyA/pi-display/releases/tag/v2.2)
-[![GitHub commits](https://img.shields.io/github/commits-since/BradleyA/pi-display/v2.2.svg)](https://github.com/BradleyA/pi-display/commits/)
+[![Stable Release](https://img.shields.io/badge/Release-3.403-blue.svg)](https://github.com/BradleyA/pi-display/releases/tag/3.403)
+[![GitHub commits](https://img.shields.io/github/commits-since/BradleyA/pi-display/3.403.svg)](https://github.com/BradleyA/pi-display/commits/)
 [![MIT License](http://img.shields.io/badge/License-MIT-red.png)](LICENSE)
 [<img alt="Clones" src="https://img.shields.io/static/v1?label=Clones&message=17&color=blue">](images/clone.table.md)
 [<img alt="Views" src="https://img.shields.io/static/v1?label=Views&message=29&color=blue">](images/view.table.md)
