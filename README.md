@@ -1,4 +1,9 @@
 # pi-display
+[![Stable Release](https://img.shields.io/badge/Release-v2.2-blue.svg)](https://github.com/BradleyA/pi-display/releases/tag/v2.2)
+[![GitHub commits](https://img.shields.io/github/commits-since/BradleyA/pi-display/v2.2.svg)](https://github.com/BradleyA/pi-display/commits/)
+[![MIT License](http://img.shields.io/badge/License-MIT-red.png)](LICENSE)
+[<img alt="Clones" src="https://img.shields.io/static/v1?label=Clones&message=17&color=blue">](images/clone.table.md)
+[<img alt="Views" src="https://img.shields.io/static/v1?label=Views&message=29&color=blue">](images/view.table.md)
 
 This repository contains shell scripts and python for RaspBerry Pi display project.  The displays are Pimoroni Blinkt, Scroll-pHAT, and Scroll-pHAT-HD connected to Raspberry Pi 3 using Triple GPIO Multiplexing Expansion Board. 
 
@@ -26,10 +31,6 @@ To install, change directory to the location you want to download the scripts. U
 
     git clone https://github.com/BradleyA/pi-display
     cd pi-display
-
-#### Traffic
-  * <img alt="Clones" src="https://img.shields.io/static/v1?label=Clones&message=17&color=blue">  [Clones Table](images/clone.table.md)
-  * <img alt="Views" src="https://img.shields.io/static/v1?label=Views&message=29&color=blue">  [Views Table](images/view.table.md)
   
 #### Author
 [<img id="twitter" src="images/twitter.png" width="50" a="twitter.com/bradleyaustintx/">
