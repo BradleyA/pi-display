@@ -7,6 +7,6 @@ Unique   clones:  |       1       |       2       |       1       |       1     
 Total clones: 17
 ###### Updated: 2020-01-04
 
-[Return to README](https://github.com/BradleyA/pi-display/blob/master/README.md#traffic)
+[Return to README](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
 
 **Note**  Data collection stopped between 10/14 & 12/9
