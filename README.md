@@ -1,8 +1,4 @@
 # pi-display
-
-[<img alt="Clones" src="https://img.shields.io/static/v1?label=Clones&message=33&color=blue">](images/clone.table.md)
-[<img alt="Views" src="https://img.shields.io/static/v1?label=Views&message=279&color=blue">](images/view.table.md)
-
 [![GitHub Stable Release](https://img.shields.io/badge/Release-3.403-blue.svg)](https://github.com/BradleyA/pi-display/releases/tag/3.403)
 ![GitHub Release Date](https://img.shields.io/github/release-date/BradleyA/pi-display?color=blue)
 [![GitHub Commits Since](https://img.shields.io/github/commits-since/BradleyA/pi-display/3.403?color=orange)](https://github.com/BradleyA/pi-display/commits/)
