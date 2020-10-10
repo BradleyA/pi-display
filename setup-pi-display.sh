@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.405.684  2020-10-09T21:58:17.660931-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.404  
+# 	   setup-pi-display.sh -->   testing  
 # 	setup-pi-display.sh  3.404.683  2020-10-09T21:21:14.339160-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.403-51-g1d99bb9  
 # 	   setup-pi-display.sh -->   upgrade Production standard & run shellcheck  
 # 	setup-pi-display.sh  3.366.552  2019-01-18T21:09:55.155962-06:00 (CST)  https://github.com/BradleyA/pi-display  uadmin  six-rpi3b.cptx86.com 3.365  
@@ -21,6 +23,9 @@
 ###  Production standard 3.0 shellcheck
 ###  Production standard 1.3.550 DEBUG variable                                             # 3.550
 #    Order of precedence: environment variable, default code
+DEBUG=1
+
+
 if [[ "${DEBUG}" == ""  ]] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
 if [[ "${DEBUG}" == "2" ]] ; then set -x    ; fi   # Print trace of simple commands before they are executed
 if [[ "${DEBUG}" == "3" ]] ; then set -v    ; fi   # Print shell input lines as they are read
@@ -417,7 +422,8 @@ cd ..
 #       Check if directory 
 if [[ -d ./pi-display ]] ; then
 	echo -e "\n\tRemoving directory ./pi-display"
-	rm -rf ./pi-display/
+#	rm -rf ./pi-display/
+echo  ">>>>>>>>>>>>>>....... crap don't do this until I save it <<<<<<<<<<<<<<<"
 else
 	new_message "${LINENO}" "${YELLOW}INFO${WHITE}" "  ./pi-display/ directory not found"  1>&2
 fi
