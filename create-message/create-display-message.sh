@@ -1,28 +1,54 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.407.686  2020-10-14T16:39:53.743896-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.406  
+# 	   create-message/create-display-message.sh -->   begin updating code to latest Production standards  
 # 	create-message/create-display-message.sh  3.403.631  2019-08-09T13:50:45.279479-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.402-2-g700767e  
 # 	   create-message/create-display-message.sh change WARN to ERROR #73 
 # 	create-message/create-display-message.sh  3.402.628  2019-05-05T23:44:27.278222-05:00 (CDT)  https://github.com/BradleyA/pi-display  uadmin  one-rpi3b.cptx86.com 3.401  
 # 	   #73 debug addition with "" 
+#86# create-message/create-display-message.sh
+###  Production standard 5.3.559 Copyright                                    # 3.559
+#    Copyright (c) 2020 Bradley Allen                                                # 3.555
+#    MIT License is online in the repository as a file named LICENSE"         # 3.559
+###  Production standard 3.0 shellcheck
+###  Production standard 1.3.550 DEBUG variable                                             # 3.550
+#    Order of precedence: environment variable, default code
+if [[ "${DEBUG}" == ""  ]] ; then DEBUG="0" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
+if [[ "${DEBUG}" == "2" ]] ; then set -x    ; fi   # Print trace of simple commands before they are executed
+if [[ "${DEBUG}" == "3" ]] ; then set -v    ; fi   # Print shell input lines as they are read
+if [[ "${DEBUG}" == "4" ]] ; then set -e    ; fi   # Exit immediately if non-zero exit status
+if [[ "${DEBUG}" == "5" ]] ; then set -e -o pipefail ; fi   # Exit immediately if non-zero exit status and exit if any command in a pipeline errors
 #
-### create-message/create-display-message.sh
-#       Copyright (c) 2019 Bradley Allen
-#       License is in the online DOCUMENTATION, DOCUMENTATION URL defined below.
-###
-#   production standard 5
-#       Order of precedence: environment variable, default code
-if [ "${DEBUG}" == "" ] ; then DEBUG="1" ; fi   # 0 = debug off, 1 = debug on, 'export DEBUG=1', 'unset DEBUG' to unset environment variable (bash)
-#       set -x
-#       set -v
 BOLD=$(tput -Txterm bold)
+UNDERLINE=$(tput -Txterm sgr 0 1)  # 0.3.583
 NORMAL=$(tput -Txterm sgr0)
-###
+RED=$(tput    setaf 1)
+GREEN=$(tput  setaf 2)
+YELLOW=$(tput setaf 3)
+WHITE=$(tput  setaf 7)
+
+###  Production standard 7.0 Default variable value
+DEFAULT_ADM_TLS_USER="${USER}"
+DEFAULT_CLUSTER="us-tx-cluster-1/"
+DEFAULT_DATA_DIR="/usr/local/data/"
+DEFAULT_MESSAGE_FILE="MESSAGE"
+DEFAULT_SYSTEMS_FILE="SYSTEMS"
+
+###  Production standard 8.3.541 --usage
+COMMAND_NAME=$(echo "${0}" | sed 's/^.*\///')                                               # 3.541
+display_usage() {
+echo -e "\n${NORMAL}${COMMAND_NAME}\n   Store Docker and system information"
+echo -e "\n${BOLD}USAGE${NORMAL}"
+echo -e "   ${COMMAND_NAME} [-c <CLUSTER>] [-d <DATA_DIR>] [-a <ADM_TLS_USER>] [-m <MESSAGE_FILE>] [-s <SYSTEMS_FILE>]\n"
+echo    "   ${COMMAND_NAME} [--help | -help | help | -h | h | -?]"
+echo    "   ${COMMAND_NAME} [--usage | -usage | -u]"
+echo    "   ${COMMAND_NAME} [--version | -version | -v]"
+}
+
+###  Production standard 0.3.583 --help
 display_help() {
-echo -e "\n${NORMAL}${0} - Store Docker and system information"
-echo -e "\nUSAGE\n   ${0} [<CLUSTER>] [<ADMUSER>] [<DATA_DIR>] [<MESSAGE_FILE>] [<SYSTEMS_FILE>]"
-echo    "   ${0} [--help | -help | help | -h | h | -?]"
-echo    "   ${0} [--version | -version | -v]"
-echo -e "\nDESCRIPTION"
-#       Displaying help DESCRIPTION in English en_US.UTF-8
+display_usage
+#    Displaying help DESCRIPTION in English en_US.UTF-8, en.UTF-8, C.UTF-8                  # 3.550
+echo -e "\n${BOLD}DESCRIPTION${NORMAL}"
 echo    "This script stores Docker information and system information in a file,"
 echo    "<DATA_DIR>/<CLUSTER>/<hostname>, on each system in <SYSTEMS_FILE>."
 echo    "These <hostname> files are copied to a host and totaled in a file,"
@@ -46,59 +72,149 @@ echo    "disk usage.  The system information will be used by blinkt to display s
 echo    "information about each system in near real time."
 echo -e "\nTo avoid many login prompts for each host in a cluster, enter the following:"
 echo    "${BOLD}ssh-copy-id uadmin@<host-name>${NORMAL} to each host in the SYSTEMS file."
-#       Displaying help DESCRIPTION in French
-if [ "${LANG}" == "fr_CA.UTF-8" ] || [ "${LANG}" == "fr_FR.UTF-8" ] || [ "${LANG}" == "fr_CH.UTF-8" ] ; then
-        echo -e "\n--> ${LANG}"
-        echo    "<votre aide va ici>"
-        echo    "Souhaitez-vous traduire la section description?"
-elif ! [ "${LANG}" == "en_US.UTF-8" ] ; then
-        get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Your language, ${LANG}, is not supported.  Would you like to translate the description section?" 1>&2
+
+###  Production standard 4.3.587 Documentation Language                                     # 3.550
+#    Displaying help DESCRIPTION in French fr_CA.UTF-8, fr_FR.UTF-8, fr_CH.UTF-8
+if [[ "${LANG}" == "fr_CA.UTF-8" ]] || [[ "${LANG}" == "fr_FR.UTF-8" ]] || [[ "${LANG}" == "fr_CH.UTF-8" ]] ; then
+  echo -e "\n--> ${LANG}"
+  echo    "<Votre aide va ici>" # Your help goes here
+  echo    "Souhaitez-vous traduire la section description?" # Would you like to translate the description section?
+elif ! [[ "${LANG}" == "en_US.UTF-8" ||  "${LANG}" == "en.UTF-8" || "${LANG}" == "C.UTF-8" ]] ; then  # 3.550
+  new_message "${LINENO}" "${YELLOW}INFO${WHITE}" "  Your language, ${LANG}, is not supported.  Would you like to translate the description section?" 1>&2
 fi
-echo -e "\nEnvironment Variables"
-echo    "If using the bash shell, enter; export CLUSTER='us-west1' on the command"
-echo    "line to set the CLUSTER environment variable to 'us-west1'.  Use the command,"
-echo    "unset CLUSTER to remove the exported information from the CLUSTER environment"
-echo    "variable.  To set an environment variable to be defined at login, add it to"
-echo    "~/.bashrc file or you can modify this script with your default location for"
-echo    "CLUSTER, DATA_DIR, MESSAGE_FILE, SYSTEMS_FILE, and DEBUG.  You are on your own"
-echo    "own defining environment variables if you are using other shells."
-echo    "   CLUSTER       (default us-tx-cluster-1/)"
-echo    "   DATA_DIR      (default /usr/local/data/)"
-echo    "   MESSAGE_FILE  (default MESSAGE)"
-echo    "   SYSTEMS_FILE  (default SYSTEMS)"
-echo    "   DEBUG         (default '0')"
-echo -e "\nOPTIONS"
-echo    "   CLUSTER       name of cluster directory, default us-tx-cluster-1"
-echo    "   ADMUSER       site SRE administrator, default is user running script"
-echo    "   DATA_DIR      path to cluster data directory, default /usr/local/data/"
-echo    "   MESSAGE_FILE  name of MESSAGE file, default MESSAGE and MESSAGEHD"
-echo    "   SYSTEMS_FILE  name of SYSTEMS file, (default SYSTEMS)"
-echo -e "\nDOCUMENTATION\n   https://github.com/BradleyA/pi-display-board"
-echo -e "\nEXAMPLES"
-echo -e "   Store message information for a cluster-2\n\n   ${0} cluster-2\n"
+
+echo -e "\n${BOLD}ENVIRONMENT VARIABLES${NORMAL}"
+echo    "If using the bash shell, enter; 'export DEBUG=1' on the command line to set"
+echo    "the environment variable DEBUG to '1' (0 = debug off, 1 = debug on).  Use the"
+echo    "command, 'unset DEBUG' to remove the exported information from the environment"
+echo    "variable DEBUG.  You are on your own defining environment variables if"
+echo    "you are using other shells."
+
+###  Production standard 1.3.550 DEBUG variable                                             # 3.550
+echo    "   DEBUG           (default off '0')  The DEBUG environment variable can be set"   # 3.550
+echo    "                   to 0, 1, 2, 3, 4 or 5.  The setting '' or 0 will turn off"      # 3.550
+echo    "                   all DEBUG messages during execution of this script.  The"       # 3.550
+echo    "                   setting 1 will print all DEBUG messages during execution."      # 3.550
+echo    "                   Setting 2 (set -x) will print a trace of simple commands"       # 3.550
+echo    "                   before they are executed.  Setting 3 (set -v) will print"       # 3.550
+echo    "                   shell input lines as they are read.  Setting 4 (set -e) will"   # 3.550
+echo    "                   exit immediately if non-zero exit status is recieved with"      # 3.550
+echo    "                   some exceptions.  Setting 5 (set -e -o pipefail) will do"       # 3.550
+echo    "                   setting 4 and exit if any command in a pipeline errors.  For"   # 3.550
+echo    "                   more information about the set options, see man bash."          # 3.550
+#
+echo    "   CLUSTER         Cluster name (default '${DEFAULT_CLUSTER}')"
+echo    "   DATA_DIR        Data directory (default '${DEFAULT_DATA_DIR}')"
+echo    "   SYSTEMS_FILE    Name of file that includes hosts in cluster"
+echo    "                   (default '${DEFAULT_SYSTEMS_FILE}')"
+echo    "   MESSAGE_FILE    Name of file that stores Pimoroni Scroll-pHAT(-HD) message"
+echo    "                   (default MESSAGE)"
+
+echo    " [-a <ADM_TLS_USER>] "
+
+echo -e "\n${BOLD}OPTIONS${NORMAL}"
+echo -e "Order of precedence: CLI options, environment variable, default value.\n"     # 3.572
+echo    "   --help, -help, help, -h, h, -?"                                            # 3.572
+echo -e "\tOn-line brief reference manual\n"                                           # 3.572
+echo    "   --usage, -usage, -u"                                                       # 3.572
+echo -e "\tOn-line command usage\n"                                                    # 3.572
+echo    "   --version, -version, -v"                                                      # 0.3.579
+echo -e "\tOn-line command version\n"                                                  # 3.572
+#
+echo    "   --cluster, -c, --cluster=<CLUSTER>, -c="
+echo -e "\tCluster name (default '${DEFAULT_CLUSTER}')\n"
+echo    "   --datadir, -d, --datadir=<DATA_DIR>, -d="
+echo -e "\tData directory (default '${DEFAULT_DATA_DIR}')\n"
+echo    "   --admuser, -a, --admuser=<ADM_TLS_USER>, -a="
+echo -e "\tSite SRE administrator, default is user running script\n"
+echo    "   --message, -m, --message=<MESSAGE_FILE>, -m=MESSAGE_FILE>"
+echo -e "\tName of file that stores Pimoroni Scroll-pHAT(-HD) message\n\t(default '${DEFAULT_MESSAGE_FILE}')"
+echo    "   --systems, -s, --systems=<SYSTEMS_FILE>, -s="
+echo -e "\tName of systems file (default '${DEFAULT_SYSTEMS_FILE}')"
+
+###  Production standard 6.3.547  Architecture tree
+echo -e "\n${BOLD}ARCHITECTURE TREE${NORMAL}"  # STORAGE & CERTIFICATION
+echo    "/usr/local/data/                           <-- <DATA_DIR>"
+echo    "└── <CLUSTER>/                             <-- <CLUSTER>"
+echo    "    ├── SYSTEMS                            <-- List of hosts in cluster"
+echo    "    ├── MESSAGE                            <-- Pimoroni Scroll-pHAT message"
+echo    "    ├── MESSAGEHD                          <-- Pimoroni Scroll-pHAT-HD message"
+echo    "    ├── log/                               <-- Host log directory"
+echo    "    └── logrotate/                         <-- Host logrotate directory"
+
+echo -e "\n${BOLD}DOCUMENTATION${NORMAL}"
+echo    "   ${UNDERLINE}https://github.com/BradleyA/pi-display#pi-display${NORMAL}"   # 0.3.583
+
+echo -e "\n${BOLD}EXAMPLES${NORMAL}"
+echo -e "   <<description about code example>>\n\t${BOLD}${COMMAND_NAME} <<code example>>${NORMAL}\n" # 3.550
+echo -e "   <<description about code example>>\n\t${BOLD}${COMMAND_NAME}${NORMAL}\n"        # 3.550
+echo    "   To loop through a list of hosts a user could use, cluster-command.sh."          # 3.550
+echo    "   An administrator may receive password and/or passphrase prompts from a"         # 3.550
+echo    "   remote systen; running the following may stop the prompts."                     # 3.550
+echo -e "\t${BOLD}ssh-copy-id <TLS_USER>@<REMOTE_HOST>${NORMAL}\n"                            # 3.550
+echo    "   or using the IP address"                                                          # 3.550
+echo -e "\t${BOLD}ssh-copy-id <TLS_USER>@<192.168.x.x>${NORMAL}\n"                            # 3.550
+echo    "   If that does not resolve the prompting challenge then review man pages for"     # 3.550
+echo    "   ssh-agent and ssh-add."                                                         # 3.550
+echo    "   (${UNDERLINE}https://github.com/BradleyA/Linux-admin/tree/master/cluster-command#cluster-command ${NORMAL})"  # 0.3.583
+echo -e "\t${BOLD}cluster-command.sh special '${COMMAND_NAME}'${NORMAL}\n"                  # 3.550
+
+echo -e "\n${BOLD}SEE ALSO${NORMAL}"                                                        # 3.550
+echo    "   ${BOLD}setup-pi-display.sh${NORMAL} (${UNDERLINE}https://github.com/BradleyA/pi-display/blob/master/setup-pi-display.sh ${NORMAL})"  # 0.3.583
+echo    "   ${BOLD}uninstall-pi-display.sh${NORMAL} (${UNDERLINE}https://github.com/BradleyA/pi-display/blob/master/uninstall-pi-display.sh ${NORMAL})"
+
+echo -e "\n${BOLD}AUTHOR${NORMAL}"                                                          # 3.550
+echo    "   ${COMMAND_NAME} was written by Bradley Allen <allen.bradley@ymail.com>"         # 3.550
+
+echo -e "\n${BOLD}REPORTING BUGS${NORMAL}"                                                  # 3.550
+echo    "   Report ${COMMAND_NAME} bugs ${UNDERLINE}https://github.com/BradleyA/pi-display/issues/new/choose ${NORMAL}"  # 0.3.583
+
+###  Production standard 5.3.559 Copyright                                            # 3.559
+echo -e "\n${BOLD}COPYRIGHT${NORMAL}"                                                       # 3.550
+echo    "   Copyright (c) 2020 Bradley Allen"                                               # 3.550
+echo    "   MIT License is online in the repository as a file named LICENSE"          # 3.559
 }
 
-#       Date and time function ISO 8601
+#    Date and time function ISO 8601
 get_date_stamp() {
-DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)
-TEMP=$(date +%Z)
-DATE_STAMP="${DATE_STAMP} (${TEMP})"
+  DATE_STAMP=$(date +%Y-%m-%dT%H:%M:%S.%6N%:z)
+  TEMP=$(date +%Z)
+  DATE_STAMP="${DATE_STAMP} (${TEMP})"
 }
 
-#       Fully qualified domain name FQDN hostname
+#    Fully qualified domain name FQDN hostname
 LOCALHOST=$(hostname -f)
 
-#       Version
-SCRIPT_NAME=$(head -2 "${0}" | awk {'printf $2'})
-SCRIPT_VERSION=$(head -2 "${0}" | awk {'printf $3'})
+#    Version
+#    Assumptions for the next two lines of code:  The second line in this script includes the script path & name as the second item and
+#    the script version as the third item separated with space(s).  The tool I use is called 'markit'. See example line below:
+#       template/template.sh  3.517.783  2019-09-13T18:20:42.144356-05:00 (CDT)  https://github.com/BradleyA/user-files.git  uadmin  one-rpi3b.cptx86.com 3.516  
+SCRIPT_NAME=$(head -2 "${0}" | awk '{printf $2}')  #  Different from ${COMMAND_NAME}=$(echo "${0}" | sed 's/^.*\///'), SCRIPT_NAME = includes Git repository directory and can be used any where in script (for dev, test teams)
+SCRIPT_VERSION=$(head -2 "${0}" | awk '{printf $3}')
+if [[ "${SCRIPT_NAME}" == "" ]] ; then SCRIPT_NAME="${0}" ; fi
+if [[ "${SCRIPT_VERSION}" == "" ]] ; then SCRIPT_VERSION="v?.?" ; fi
 
-#       UID and GID
-USER_ID=$(id -u)
+#    GID
 GROUP_ID=$(id -g)
 
-#       Added line because USER is not defined in crobtab jobs
-if ! [ "${USER}" == "${LOGNAME}" ] ; then  USER=${LOGNAME} ; fi
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Setting USER to support crobtab...  USER >${USER}<  LOGNAME >${LOGNAME}<" 1>&2 ; fi
+###  Production standard 2.3.578 Log format (WHEN WHERE WHAT Version Line WHO UID:GID [TYPE] Message)
+new_message() {  #  $1="${LINENO}"  $2="DEBUG INFO ERROR WARN"  $3="message"
+  get_date_stamp
+  echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${SCRIPT_NAME}[$$] ${BOLD}${BLUE}${SCRIPT_VERSION} ${PURPLE}${1}${NORMAL} ${USER} ${UID}:${GROUP_ID} ${BOLD}[${2}]${NORMAL}  ${3}"
+}
+
+#    INFO
+new_message "${LINENO}" "${YELLOW}INFO${WHITE}" "  Started..." 1>&2
+
+#    Added following code because USER is not defined in crobtab jobs
+if ! [[ "${USER}" == "${LOGNAME}" ]] ; then  USER=${LOGNAME} ; fi
+if [[ "${DEBUG}" == "1" ]] ; then new_message "${LINENO}" "DEBUG" "  Setting USER to support crobtab...  USER >${YELLOW}${USER}${WHITE}<  LOGNAME >${YELLOW}${LOGNAME}${WHITE}<" 1>&2 ; fi  #  2.3.578
+
+#    DEBUG
+if [[ "${DEBUG}" == "1" ]] ; then new_message "${LINENO}" "DEBUG" "  Name_of_command >${YELLOW}${SCRIPT_NAME}${WHITE}< Name_of_arg1 >${YELLOW}${1}${WHITE}< Name_of_arg2 >${YELLOW}${2}${WHITE}< Name_of_arg3 >${YELLOW}${3}${WHITE}<  Version of bash ${YELLOW}${BASH_VERSION}${WHITE}" 1>&2 ; fi  #  2.3.578
+
+
+
 
 #	Default help and version arguments
 if [ "$1" == "--help" ] || [ "$1" == "-help" ] || [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "h" ] || [ "$1" == "-?" ] ; then
@@ -110,16 +226,12 @@ if [ "$1" == "--version" ] || [ "$1" == "-version" ] || [ "$1" == "version" ] ||
         exit 0
 fi
 
-#       INFO
-get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[INFO]${NORMAL}   Started..." 1>&2
 
-#       DEBUG
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Name_of_command >${0}< Name_of_arg1 >${1}< Name_of_arg2 >${2}< Name_of_arg3 >${3}<  Version of bash ${BASH_VERSION}" 1>&2 ; fi
 
 #	Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
 #	order of precedence: CLI argument, default code
-ADMUSER=${2:-${USER}}
+ADM_TLS_USER=${2:-${USER}}
 #	order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  3 ]  ; then DATA_DIR=${3} ; elif [ "${DATA_DIR}" == "" ] ; then DATA_DIR="/usr/local/data/" ; fi
 #	order of precedence: CLI argument, environment variable, default code
@@ -127,7 +239,7 @@ if [ $# -ge  4 ]  ; then MESSAGE_FILE=${4} ; elif [ "${MESSAGE_FILE}" == "" ] ; 
 #	order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  5 ]  ; then SYSTEMS_FILE=${5} ; elif [ "${SYSTEMS_FILE}" == "" ] ; then SYSTEMS_FILE="SYSTEMS" ; fi
 #
-if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  CLUSTER >${CLUSTER}< ADMUSER >${ADMUSER}< DATA_DIR >${DATA_DIR}< MESSAGE_FILE >${MESSAGE_FILE}< SYSTEMS_FILE >${SYSTEMS_FILE}< PATH >${PATH}<" 1>&2 ; fi
+if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  CLUSTER >${CLUSTER}< ADM_TLS_USER >${ADM_TLS_USER}< DATA_DIR >${DATA_DIR}< MESSAGE_FILE >${MESSAGE_FILE}< SYSTEMS_FILE >${SYSTEMS_FILE}< PATH >${PATH}<" 1>&2 ; fi
 
 #	Set variables to zero before counting in loop 
 CONTAINERS=0
@@ -144,14 +256,14 @@ if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP}
 #       Check if data directory is on system
 if [ ! -d "${DATA_DIR}"/"${CLUSTER}"/log ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Creating missing directory: ${DATA_DIR}" 1>&2
-	mkdir -p  ${DATA_DIR} || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADMUSER} does not have permission to create ${DATA_DIR} directory" 1>&2 ; exit 1; }
+	mkdir -p  ${DATA_DIR} || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADM_TLS_USER} does not have permission to create ${DATA_DIR} directory" 1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}
 fi
 
 #       Check if cluster directory is on system
 if [ ! -d "${DATA_DIR}"/"${CLUSTER}"/log ] ; then
 	get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[WARN]${NORMAL}  Creating missing directory: ${DATA_DIR}/${CLUSTER}" 1>&2
-	mkdir -p  ${DATA_DIR}/${CLUSTER}/log || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADMUSER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
+	mkdir -p  ${DATA_DIR}/${CLUSTER}/log || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADM_TLS_USER} does not have permission to create ${DATA_DIR}/${CLUSTER} directory" 1>&2 ; exit 1; }
 	chmod 775 ${DATA_DIR}/${CLUSTER}
 	chmod 770 ${DATA_DIR}/${CLUSTER}/log
 	mkdir -p  ${DATA_DIR}/${CLUSTER}/logrotate
@@ -159,8 +271,8 @@ if [ ! -d "${DATA_DIR}"/"${CLUSTER}"/log ] ; then
 fi
 
 #	Create ${MESSAGE_FILE} file 1) create file for initial running on host, 2) check for write permission
-touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}  || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADMUSER} does not have permission to create ${MESSAGE_FILE} file" 1>&2 ; exit 1; }
-touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD  || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADMUSER} does not have permission to create ${MESSAGE_FILE}HD file" 1>&2 ; exit 1; }
+touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}  || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADM_TLS_USER} does not have permission to create ${MESSAGE_FILE} file" 1>&2 ; exit 1; }
+touch ${DATA_DIR}/${CLUSTER}/${MESSAGE_FILE}HD  || { get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  User ${ADM_TLS_USER} does not have permission to create ${MESSAGE_FILE}HD file" 1>&2 ; exit 1; }
 
 #       Check if ${SYSTEMS_FILE} file is on system, one FQDN or IP address per line for all hosts in cluster
 if ! [ -e ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ] || ! [ -s ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} ] ; then
@@ -182,7 +294,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 		if $(ssh ${NODE} 'exit' >/dev/null 2>&1 ) ; then
 #			Copy ${NODE} information to ${LOCALHOST}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}      Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
-			scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER} &
+			scp -q    -i ~/.ssh/id_rsa ${ADM_TLS_USER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER} &
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}      Finished: Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
 		else
 			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is not responding to ${LOCALHOST}." 1>&2
@@ -198,7 +310,7 @@ for NODE in $(cat ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} | grep -v "#" ); do
 	if [ ! -s "${DATA_DIR}"/"${CLUSTER}"/"${NODE}" ] ; then
 		get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  File ${DATA_DIR}/${CLUSTER}/${NODE} is empty.  Copy again.  Incidnet, why is file empty when being copied?" 1>&2
 		sleep 1
-		scp -q    -i ~/.ssh/id_rsa ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER} &
+		scp -q    -i ~/.ssh/id_rsa ${ADM_TLS_USER}@${NODE}:${DATA_DIR}/${CLUSTER}/${NODE} ${DATA_DIR}/${CLUSTER} &
 		if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}  Copy ${NODE} information to ${LOCALHOST}" 1>&2 ; fi
 	fi
 # >>>	###  #73
@@ -243,11 +355,11 @@ for NODE in $(cat "${DATA_DIR}"/"${CLUSTER}"/"${SYSTEMS_FILE}" | grep -v "#" ); 
 	if [ "${LOCALHOST}" != "${NODE}" ] ; then
 #		Check if ${NODE} is available on ssh port
 		if $(ssh "${NODE}" 'exit' >/dev/null 2>&1 ) ; then
-			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/*$(hostname -d) ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER} &
+			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/*$(hostname -d) ${ADM_TLS_USER}@${NODE}:${DATA_DIR}/${CLUSTER} &
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}      $(ls -l ${DATA_DIR}/${CLUSTER}/${NODE})" 1>&2 ; fi
-			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/log/$(hostname -f)\-crontab ${ADMUSER}@${NODE}:${DATA_DIR}/${CLUSTER}/log &
+			scp -q -p -i ~/.ssh/id_rsa ${DATA_DIR}/${CLUSTER}/log/$(hostname -f)\-crontab ${ADM_TLS_USER}@${NODE}:${DATA_DIR}/${CLUSTER}/log &
 			TEMP="cd ${DATA_DIR}/${CLUSTER} ; ln -sf ${NODE} LOCAL-HOST"
-			ssh -q -t -i ~/.ssh/id_rsa ${ADMUSER}@${NODE} ${TEMP}
+			ssh -q -t -i ~/.ssh/id_rsa ${ADM_TLS_USER}@${NODE} ${TEMP}
 			if [ "${DEBUG}" == "1" ] ; then get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[DEBUG]${NORMAL}      Copy complete to ${NODE}" 1>&2 ; fi
 		else
 			get_date_stamp ; echo -e "${NORMAL}${DATE_STAMP} ${LOCALHOST} ${0}[$$] ${SCRIPT_VERSION} ${LINENO} ${USER} ${USER_ID}:${GROUP_ID} ${BOLD}[ERROR]${NORMAL}  --> Host ${NODE} found in ${DATA_DIR}/${CLUSTER}/${SYSTEMS_FILE} file is  NOT  responding to ${LOCALHOST}." 1>&2
