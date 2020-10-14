@@ -1,5 +1,5 @@
 #!/bin/bash
-# 	setup-pi-display.sh  3.405.684  2020-10-09T21:58:17.660931-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.404  
+# 	setup-pi-display.sh  3.406.685  2020-10-14T14:11:35.686695-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.405  
 # 	   setup-pi-display.sh -->   testing  
 # 	setup-pi-display.sh  3.404.683  2020-10-09T21:21:14.339160-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.403-51-g1d99bb9  
 # 	   setup-pi-display.sh -->   upgrade Production standard & run shellcheck  
@@ -255,6 +255,7 @@ if ! [[ "${UID}"  = 0 ]] ; then
 fi
 
 ###
+set -v
 
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  1 ]  ; then CLUSTER=${1} ; elif [ "${CLUSTER}" == "" ] ; then CLUSTER="us-tx-cluster-1/" ; fi
@@ -267,6 +268,9 @@ if [ $# -ge  4 ]  ; then ADMGRP=${4} ; else "${ADMGRP}" == "$(groups | cut -d' '
 #       Order of precedence: CLI argument, environment variable, default code
 if [ $# -ge  5 ]  ; then EMAIL_ADDRESS=${5} ; elif [ "${EMAIL_ADDRESS}" == "" ] ; then EMAIL_ADDRESS="root@${LOCALHOST}" ; fi
 if [ "${DEBUG}" == "1" ] ; then new_message "${LINENO}" "DEBUG" "  Variable... CLUSTER >${CLUSTER}< DATA_DIR >${DATA_DIR}< ADMUSER >${ADMUSER}< ADMGRP >${ADMGRP}< EMAIL_ADDRESS >${EMAIL_ADDRESS}<" 1>&2 ; fi
+
+set +v
+
 
 #
 mkdir -p /usr/local/bin
