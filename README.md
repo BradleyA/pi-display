@@ -27,17 +27,23 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
  * [scrollphat](https://github.com/BradleyA/pi-display/tree/master/scrollphat) 
  * [scrollphathd](https://github.com/BradleyA/pi-display/tree/master/scrollphathd)
  * [blinkt](https://github.com/BradleyA/pi-display-board/tree/master/blinkt)
- 
+
+[Return to top](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
+
 ## Architecture
 
 <img id="pi-display architecture" src="images/pi-display-architecture.png" width="900" >
- 
+
+[Return to top](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
+
 <img id="image_respberry_setup" src="images/IMG_2803.JPG" width="450" >
 
 [Return to top](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
 
 #### WARNING: These instructions below are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!  I need to get this to work and completed then some cleanup before it is shareable and documented . . .
 <img id="Construction" src="images/construction-icon.gif" width="120">
+
+#### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching.
 
 ## Clone
 
@@ -74,8 +80,6 @@ Please do contribute!  Issues and pull requests are welcome.  Thank you for your
  * Be easy to install and configure
 
 [Return to top](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
-
-#### To watch future updates in this repository select in the upper-right corner, the "Watch" list, and select Watching.
 
 #### License
 MIT License
