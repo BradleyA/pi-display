@@ -34,6 +34,8 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
  
 <img id="image_respberry_setup" src="images/IMG_2803.JPG" width="450" >
 
+[Return to top](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
+
 #### WARNING: These instructions below are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!  I need to get this to work and completed then some cleanup before it is shareable and documented . . .
 <img id="Construction" src="images/construction-icon.gif" width="120">
 
