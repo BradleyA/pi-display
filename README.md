@@ -18,6 +18,8 @@
 
 This repository contains shell scripts and python for RaspBerry Pi display project.  The displays are Pimoroni Blinkt, Scroll-pHAT, and Scroll-pHAT-HD connected to Raspberry Pi 3 using Triple GPIO Multiplexing Expansion Board. 
 
+#### If you like this repository, select in the upper-right corner, [![GitHub stars](https://img.shields.io/github/stars/BradleyA/pi-display.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/BradleyA/pi-display/stargazers/), thank you.
+
 #### If you like this repository, select in the upper-right corner, star, thank you.
 
  <img id="image_respberry_scroll-phat" src="images/IMG_3247.JPG" width="450" >
