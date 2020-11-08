@@ -9,6 +9,7 @@ System inforamtion about each host is stored in /usr/local/data/\<cluster-name>/
 To avoid many login prompts for each host in a cluster, enter the following:  ssh-copy-id uadmin@<host-name>
 
 #### WARNING: These instructions below are incomplete. Consider them as notes quickly drafted on a napkin rather than proper documentation!  I need to complete some cleanup before it is shareable and documented . . .
+<img id="Construction" src="../images/construction-icon.gif" width="120">
 
 create-message.sh -> is found in /usr/local/data/cluster-1/SYSTEMS file.  Docker totals from these files are in /usr/local/data/cluster-1/MESSAGE for Scroll-pHAT on each system.  
 
