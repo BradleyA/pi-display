@@ -20,8 +20,6 @@ This repository contains shell scripts and python for RaspBerry Pi display proje
 
 #### If you like this repository, select in the upper-right corner, [![GitHub stars](https://img.shields.io/github/stars/BradleyA/pi-display.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/BradleyA/pi-display/stargazers/), thank you.
 
-#### If you like this repository, select in the upper-right corner, star, thank you.
-
  <img id="image_respberry_scroll-phat" src="images/IMG_3247.JPG" width="450" >
 
 ----> ![Click this link, then click 'view raw' to see board running](images/IMG_3246.MOV)
