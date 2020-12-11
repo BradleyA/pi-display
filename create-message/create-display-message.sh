@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	create-message/create-display-message.sh  3.409.709  2020-12-11T14:27:18.645919-06:00 (CST)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.408-1-geacc025  
+# 	   create-message/create-display-message.sh -->   close #78  Default variable value not used #78  
 # 	create-message/create-display-message.sh  3.408.708  2020-12-11T13:26:15.364986-06:00 (CST)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.408  
 # 	   create-message/create-display-message.sh -->   close #77  remove ADM_TLS_USER #77  
 # 	create-message/create-display-message.sh  3.408.707  2020-12-11T13:16:44.954980-06:00 (CST)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.407-20-g62a1375 
@@ -35,7 +37,7 @@ WHITE=$(tput  setaf 7)
 ###  Production standard 7.3.602 Default variable value
 DEFAULT_CLUSTER="us-tx-cluster-1/"
 DEFAULT_DATA_DIR="/usr/local/data/"
-DEFAULT_MESSAGE_FILE="MESSAGE"
+DEFAULT_MESSAGE_FILE="DEFAULT NULL MESSAGE"
 DEFAULT_SYSTEMS_FILE="SYSTEMS"
 
 ###  Production standard 8.3.541 --usage
@@ -217,6 +219,15 @@ if [[ "${DEBUG}" == "1" ]] ; then new_message "${LINENO}" "${YELLOW}DEBUG${WHITE
 
 #    DEBUG  # 1.3.614
 if [[ "${DEBUG}" == "1" ]] ; then new_message "${LINENO}" "${YELLOW}DEBUG${WHITE}" "  Name_of_command >${YELLOW}${SCRIPT_NAME}${WHITE}< Name_of_arg1 >${YELLOW}${1}${WHITE}< Name_of_arg2 >${YELLOW}${2}${WHITE}< Name_of_arg3 >${YELLOW}${3}${WHITE}<  Version of bash ${YELLOW}${BASH_VERSION}${WHITE}" 1>&2 ; fi  # 1.3.614
+
+###  Production standard 7.3.602 Default variable value
+#    Order of precedence: CLI argument, environment variable, default code
+if [[ "${CLUSTER}" == "" ]] ; then CLUSTER="${DEFAULT_CLUSTER}" ; fi
+if [[ "${DATA_DIR}" == "" ]] ; then DATA_DIR="${DEFAULT_DATA_DIR}" ; fi
+if [[ "${MESSAGE_FILE}" == "" ]] ; then MESSAGE_FILE="${DEFAULT_MESSAGE_FILE}" ; fi
+if [[ "${SYSTEMS_FILE}" == "" ]] ; then SYSTEMS_FILE="${DEFAULT_SYSTEMS_FILE}" ; fi
+if [[ "${DEBUG}" == "1" ]] ; then new_message "${LINENO}" "${YELLOW}DEBUG${WHITE}" "  CLUSTER >${BOLD}${CYAN}${CLUSTER}${NORMAL}< DATA_DIR >${BOLD}${CYAN}${DATA_DIR}${NORMAL}< SYSTEMS_FILE >${BOLD}${CYAN}${SYSTEMS_FILE}${NORMAL}< PATH >${BOLD}${CYAN}${PATH}${NORMAL}<" 1>&2 ; fi  # 1.3.614
+#
 
 ###  Production standard 9.3.608 Parse CLI options and arguments
 while [[ "${#}" -gt 0 ]] ; do
