@@ -1,5 +1,7 @@
 #!/bin/bash
-# 	create-message/create-display-message.sh  3.408.707  2020-12-11T13:16:44.954980-06:00 (CST)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.407-20-g62a1375  
+# 	create-message/create-display-message.sh  3.408.708  2020-12-11T13:26:15.364986-06:00 (CST)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.408  
+# 	   create-message/create-display-message.sh -->   close #77  remove ADM_TLS_USER #77  
+# 	create-message/create-display-message.sh  3.408.707  2020-12-11T13:16:44.954980-06:00 (CST)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.407-20-g62a1375 
 # 	   create-message/create-display-message.sh setup-pi-display.sh -->   Production standard 1.3.614 DEBUG variable  Production standard 0.3.615 --help  Production standard 2.3.614 Log format  AND MAJOR FORMATTING CHANGES  
 # 	create-message/create-display-message.sh  3.407.686  2020-10-14T16:39:53.743896-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.406  
 # 	   create-message/create-display-message.sh -->   begin updating code to latest Production standards  
