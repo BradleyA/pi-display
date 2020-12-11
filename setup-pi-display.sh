@@ -1,4 +1,6 @@
 #!/bin/bash
+# 	setup-pi-display.sh  3.408.707  2020-12-11T13:16:45.111184-06:00 (CST)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.407-20-g62a1375  
+# 	   create-message/create-display-message.sh setup-pi-display.sh -->   Production standard 1.3.614 DEBUG variable  Production standard 0.3.615 --help  Production standard 2.3.614 Log format  AND MAJOR FORMATTING CHANGES  
 # 	setup-pi-display.sh  3.406.685  2020-10-14T14:11:35.686695-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.405  
 # 	   setup-pi-display.sh -->   testing  
 # 	setup-pi-display.sh  3.404.683  2020-10-09T21:21:14.339160-05:00 (CDT)  https://github.com/BradleyA/pi-display  master  uadmin  five-rpi3b.cptx86.com 3.403-51-g1d99bb9  
@@ -70,7 +72,7 @@ display_usage
 #    Displaying help DESCRIPTION in English en_US.UTF-8, en.UTF-8, C.UTF-8                  # 3.550
 echo -e "\n${BOLD}DESCRIPTION${NORMAL}"
 echo    "This script has to be run as root to create ${DEFAULT_DATA_DIR}${DEFAULT_CLUSTER}."
-echo    "The commands are installed in /usr/local/bin and will store logs, Docker and"
+echo    "The commands are installed in <DATA_DIR>/ and will store logs, Docker and"
 echo    "system information into ${DEFAULT_DATA_DIR}${DEFAULT_CLUSTER} directory.  The"
 echo    "Docker information includes the number of containers, running containers,"
 echo    "paused containers, stopped containers, and number of images.  The system"
