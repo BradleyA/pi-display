@@ -8,7 +8,7 @@
 [![GitHub Open Issues](https://img.shields.io/github/issues/BradleyA/pi-display?color=purple)](https://github.com/BradleyA/pi-display/issues?q=is%3Aopen+is%3Aissue)
 [![GitHub Closed Issues](https://img.shields.io/github/issues-closed/BradleyA/pi-display?color=purple)](https://github.com/BradleyA/pi-display/issues?q=is%3Aclosed+is%3Aissue)
 
-[<img alt="GitHub Clones" src="https://img.shields.io/static/v1?label=Clones&message=89&color=blueviolet">](https://github.com/BradleyA/pi-display/blob/master/images/clone.table.md)
+[<img alt="GitHub Clones" src="https://img.shields.io/static/v1?label=Clones&message=107&color=blueviolet">](https://github.com/BradleyA/pi-display/blob/master/images/clone.table.md)
 [<img alt="GitHub Views" src="https://img.shields.io/static/v1?label=Views&message=327&color=blueviolet">](https://github.com/BradleyA/pi-display/blob/master/images/view.table.md)
 [![GitHub Size](https://img.shields.io/github/repo-size/BradleyA/pi-display.svg)](https://github.com/BradleyA/pi-display/)
 ![Language Bash Python](https://img.shields.io/badge/%20Language-bash/python-blue.svg)
