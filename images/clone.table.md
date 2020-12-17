@@ -17,4 +17,4 @@ Total clones: 19
 ###### Updated: 2020-01-04
 **Note**  Data collection stopped between 10/14/2019 & 12/9/2019
 
-[Return to README](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
+[Return to README](https://github.com/BradleyA/pi-display/blob/master/README.md)
