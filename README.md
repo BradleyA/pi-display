@@ -67,15 +67,14 @@ Please do contribute!  Issues and pull requests are welcome.  Thank you for your
 [Return to top](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
 
 #### Stars
-[![Stargazers repo roster for @BradleyA/XXXXX](https://reporoster.com/stars/BradleyA/XXXXX)](https://github.com/BradleyA/XXXXX/stargazers)
+[![Stargazers repo roster for @BradleyA/pi-display](https://reporoster.com/stars/BradleyA/pi-display)](https://github.com/BradleyA/pi-display/stargazers)
 
-[Return to top](https://github.com/BradleyA/XXXXX/blob/master/README.md#XXXXX)
+[Return to top](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
 
 #### Forks
-[![Forkers repo roster for @BradleyA/XXXXX](https://reporoster.com/forks/BradleyA/XXXXX)](https://github.com/BradleyA/XXXXX/network/members)
+[![Forkers repo roster for @BradleyA/pi-display](https://reporoster.com/forks/BradleyA/pi-display)](https://github.com/BradleyA/pi-display/network/members)
 
-[Return to top](https://github.com/BradleyA/XXXXX/blob/master/README.md#XXXXX)
-
+[Return to top](https://github.com/BradleyA/pi-display/blob/master/README.md#pi-display)
 
 #### Tested OS
  * Ubuntu 14.04.6 LTS (amd64,armv7l)
