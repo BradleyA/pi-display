@@ -7,6 +7,8 @@
 [![Open GitHub Issue](https://img.shields.io/badge/Open-Incident-brightgreen.svg)](https://github.com/BradleyA/pi-display/issues/new/choose)
 [![GitHub Open Issues](https://img.shields.io/github/issues/BradleyA/pi-display?color=purple)](https://github.com/BradleyA/pi-display/issues?q=is%3Aopen+is%3Aissue)
 [![GitHub Closed Issues](https://img.shields.io/github/issues-closed/BradleyA/pi-display?color=purple)](https://github.com/BradleyA/pi-display/issues?q=is%3Aclosed+is%3Aissue)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/BradleyA/pi-display)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-closed-raw/BradleyA/pi-display)
 
 [<img alt="GitHub Repo Clones" src="https://img.shields.io/static/v1?label=Repo_Clones&message=107&color=blueviolet">](https://github.com/BradleyA/pi-display/blob/master/images/clone.table.md)
 [<img alt="GitHub Repo Views" src="https://img.shields.io/static/v1?label=Repo_Views&message=594&color=blueviolet">](https://github.com/BradleyA/pi-display/blob/master/images/view.table.md)
