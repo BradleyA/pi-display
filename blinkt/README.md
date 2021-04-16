@@ -52,7 +52,7 @@ To edit crontab and enter the following chnages, crontab -e
 ----
 
 #### Contribute
-Please do contribute!  Issues and pull requests are welcome.  Thank you for your help improving software.
+Please do contribute!  Issues, comments, and pull requests are welcome.  Thank you for your help improving software.
 
 [Return to top](https://github.com/BradleyA/pi-display/tree/master/blinkt#blinkt)
 
